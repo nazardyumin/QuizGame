@@ -228,8 +228,7 @@ namespace QuizGame.GUI
                 {
                     _adminFeatures.ChangeDateOfBirth(newdate);
                     MessageBox.Query(30, 7, "Well done!", "Сhanges saved successfully!", "Ok");
-                    old_date_text.Text = $" {_adminFeatures._user.DateOfBirth} ";
-                    new_date_text.Text = " ";
+                    back = true; top.Running = false;
                 }
             };
             var comeback = new Button("Cancel");

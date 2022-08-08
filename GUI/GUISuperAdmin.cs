@@ -9,11 +9,9 @@
             _changePass = _features.ChangePassword;
             _changeDate = _features.ChangeDateOfBirth;
         }
-
         public void CreateSMTH()
         {
 
         }
     }
-
 }

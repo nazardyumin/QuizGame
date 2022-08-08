@@ -33,8 +33,6 @@ do
 
 Console.WriteLine("Мы здесь!");
 
-DefaultFeatures[] a = { new AdminFeatures(new User()), new PlayerFeatures(new User())};
-
 //GUICommon.LoginPasswordWindow();
 
 

@@ -11,11 +11,6 @@
     public void EditQuiz()
     {
     }
-
-    public void Test()
-    {
-        Console.WriteLine("adminfeatures!!!!!!");
-    }
 }
 
 

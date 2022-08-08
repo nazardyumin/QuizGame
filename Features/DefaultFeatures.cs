@@ -24,9 +24,5 @@
         _database.SaveToFile();
         _database.Clear();
     }
-    protected void Test()
-    {
-
-    }
 }
 

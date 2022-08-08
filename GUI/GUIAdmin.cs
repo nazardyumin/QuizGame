@@ -94,7 +94,6 @@ namespace QuizGame.GUI
             SomeAction action = null;
             return (keep_on, logout, back, action);
         }
-
         public (bool keep_on, bool logout) AdminMenu()
         {
             bool keep_on = true;

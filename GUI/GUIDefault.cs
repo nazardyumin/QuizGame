@@ -11,11 +11,10 @@ namespace QuizGame.GUI
    public class GUIDefault
     {        
         protected User _user;
-        protected string _role;
-        protected delegate void ChangePass(string NewPass);
-        protected ChangePass _changePass;
-        protected delegate void ChangeDate(string NewDate);
-        protected ChangeDate _changeDate;
+        protected string _role;   
+        protected Change _changePass;
+        protected Change _changeDate;
+        protected delegate void Change(string New);
         protected delegate (bool keep_on, bool logout, bool back, SomeAction action) SomeAction();
         protected GUIDefault(User user)
         {

@@ -8,11 +8,15 @@
     {
 
     }
-    public void WatchResults()
+    public  void WatchResults()
     {
 
     }
-    public void WatchTop20()
+    public  void WatchTop20()
+    {
+
+    }
+    public  void WatchHighScores()
     {
 
     }

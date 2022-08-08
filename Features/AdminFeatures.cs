@@ -4,13 +4,17 @@
     {
 
     }
-    public void EditExistingQuiz()
+    public void CreateQuiz()
     {
 
     }
-    public void CreateNewQuiz()
+    public void EditQuiz()
     {
+    }
 
+    public void Test()
+    {
+        Console.WriteLine("adminfeatures!!!!!!");
     }
 }
 

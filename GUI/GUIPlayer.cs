@@ -1,26 +1,17 @@
 ﻿namespace QuizGame.GUI
 {
-    public class GUIPlayer
+    public class GUIPlayer : GUIDefault
     {
-        private PlayerFeatures? _playerFeatures;
-        public GUIPlayer(User user)
+        PlayerFeatures _features;
+        public GUIPlayer(User user):base(user)
         {
-            _playerFeatures = new PlayerFeatures(user);
+            _features = new(user);
+            _changePass = _features.ChangePassword;
+            _changeDate = _features.ChangeDateOfBirth;
         }
-
         public void Play()
         {
-            _playerFeatures.Play();
+
         }
-
-
-
-
-
-
-
-
-
-
     }
 }

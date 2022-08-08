@@ -1,6 +1,6 @@
 ﻿public class DefaultFeatures
 {
-    public User _user;
+    private User _user;
     private UsersDataBase _database;
     public DefaultFeatures(User user)
     {
@@ -23,6 +23,10 @@
         _user.DateOfBirth = NewDateOfBirth;
         _database.SaveToFile();
         _database.Clear();
+    }
+    protected void Test()
+    {
+
     }
 }
 

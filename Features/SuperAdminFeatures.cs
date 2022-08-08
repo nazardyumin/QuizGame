@@ -4,11 +4,11 @@
     {
 
     }
-    public void CreateNewAdmin()
+    public void CreateAdmin()
     {
 
     }
-    public void CreateNewSuperAdmin()
+    public void CreateSuperAdmin()
     {
 
     }

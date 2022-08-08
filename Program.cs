@@ -1,7 +1,5 @@
 ﻿using QuizGame.GUI;
 
-
-
 bool keep_on_using = true;
 bool logout = false;
 
@@ -22,14 +20,24 @@ do
         }
         else if (reply1.user.IsSuperAdmin)
         {
-            Console.WriteLine("Это суперадмин!");
+            var GUIsuperadmin = new GUISuperAdmin(reply1.user);
+            (bool keep_on, bool logout) reply2 = GUIsuperadmin.SuperAdminMenu();
+            keep_on_using = reply2.keep_on;
+            logout = reply2.logout;
+            if (keep_on_using == false) break;
         }
         else
         {
-            Console.WriteLine("Это игрок!");
+            var GUIplayer = new GUIPlayer(reply1.user);
+            (bool keep_on, bool logout) reply2 = GUIplayer.PlayerMenu();
+            keep_on_using = reply2.keep_on;
+            logout = reply2.logout;
+            if (keep_on_using == false) break;
         }
     } while (logout == false);
 } while (keep_on_using);
+
+//DON'T LOOK HERE!
 
 Console.WriteLine("Мы здесь!");
 

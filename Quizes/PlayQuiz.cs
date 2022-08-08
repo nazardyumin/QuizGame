@@ -1,5 +1,4 @@
 ﻿using System.Text.Json;
-
 public class PlayQuiz
 {
     protected Quiz Quiz;

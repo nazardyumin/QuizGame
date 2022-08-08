@@ -2,7 +2,7 @@
 {
     private User _user;
     private UsersDataBase _database;
-    public DefaultFeatures(User user)
+    protected DefaultFeatures(User user)
     {
         _user = user;
         _database = new UsersDataBase();

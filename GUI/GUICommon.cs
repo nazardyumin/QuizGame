@@ -118,7 +118,6 @@ namespace QuizGame.GUI
                     top.Running = false;
                 }
             };
-
             var back = new Button("Cancel");
             back.X = Pos.Left(signin) - 11;
             back.Y = Pos.Top(signin);
@@ -172,7 +171,6 @@ namespace QuizGame.GUI
                 X = Pos.Left(first_name),
                 Y = Pos.Top(login) + 2
             };
-
             var password2 = new Label("Confirm password: ")
             {
                 X = Pos.Left(first_name),

@@ -2,15 +2,11 @@
 {
     public AdminFeatures(User user) : base(user)
     {
-
     }
     public void CreateQuiz()
     {
-
     }
     public void EditQuiz()
     {
     }
 }
-
-

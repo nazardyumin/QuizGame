@@ -6,7 +6,6 @@ public class PathsConfig
     public string PathToHighscores { get; set; }
     public string PathToTop20 { get; set; }
     public string PathToQuizes { get; set; }
-
     public static PathsConfig Init()
     {
         using var file = new FileStream("PathsConfig.json", FileMode.Open, FileAccess.Read);
@@ -22,4 +21,3 @@ public class PathsConfig
         return config;
     }
 }
-

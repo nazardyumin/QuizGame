@@ -1,7 +1,6 @@
 ﻿public class Authentification
 {
     private UsersDataBase _usersDataBase;
-
     public Authentification()
     {
         _usersDataBase = new UsersDataBase();
@@ -49,5 +48,3 @@
         _usersDataBase.Clear();
     }
 }
-
-

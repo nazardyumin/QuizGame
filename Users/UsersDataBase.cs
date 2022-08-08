@@ -1,16 +1,13 @@
 ﻿using System.Text.Json;
-
 public class UsersDataBase
 {
     public List<User> Users;
     public string Path;
-
     public UsersDataBase()
     {
         Users = new List<User>();
         Path = PathInit();
     }
-
     public void Add(User user)
     {
         Users.Add(user);
@@ -50,4 +47,3 @@ public class UsersDataBase
         return PathsConfig.Init().PathToUserList;
     }
 }
-

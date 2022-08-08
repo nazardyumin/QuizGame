@@ -2,17 +2,11 @@
 {
     public SuperAdminFeatures(User user) : base(user)
     {
-
     }
     public void CreateAdmin()
     {
-
     }
     public void CreateSuperAdmin()
     {
-
     }
 }
-
-
-

@@ -1,17 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using QuizGame.Helpers;
 using Terminal.Gui;
-using QuizGame.Helpers;
 
 namespace QuizGame.GUI
 {
-   public class GUIDefault
-    {        
+    public class GUIDefault
+    {
         protected User _user;
-        protected string _role;   
+        protected string _role;
         protected Change _changePass;
         protected Change _changeDate;
         protected delegate void Change(string New);

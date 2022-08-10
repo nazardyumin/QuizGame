@@ -3,8 +3,9 @@
     public AdminFeatures(User user) : base(user)
     {
     }
-    public void CreateQuiz()
+    public void CreateNewQuiz()
     {
+        //CreateQuiz
     }
     public void EditQuiz()
     {

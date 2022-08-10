@@ -290,7 +290,6 @@ namespace QuizGame.GUI
                 if (new_pass_text.Text == "" || new_pass_text2.Text == "" || old_pass_text.Text == "")
                 {
                     MessageBox.ErrorQuery(30, 7, "Error!", "Not all fields are filled in!", "Ok");
-
                 }
                 else if (new_pass_text.Text != new_pass_text2.Text)
                 {

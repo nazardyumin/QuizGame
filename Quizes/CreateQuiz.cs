@@ -2,7 +2,7 @@
 
 public class CreateQuiz
 {
-    private Quiz _quiz;
+    public Quiz _quiz { get; set; }
     private string? _question;
     private List<QuizAnswer> _answers;
     public CreateQuiz()
@@ -15,11 +15,15 @@ public class CreateQuiz
     {
         _quiz.Theme = theme;
     }
+    public void SetLevel(string level)
+    {
+        _quiz.Level = level;
+    }
     public void SetQuestion(string question)
     {
         _question = question;
     }
-    public void SetAnswer(string answer, bool iscorrect)
+    public void SetAnswer(string answer, int iscorrect)
     {
         _answers.Add(new QuizAnswer { Answer = answer, IsCorrect = iscorrect });
     }
@@ -53,7 +57,7 @@ public class CreateQuiz
         file.Position = 0;
         JsonSerializer.SerializeAsync(file, quizlist);
     }
-    private List<Quiz>? LoadQuizListFromFile(string path)
+    private List<Quiz>? LoadQuizListFromFile(string path)  //TODO добавить загрузку из файла DefaultQuizList
     {
         if (!Directory.Exists(path))
         {

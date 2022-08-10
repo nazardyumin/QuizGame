@@ -20,7 +20,7 @@ public class PlayQuiz
     public void SaveResults()
     {
         PositionInit();
-        SaveResultToTop20File(Paths.top20);
+        //SaveResultToTop20File(Paths.top20);
         SaveResultToHighscoresFile(Paths.highscores);
     }
     public List<string> GetAllQuizThemes()
@@ -40,7 +40,7 @@ public class PlayQuiz
         file.Close();
         return list;
     }
-    private void SaveResultToTop20File(string path)
+    /*private void SaveResultToTop20File(string path)
     {
         if (!Directory.Exists(path))
         {
@@ -76,7 +76,7 @@ public class PlayQuiz
             file3.Position = 0;
             JsonSerializer.SerializeAsync(file3, Top20);
         }
-    }
+    }*/
     private void SaveResultToHighscoresFile(string path)
     {
         if (!Directory.Exists(path))

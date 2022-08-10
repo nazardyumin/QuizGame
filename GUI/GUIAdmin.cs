@@ -291,6 +291,7 @@ namespace QuizGame.GUI
                 createQuiz._quiz.Questions.Clear();
                 _memory_level = 0;
                 _memory_theme = "";
+                iter = 0;
                 back = true;
                 top.Running = false;
             };
@@ -323,6 +324,13 @@ namespace QuizGame.GUI
                     createQuiz.SaveToQuizListFile();
                     _memory_theme = "";
                     _memory_level = 0;
+                    question_buffer = "";
+                    buffers[0] = ("", 0);
+                    buffers[1] = ("", 0);
+                    buffers[2] = ("", 0);
+                    buffers[3] = ("", 0);
+                    iter = 0;
+                    createQuiz._quiz.Questions.Clear();
                     back = true;
                     top.Running = false;
                 }

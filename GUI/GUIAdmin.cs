@@ -234,7 +234,7 @@ namespace QuizGame.GUI
                 X = Pos.Left(is_correct1),
                 Y = Pos.Top(is_correct3) + 3
             };
-            is_correct3.SelectedItem = buffers[3].Item2;
+            is_correct4.SelectedItem = buffers[3].Item2;
             var add_item = new Button("Add Item")
             {
                 X = Pos.Center(),
@@ -301,28 +301,31 @@ namespace QuizGame.GUI
             };
             save.Clicked += () =>
             {
-                createQuiz.SetTheme(_memory_theme);
-                string what_level = "";
-                switch (_memory_level)
+                if (GUIHelper.Save())
                 {
-                    case 0:
-                        what_level = "Easy";
-                        break;
-                    case 1:
-                        what_level = "Normal";
-                        break;
-                    case 2:
-                        what_level = "Hard";
-                        break;
-                    default:
-                        break;
-                };
-                createQuiz.SetLevel(what_level);
-                createQuiz.SaveToQuizListFile();
-                back = true;
-                _memory_theme = "";
-                _memory_level = 0;
-                top.Running = false;
+                    createQuiz.SetTheme(_memory_theme);
+                    string what_level = "";
+                    switch (_memory_level)
+                    {
+                        case 0:
+                            what_level = "Easy";
+                            break;
+                        case 1:
+                            what_level = "Normal";
+                            break;
+                        case 2:
+                            what_level = "Hard";
+                            break;
+                        default:
+                            break;
+                    };
+                    createQuiz.SetLevel(what_level);
+                    createQuiz.SaveToQuizListFile();
+                    _memory_theme = "";
+                    _memory_level = 0;
+                    back = true;
+                    top.Running = false;
+                }
             };
             if (iter+1<0)
             {
@@ -451,7 +454,6 @@ namespace QuizGame.GUI
                 {
                     iter = 0;
                     RestoreInputData();
-
                 }
                 else StepForward();
                 top.Running = false;

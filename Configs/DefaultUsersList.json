@@ -1,1 +1,22 @@
-[{"FirstName":"Test","LastName":"Admin","DateOfBirth":"00.00.0000","Login":"admin","Password":"admin","IsAdmin":true,"IsSuperAdmin":false},{"FirstName":"Test","LastName":"SuperAdmin","DateOfBirth":"00.00.0000","Login":"superadmin","Password":"superadmin","IsAdmin":false,"IsSuperAdmin":true},{"FirstName":"Test","LastName":"Player","DateOfBirth":"00.00.0000","Login":"player","Password":"player","IsAdmin":false,"IsSuperAdmin":false}]
+[
+  {
+    "FirstName": "Default",
+    "LastName": "Admin",
+    "DateOfBirth": "00.00.0000",
+    "Login": "admin",
+    "Password": "admin",
+    "IsAdmin": true,
+    "IsSuperAdmin": false,
+    "Results": null
+  },
+  {
+    "FirstName": "Default",
+    "LastName": "SuperAdmin",
+    "DateOfBirth": "00.00.0000",
+    "Login": "superadmin",
+    "Password": "superadmin",
+    "IsAdmin": false,
+    "IsSuperAdmin": true,
+    "Results": null
+  }
+]

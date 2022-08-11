@@ -46,28 +46,34 @@
     }
     private void SaveResultToTop20()
     {
-        if (_quiz.Top20 is not null)
+        if (_position.Scores>0)
         {
-            if (_quiz.Top20.Contains(_quiz.Top20.Find((i) => i.Name == _position.Name)))
+            if (_quiz.Top20 is not null)
             {
-                var item = _quiz.Top20.Find((i) => i.Name == _position.Name);
-                if (item.Scores < _position.Scores) item.Scores = _position.Scores;
+                if (_quiz.Top20.Contains(_quiz.Top20.Find((i) => i.Name == _position.Name)))
+                {
+                    var item = _quiz.Top20.Find((i) => i.Name == _position.Name);
+                    if (item.Scores < _position.Scores) item.Scores = _position.Scores;
+                }
+                else
+                {
+                    _quiz.Top20.Add(_position);
+                    _quiz.Top20 = (List<RatingPosition>)_quiz.Top20.OrderByDescending((p) => p.Scores);
+                }
             }
             else
             {
+                _quiz.Top20 = new List<RatingPosition>();
                 _quiz.Top20.Add(_position);
-                _quiz.Top20 = (List<RatingPosition>)_quiz.Top20.OrderByDescending((p) => p.Scores);
             }
-        }
-        else
-        {
-            _quiz.Top20 = new List<RatingPosition>();
-            _quiz.Top20.Add(_position);
-        }
+        } 
     }
     private void SaveResultToHighscoresFile(string path)
     {
-        SerializerHelper.SaveHighscores(path, _position);
+        if (_position.Scores > 0)
+        {
+            SerializerHelper.SaveHighscores(path, _position);
+        }         
     }
     private void PositionInit()
     {

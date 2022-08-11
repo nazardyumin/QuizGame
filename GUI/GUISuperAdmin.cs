@@ -3,16 +3,16 @@ using Terminal.Gui;
 
 namespace QuizGame.GUI
 {
-    public class GUISuperAdmin : GUIDefault
+    public class GUISuperAdmin : GUIAdmin
     {
-        SuperAdminFeatures _features;
+        SuperAdminFeatures _superFeatures;
         public GUISuperAdmin(User user) : base(user)
         {
-            _features = new(user);
+            _superFeatures = new();
             _changePass = _features.ChangePassword;
             _changeDate = _features.ChangeDateOfBirth;
         }
-        private (bool keep_on, bool logout, bool back, SomeAction action) MainMenuWindow()
+        private (bool keep_on, bool logout, bool back, SomeAction action) MainMenuWindow()  //надо переопределить
         {
             bool logout = false;
             bool keep_on = true;

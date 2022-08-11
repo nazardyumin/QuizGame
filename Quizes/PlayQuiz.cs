@@ -1,31 +1,42 @@
-﻿using System.Text.Json;
-public class PlayQuiz
+﻿public class PlayQuiz
 {
-    protected Quiz Quiz;
-    protected User Player;
-    public QuizResult Result;
-    public RatingPosition? Pos;
-    private (string top20, string highscores, string quizes) Paths;
+    private Quiz _quiz;
+    private User _player;
+    private QuizResult _result;
+    private RatingPosition _position;
+    private (string highscores, string quizes) _paths;
     public PlayQuiz(User player)
     {
-        Player = player;
-        Paths = PathInit();
-        Result = new QuizResult(); //testing!!!!!!!!!!!!
+        _player = player;
+        _paths = PathInit();
+        _result = new QuizResult(); //testing!!!!!!!!!!!!
     }
-    public void FindQuizAndInit(string theme)
+    public void SetQuiz(Quiz quiz)
     {
-        var quizlist = LoadQuizListFromFile(Paths.quizes);
-        Quiz = quizlist.Find((q) => q.Theme == theme);
+        _quiz = quiz;
+    }
+    public Quiz FindQuiz(string theme)
+    {
+        return QuizLoader.FindQuiz(theme, QuizLoader.FromFile(_paths.quizes));
+    }
+    public Quiz MakeMixedQuiz()
+    {
+        //прописать механику получения квиза со случайными вопросам из всех квизов
+        return null;
+    }
+    public List<RatingPosition>? GetTop20()
+    {
+        return _quiz.Top20;
     }
     public void SaveResults()
     {
         PositionInit();
-        //SaveResultToTop20File(Paths.top20);
-        SaveResultToHighscoresFile(Paths.highscores);
+        SaveResultToTop20();
+        SaveResultToHighscoresFile(_paths.highscores);
     }
     public List<string> GetAllQuizThemes()
     {
-        var quizlist = LoadQuizListFromFile(Paths.quizes);
+        var quizlist = QuizLoader.FromFile(_paths.quizes);
         var listthemes = new List<string>();
         foreach (var item in quizlist)
         {
@@ -33,96 +44,41 @@ public class PlayQuiz
         }
         return listthemes;
     }
-    private List<Quiz>? LoadQuizListFromFile(string path)
+    private void SaveResultToTop20()
     {
-        var file = new FileStream(path + "Quizes.json", FileMode.Open, FileAccess.Read);
-        var list = JsonSerializer.DeserializeAsync<List<Quiz>>(file).Result;
-        file.Close();
-        return list;
-    }
-    /*private void SaveResultToTop20File(string path)
-    {
-        if (!Directory.Exists(path))
+        if (_quiz.Top20 is not null)
         {
-            Directory.CreateDirectory(path);
-        }
-        FileStream? helpfile = null;
-        var file1 = new FileStream(path + Quiz.Theme + "Top20.json", FileMode.OpenOrCreate, FileAccess.Read);
-        var newfile = SerializerHelper.IfEmptyRatingPositionFile(ref file1, ref helpfile, path + Quiz.Theme + "Top20.json");
-        var Top20 = JsonSerializer.DeserializeAsync<List<RatingPosition>>(newfile).Result;
-        newfile.Close();
-        if (Top20 is not null)
-        {
-            if (Top20.Contains(Top20.Find((i) => i.Name == Pos.Name)))
+            if (_quiz.Top20.Contains(_quiz.Top20.Find((i) => i.Name == _position.Name)))
             {
-                var item = Top20.Find((i) => i.Name == Pos.Name);
-                if (item.Scores < Pos.Scores) item.Scores = Pos.Scores;
+                var item = _quiz.Top20.Find((i) => i.Name == _position.Name);
+                if (item.Scores < _position.Scores) item.Scores = _position.Scores;
             }
             else
             {
-                Top20.Add(Pos);
-
+                _quiz.Top20.Add(_position);
+                _quiz.Top20 = (List<RatingPosition>)_quiz.Top20.OrderByDescending((p) => p.Scores);
             }
-            var orderedTop20 = Top20.OrderByDescending((r) => r.Scores);
-            using var file2 = new FileStream(path + Quiz.Theme + "Top20.json", FileMode.Open, FileAccess.Write);
-            file2.Position = 0;
-            JsonSerializer.SerializeAsync(file2, orderedTop20);
         }
         else
         {
-            Top20 = new List<RatingPosition>();
-            Top20.Add(Pos);
-            using var file3 = new FileStream(path + Quiz.Theme + "Top20.json", FileMode.Open, FileAccess.Write);
-            file3.Position = 0;
-            JsonSerializer.SerializeAsync(file3, Top20);
+            _quiz.Top20 = new List<RatingPosition>();
+            _quiz.Top20.Add(_position);
         }
-    }*/
+    }
     private void SaveResultToHighscoresFile(string path)
     {
-        if (!Directory.Exists(path))
-        {
-            Directory.CreateDirectory(path);
-        }
-        FileStream? helpfile = null;
-        var hsfile1 = new FileStream(path + "Highscores.json", FileMode.OpenOrCreate, FileAccess.Read);
-        var newfile = SerializerHelper.IfEmptyRatingPositionFile(ref hsfile1, ref helpfile, path + "Highscores.json");
-        var Highscores = JsonSerializer.DeserializeAsync<List<RatingPosition>>(newfile).Result;
-        newfile.Close();
-        if (Highscores is not null)
-        {
-            if (Highscores.Contains(Highscores.Find((i) => i.Name == Pos.Name)))
-            {
-                var item = Highscores.Find((i) => i.Name == Pos.Name);
-                item.Scores += Pos.Scores;
-            }
-            else
-            {
-                Highscores.Add(Pos);
-            }
-            var orderedHighScores = Highscores.OrderByDescending((r) => r.Scores);
-            using var hsfile2 = new FileStream(path + "Highscores.json", FileMode.Open, FileAccess.Write);
-            hsfile2.Position = 0;
-            JsonSerializer.SerializeAsync(hsfile2, orderedHighScores);
-        }
-        else
-        {
-            Highscores = new List<RatingPosition>();
-            Highscores.Add(Pos);
-            using var hsfile3 = new FileStream(path + "Highscores.json", FileMode.Open, FileAccess.Write);
-            hsfile3.Position = 0;
-            JsonSerializer.SerializeAsync(hsfile3, Highscores);
-        }
+        SerializerHelper.SaveHighscores(path, _position);
     }
     private void PositionInit()
     {
-        var Pos = new RatingPosition();
-        Pos.Scores = Result.Scores;
-        Pos.Name = Player.FirstName + " " + Player.LastName;
+        _position = new RatingPosition();
+        _position.Scores = _result.Scores;
+        _position.Name = _player.FirstName + " " + _player.LastName;
     }
-    private (string top20, string highscores, string quizes) PathInit()
+    private (string highscores, string quizes) PathInit()
     {
         var paths = PathsConfig.Init();
-        return (paths.PathToTop20, paths.PathToHighscores, paths.PathToQuizes);
+        return (paths.PathToHighscores, paths.PathToQuizes);
     }
 }
 

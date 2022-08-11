@@ -1,6 +1,6 @@
-﻿public class SuperAdminFeatures : AdminFeatures
+﻿public class SuperAdminFeatures
 {
-    public SuperAdminFeatures(User user) : base(user)
+    public SuperAdminFeatures()
     {
     }
     public void CreateAdmin()

@@ -17,11 +17,13 @@ namespace QuizGame.GUI
         protected List<(string, int)> _buffers;
         public GUIAdmin(User user) : base(user)
         {
+            _features = new(user);
             _changePass = _features.ChangePassword;
             _changeDate = _features.ChangeDateOfBirth;
-            _features = new(user);
             _createQuiz = new();
             _iter = 0;
+            _memory_theme = "";
+            _memory_level = 0;
             _question_buffer = "";
             _buffers = new List<(string, int)>(){("",0),("",0),("",0),("",0),};
         }

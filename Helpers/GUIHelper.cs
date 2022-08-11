@@ -27,5 +27,4 @@ namespace QuizGame.Helpers
             }
         }
     }
-
 }

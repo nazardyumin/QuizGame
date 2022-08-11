@@ -5,12 +5,12 @@ namespace QuizGame.GUI
 {
     public class GUIPlayer : GUIDefault
     {
-        PlayerFeatures _features;
+        QuizPlayer _player;
         public GUIPlayer(User user) : base(user)
         {
-            _features = new(user);
-            _changePass = _features.ChangePassword;
-            _changeDate = _features.ChangeDateOfBirth;
+            _player = new(user);
+            _changePass = _player.ChangePassword;
+            _changeDate = _player.ChangeDateOfBirth;
         }
         private (bool keep_on, bool logout, bool back, SomeAction action) MainMenuWindow()
         {

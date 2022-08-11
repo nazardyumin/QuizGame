@@ -1,10 +1,11 @@
-﻿public class SuperAdminFeatures
+﻿public class UsersCreator : QuizCreator
 {
-    public SuperAdminFeatures()
+    public UsersCreator(User user):base(user)
     {
     }
     public void CreateAdmin()
     {
+
     }
     public void CreateSuperAdmin()
     {

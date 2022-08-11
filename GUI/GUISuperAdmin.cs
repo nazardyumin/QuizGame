@@ -5,12 +5,12 @@ namespace QuizGame.GUI
 {
     public class GUISuperAdmin : GUIAdmin
     {
-        SuperAdminFeatures _superFeatures;
+        UsersCreator _superCreator;
         public GUISuperAdmin(User user) : base(user)
         {
-            _superFeatures = new();
-            _changePass = _features.ChangePassword;
-            _changeDate = _features.ChangeDateOfBirth;
+            _superCreator = new(user);
+            _changePass = _superCreator.ChangePassword;
+            _changeDate = _superCreator.ChangeDateOfBirth;
         }
         private (bool keep_on, bool logout, bool back, SomeAction action) MainMenuWindow()  //надо переопределить
         {

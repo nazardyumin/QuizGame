@@ -48,8 +48,38 @@ public class SerializerHelper
         }
         return file;
     }
-    public static void SaveHighscores(string path, RatingPosition position)
+    public static void SaveHighscores(RatingPosition position)
     {
+        var path = PathsConfig.Init().PathToHighscores;
+        var highscores = LoadHighscores();
+        if (highscores is not null)
+        {
+            if (highscores.Contains(highscores.Find((i) => i.Name == position.Name)))
+            {
+                var item = highscores.Find((i) => i.Name == position.Name);
+                item.Scores += position.Scores;
+            }
+            else
+            {
+                highscores.Add(position);
+            }
+            var orderedHighScores = highscores.OrderByDescending((r) => r.Scores);
+            File.Delete(path + "Highscores.json");
+            using var hsfile2 = new FileStream(path + "Highscores.json", FileMode.Create, FileAccess.Write);
+            JsonSerializer.SerializeAsync(hsfile2, orderedHighScores);
+        }
+        else
+        {
+            highscores = new List<RatingPosition>();
+            highscores.Add(position);
+            File.Delete(path + "Highscores.json");
+            using var hsfile3 = new FileStream(path + "Highscores.json", FileMode.Create, FileAccess.Write);
+            JsonSerializer.SerializeAsync(hsfile3, highscores);
+        }
+    }
+    public static List<RatingPosition>? LoadHighscores()
+    {
+        var path = PathsConfig.Init().PathToHighscores;
         if (!Directory.Exists(path))
         {
             Directory.CreateDirectory(path);
@@ -57,33 +87,8 @@ public class SerializerHelper
         FileStream? helpfile = null;
         var hsfile1 = new FileStream(path + "Highscores.json", FileMode.OpenOrCreate, FileAccess.Read);
         var newfile = SerializerHelper.IfEmptyRatingPositionFile(ref hsfile1, ref helpfile, path + "Highscores.json");
-        var Highscores = JsonSerializer.DeserializeAsync<List<RatingPosition>>(newfile).Result;
+        var highscores = JsonSerializer.DeserializeAsync<List<RatingPosition>>(newfile).Result;
         newfile.Close();
-        if (Highscores is not null)
-        {
-            if (Highscores.Contains(Highscores.Find((i) => i.Name == position.Name)))
-            {
-                var item = Highscores.Find((i) => i.Name == position.Name);
-                item.Scores += position.Scores;
-            }
-            else
-            {
-                Highscores.Add(position);
-            }
-            var orderedHighScores = Highscores.OrderByDescending((r) => r.Scores);
-            using var hsfile2 = new FileStream(path + "Highscores.json", FileMode.Open, FileAccess.Write);
-            hsfile2.Position = 0;
-            JsonSerializer.SerializeAsync(hsfile2, orderedHighScores);
-        }
-        else
-        {
-            Highscores = new List<RatingPosition>();
-            Highscores.Add(position);
-            using var hsfile3 = new FileStream(path + "Highscores.json", FileMode.Open, FileAccess.Write);
-            hsfile3.Position = 0;
-            JsonSerializer.SerializeAsync(hsfile3, Highscores);
-        }
+        return highscores;
     }
 }
-
-

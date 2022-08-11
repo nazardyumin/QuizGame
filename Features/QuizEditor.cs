@@ -4,13 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-public class QuizEditor
+public class QuizEditor : Default
 {
-    protected Quiz _quiz { get; set; }
-    public QuizEditor()
-    {
-        _quiz = new Quiz();
-        _quiz.Questions = new List<QuizQuestion>();
+    protected Quiz? _quiz { get; set; }
+    public QuizEditor(User user):base(user)
+    {    
     }
     public void SetTheme(string theme)
     {
@@ -46,5 +44,3 @@ public class QuizEditor
         _quiz = quiz;
     }
 }
-
-

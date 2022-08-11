@@ -7,8 +7,9 @@ using System.Text.Json;
 
 public static class QuizLoader
 {
-    public static List<Quiz> FromFile(string path)
+    public static List<Quiz> FromFile()
     {
+        string path = PathsConfig.Init().PathToQuizes;
         if (!Directory.Exists(path))
         {
             Directory.CreateDirectory(path);
@@ -26,4 +27,3 @@ public static class QuizLoader
         return quiz;
     }
 }
-

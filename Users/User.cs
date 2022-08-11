@@ -7,5 +7,5 @@
     public string Password { get; set; }
     public bool IsAdmin { get; set; }
     public bool IsSuperAdmin { get; set; }
-    List<QuizResult>? Results { get; set; }
+    public List<QuizResult>? Results { get; set; }
 }

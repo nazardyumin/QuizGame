@@ -133,7 +133,7 @@ namespace QuizGame.GUI
                 play.Clicked += () =>
                 {
                     _is_playing = true;
-                    _player.SetQuiz(_player.FindQuiz(_player.GetAllQuizThemes()[themes_list.SelectedItem]));
+                    _player.SetQuiz(_player.FindQuiz(themes_list.SelectedItem));
                     top.Running = false;
                 };
                 var mixed_quiz = new Button("MixedQuiz");
@@ -157,6 +157,10 @@ namespace QuizGame.GUI
             }
             else
             {
+                hello.Visible = false;
+
+
+                //добавить новый MenuBar TOP 20
                 count = _player.GetCount();
                 _buffer_question = _player.GetQuestion(_iterator);
                 _buffer_answers = _player.GetListAnswers(_iterator);

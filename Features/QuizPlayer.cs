@@ -21,9 +21,9 @@
         }
         return listthemes;
     }
-    public Quiz FindQuiz(string theme_plus_level)
+    public Quiz? FindQuiz(int index)
     {
-        return QuizLoader.FindQuiz(theme_plus_level, QuizLoader.FromFile());
+        return QuizLoader.FindQuiz(index);
     }
     public Quiz MixedQuiz()
     {

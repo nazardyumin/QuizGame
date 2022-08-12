@@ -35,6 +35,10 @@ public class QuizCreator : QuizEditor
     {
         _quiz.Questions.Clear();
     }
+    public Quiz? FindQuiz(string theme)
+    {
+        return QuizLoader.FindQuiz(theme, QuizLoader.FromFile());
+    }
     public Quiz GetQuiz()
     {
         return _quiz;

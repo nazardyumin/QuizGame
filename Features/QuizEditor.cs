@@ -10,9 +10,9 @@ public class QuizEditor : Default
     public QuizEditor(User user):base(user)
     {    
     }
-    public Quiz? FindQuiz(string theme)
+    public Quiz? FindQuiz(int index)
     {
-        return QuizLoader.FindQuiz(theme, QuizLoader.FromFile());
+        return QuizLoader.FindQuiz(index);
     }
     public void QuizInit(Quiz quiz)
     {

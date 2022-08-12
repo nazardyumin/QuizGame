@@ -10,6 +10,14 @@ public class QuizEditor : Default
     public QuizEditor(User user):base(user)
     {    
     }
+    public Quiz? FindQuiz(string theme)
+    {
+        return QuizLoader.FindQuiz(theme, QuizLoader.FromFile());
+    }
+    public void QuizInit(Quiz quiz)
+    {
+        _quiz = quiz;
+    }
     public void SetTheme(string theme)
     {
         _quiz.Theme = theme;
@@ -38,9 +46,5 @@ public class QuizEditor : Default
     public (string, int) GetAnswer(int index1, int index2)
     {
         return (_quiz.Questions[index1].Answers[index2].Answer, _quiz.Questions[index1].Answers[index2].IsCorrect);
-    }
-    public void QuizInit(Quiz quiz)
-    {
-        _quiz = quiz;
-    }
+    }  
 }

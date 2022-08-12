@@ -23,7 +23,26 @@ public static class QuizLoader
     }
     public static Quiz FindQuiz(string theme, List<Quiz> list)
     {
-        var quiz = list.Find((q) => q.Theme == theme);
+        var quiz = list.Find((q) => $"{q.Theme} ({q.Level})" == theme);
         return quiz;
+    }
+    public static Quiz MakeMixedQuiz()
+    {
+        var creator = new QuizCreator(new User());
+        creator.SetTheme("Mixed Quiz");
+        creator.SetLevel("Mixed");
+        Random random = new();
+        var quiz_list = QuizLoader.FromFile();
+        foreach (var item in quiz_list)
+        {
+            int i = random.Next(0, item.Questions.Count());
+            creator.SetQuestion(item.Questions[i].Question);
+            foreach (var answers in item.Questions[i].Answers)
+            {
+                creator.SetAnswer(answers.Answer, answers.IsCorrect);
+            }
+            creator.AddItem();
+        }
+        return creator.GetQuiz();
     }
 }

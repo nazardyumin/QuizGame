@@ -305,9 +305,15 @@ namespace QuizGame.GUI
             };
             save.Clicked += () =>
             {
-                if (_creator.FindQuiz(_buffer_theme) is not null)
+                var checker = _creator.FindQuiz(_buffer_theme);
+                string existing_quiz="";
+                if (checker is not null)
                 {
-                    MessageBox.ErrorQuery(30, 7, "Error!", "Sorry! A quiz with such a theme already exists!\nPlease specify a unique name!", "Ok");
+                    existing_quiz = $"{checker.Theme}{checker.Level}";
+                }
+                if (existing_quiz==$"{_buffer_theme}{_buffer_level}")
+                {
+                    MessageBox.ErrorQuery(30, 7, "Error!", "Sorry! A quiz with these theme and level exists!\nPlease specify a unique name!", "Ok");
                     _buffer_theme = "";
                     top.Running = false;
                 }

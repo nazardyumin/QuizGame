@@ -10,10 +10,6 @@ public class QuizCreator : QuizEditor
         _quiz.Questions = new List<QuizQuestion>();
         _answers = new List<QuizAnswer>();
     }
-    public Quiz? FindQuiz(string theme)
-    {
-        return QuizLoader.FindQuiz(theme, QuizLoader.FromFile());
-    }
     public void SetQuestion(string question)
     {
         _question = question;

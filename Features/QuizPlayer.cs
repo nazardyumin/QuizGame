@@ -17,18 +17,38 @@
         var listthemes = new List<string>();
         foreach (var item in quizlist)
         {
-            listthemes.Add(item.Theme);
+            listthemes.Add($"{item.Theme} ({item.Level})");
         }
         return listthemes;
     }
-    public Quiz FindQuiz(string theme)
+    public Quiz FindQuiz(string theme_plus_level)
     {
-        return QuizLoader.FindQuiz(theme, QuizLoader.FromFile());
+        return QuizLoader.FindQuiz(theme_plus_level, QuizLoader.FromFile());
     }
-    public Quiz MakeMixedQuiz()
+    public Quiz MixedQuiz()
     {
-        //прописать механику получения квиза со случайными вопросами из всех квизов
-        return null;
+        return QuizLoader.MakeMixedQuiz();
+    }
+    public int GetCount()
+    {
+        return _quiz.Questions.Count();
+    }
+    public string GetQuestion(int index)
+    {
+        return _quiz.Questions[index].Question;
+    }
+    public List<string> GetListAnswers(int index)
+    {
+        List<string> list = new();
+        for (int i = 0; i < 4; i++)
+        {
+            list.Add(GetAnswer(index, i));
+        }
+        return list;
+    }
+    private string GetAnswer(int index1, int index2)
+    {
+        return (_quiz.Questions[index1].Answers[index2].Answer);
     }
     public bool CheckingAnswer(int index, int item1, int item2, int item3, int item4)
     {

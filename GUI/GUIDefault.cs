@@ -16,15 +16,15 @@ namespace QuizGame.GUI
             _user = user;
             if (user.IsAdmin)
             {
-                _role = $"admin : {user.FirstName} {user.LastName}";
+                _role = $"admin | {user.FirstName} {user.LastName}";
             }
             else if (user.IsSuperAdmin)
             {
-                _role = $"superadmin : {user.FirstName} {user.LastName}";
+                _role = $"superadmin | {user.FirstName} {user.LastName}";
             }
             else
             {
-                _role = $"player : {user.FirstName} {user.LastName}";
+                _role = $"{user.FirstName} {user.LastName}";
             }
         }
         protected (bool keep_on, bool logout, bool back, SomeAction action) SettingsWindow()

@@ -83,7 +83,6 @@ namespace QuizGame.GUI
             } while (logout == false && keep_on == true && back == false);
             return (keep_on, logout, back, action);
         }
-
         private (bool keep_on, bool logout, bool back, SomeAction action) PlayQuizGamepLay()
         {
             bool logout = false;
@@ -106,16 +105,6 @@ namespace QuizGame.GUI
             {new MenuItem ("_Logout", "", () => { logout=true; top.Running = false; }),
              new MenuItem("_Quit", "", () => {  if (GUIHelper.Quit()) {keep_on = false; top.Running = false;} }) })});
             top.Add(menu);
-            int quizes_passed = 0;
-            int total_scores = 0;
-            if(_user.Results is not null)
-            {
-                quizes_passed = _user.Results.Count();
-                foreach (var item in _user.Results)
-                {
-                    total_scores += item.Scores;
-                }
-            }
             var hello = new Label(GetPlayerInfo())
             {
                 X = Pos.AnchorEnd(GetPlayerInfo().Length) - 1,

@@ -9,7 +9,7 @@ public class PathsConfig
     {
         using var file = new FileStream("PathsConfig.json", FileMode.Open, FileAccess.Read);
         var config = JsonSerializer.DeserializeAsync<PathsConfig>(file).Result;
-        if (config.PathToUserList == "")
+        if (config.PathToUserList == "" || config.PathToHighscores == "" || config.PathToQuizes == "")
         {
             config.PathToUserList = config.PathToHighscores = config.PathToQuizes = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
             config.PathToUserList += @"\\MyQuizGame\\Users\\";

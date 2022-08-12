@@ -21,10 +21,14 @@ public static class QuizLoader
         newfile.Close();
         return list;
     }
-    public static Quiz FindQuiz(string theme, List<Quiz> list)
+    public static Quiz FindQuiz(string theme, List<Quiz> list)  
     {
         var quiz = list.Find((q) => $"{q.Theme} ({q.Level})" == theme);
         return quiz;
+    }
+    public static Quiz FindQuiz(int index)
+    {
+        return FromFile()[index];
     }
     public static Quiz MakeMixedQuiz()
     {

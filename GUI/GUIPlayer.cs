@@ -11,12 +11,14 @@ namespace QuizGame.GUI
         private string _buffer_question;
         private List<string> _buffer_answers;
         private bool _is_playing;
+        private (bool answer1, bool answer2, bool answer3, bool answer4)[] _memory_bools;
         public GUIPlayer(User user) : base(user)
         {
             _player = new(user);
             _changePass = _player.ChangePassword;
             _changeDate = _player.ChangeDateOfBirth;
             _iterator = 0;
+            _buffer_answers = new();
             _is_playing = false;
         }
         private (bool keep_on, bool logout, bool back, SomeAction action) MainMenuWindow()
@@ -37,8 +39,8 @@ namespace QuizGame.GUI
             top.Add(win);
             var menu = new MenuBar(new MenuBarItem[] {new MenuBarItem ("_Menu", new MenuItem []
             {new MenuItem ("_Settings", "", () =>{action=SettingsWindow; top.Running = false; }),
-             new MenuItem ("_Logout", "", () => { logout=true; top.Running = false; }),
-             new MenuItem("_Quit", "", () => {  if (GUIHelper.Quit()) {keep_on = false;top.Running = false; } }) })});
+             new MenuItem ("_Logout", "", () => { _player.ReSaveUserTofile(); logout=true; top.Running = false; }),
+             new MenuItem("_Quit", "", () => {  if (GUIHelper.Quit()) {_player.ReSaveUserTofile(); keep_on = false;top.Running = false; } }) })});
             top.Add(menu);
             var hello = new Label(GetPlayerInfo())
             {
@@ -102,8 +104,8 @@ namespace QuizGame.GUI
             };
             top.Add(win);
             var menu = new MenuBar(new MenuBarItem[] {new MenuBarItem ("_Menu", new MenuItem []
-            {new MenuItem ("_Logout", "", () => { logout=true; top.Running = false; }),
-             new MenuItem("_Quit", "", () => {  if (GUIHelper.Quit()) {keep_on = false; top.Running = false;} }) })});
+            {new MenuItem ("_Logout", "", () => {_player.ReSaveUserTofile(); logout=true; top.Running = false; }),
+             new MenuItem("_Quit", "", () => {  if (GUIHelper.Quit()) {_player.ReSaveUserTofile(); keep_on = false; top.Running = false;} }) })});
             top.Add(menu);
             var hello = new Label(GetPlayerInfo())
             {
@@ -158,12 +160,243 @@ namespace QuizGame.GUI
             else
             {
                 hello.Visible = false;
-
-
-                //добавить новый MenuBar TOP 20
+                menu.Visible = false;
                 count = _player.GetCount();
+                MemoryBoolsInit(count);
+                MemoryBoolsResize(ref _memory_bools, count);
+                _player.ResetQuizResult();
                 _buffer_question = _player.GetQuestion(_iterator);
                 _buffer_answers = _player.GetListAnswers(_iterator);
+                if (_player.GetTop20().Count()>0)
+                {
+                    if (_player.GetTop20().Count()<20)
+                    {
+                        var buffer = new ustring[_player.GetTop20().Count()];
+                        for (int i = 0; i < buffer.Length; i++)
+                        {
+                            buffer[i] = _player.GetTop20()[i];
+                        }
+                        var items = new MenuItem[_player.GetTop20().Count()];
+                        for (int i = 0; i < buffer.Length; i++)
+                        {
+                            items[i] = new MenuItem(buffer[i], "", () => { });
+                        }
+                        var list_top20 = new MenuBarItem("_Top20", items);
+                        var menu_top20 = new MenuBarItem[] { list_top20, };
+                        var top20 = new MenuBar(menu_top20);
+                        top.Add(top20);
+                    }
+                    else
+                    {
+                        var buffer = new ustring[20];
+                        for (int i = 0; i < 20; i++)
+                        {
+                            buffer[i] = _player.GetTop20()[i];
+                        }
+                        var items = new MenuItem[20];
+                        for (int i = 0; i < 20; i++)
+                        {
+                            items[i] = new MenuItem(buffer[i], "", () => { });
+                        }
+                        var list_top20 = new MenuBarItem("_Top20", items);
+                        var menu_top20 = new MenuBarItem[] { list_top20 };
+                        var top20 = new MenuBar(menu_top20);
+                        top.Add(top20);
+                    }                   
+                }
+                else
+                {
+                    var items = new MenuItem[2];
+                    items[0] = new MenuItem("No results available!","" ,() => { });
+                    var list_top20 = new MenuBarItem("_Top20", items);
+                    var menu_top20 = new MenuBarItem[] { list_top20, };
+                    var top20 = new MenuBar(menu_top20);
+                    top.Add(top20);
+                }
+                var header = new Label($"{_player.GetTheme()} ({_player.GetLevel()})");
+                header.X = Pos.Center();
+                header.Y = 3;
+                var question_label = new Label($"Question {_iterator+1} of {count}");
+                question_label.X = Pos.Center();
+                question_label.Y = Pos.Bottom(header)+6;
+                var question=new Label(_buffer_question);
+                question.X = Pos.Center();
+                question.Y = Pos.Bottom(question_label) + 2;
+                question.ColorScheme = Colors.TopLevel;
+                var answer1=new CheckBox(_buffer_answers[0]);
+                answer1.X= Pos.Center();
+                answer1.Y= Pos.Bottom(question)+3;;
+                var answer2 = new CheckBox(_buffer_answers[1]);
+                answer2.X = Pos.Center();
+                answer2.Y = Pos.Bottom(answer1) + 1;
+                var answer3 = new CheckBox(_buffer_answers[2]);
+                answer3.X = Pos.Center();
+                answer3.Y = Pos.Bottom(answer2) + 1;
+                var answer4 = new CheckBox(_buffer_answers[3]);
+                answer4.X = Pos.Center();
+                answer4.Y = Pos.Bottom(answer3) + 1;
+                var previous_question = new Button("<");
+                previous_question.X = Pos.Center() - 6;
+                previous_question.Y = Pos.Bottom(answer4) + 5;
+                previous_question.Clicked += () =>
+                {
+                    _memory_bools[_iterator] = (answer1.Checked, answer2.Checked, answer3.Checked, answer4.Checked);
+                    _iterator--;
+                    top.Running = false;
+                };
+                var first_question = new Button("<<<");
+                first_question.X = Pos.Left(previous_question) - 9;
+                first_question.Y = Pos.Bottom(answer4) + 5;
+                first_question.Clicked += () =>
+                {
+                    _memory_bools[_iterator] = (answer1.Checked, answer2.Checked, answer3.Checked, answer4.Checked);
+                    _iterator =0;
+                    top.Running = false;
+                };
+                var next_question = new Button(">");
+                next_question.X = Pos.Right(previous_question)+2;
+                next_question.Y = Pos.Bottom(answer4) + 5;
+                next_question.Clicked += () =>
+                {
+                    _memory_bools[_iterator] = (answer1.Checked, answer2.Checked, answer3.Checked, answer4.Checked);
+                    _iterator++;
+                    top.Running = false;
+                };
+                var last_question = new Button(">>>");
+                last_question.X = Pos.Right(next_question) + 2;
+                last_question.Y = Pos.Bottom(answer4) + 5;
+                last_question.Clicked += () =>
+                {
+                    _memory_bools[_iterator] = (answer1.Checked, answer2.Checked, answer3.Checked, answer4.Checked);
+                    _iterator = count-1;
+                    top.Running = false;
+                };
+                if (count > 3)
+                {
+                    if (_iterator == 0)
+                    {
+                        first_question.Visible = false;
+                        previous_question.Visible = false;
+                        next_question.Visible = true;
+                        last_question.Visible = true;
+                    }
+                    else if (_iterator == 1)
+                    {
+                        first_question.Visible = false;
+                        previous_question.Visible = true;
+                        next_question.Visible = true;
+                        last_question.Visible = true;
+                    }
+                    else if (_iterator > 1 && _iterator < count - 1)
+                    {
+                        first_question.Visible = true;
+                        previous_question.Visible = true;
+                        next_question.Visible = true;
+                        if (_iterator < count - 2) last_question.Visible = true;
+                        else last_question.Visible = false;
+                    }
+                    else
+                    {
+                        first_question.Visible = true;
+                        previous_question.Visible = true;
+                        next_question.Visible = false;
+                        last_question.Visible = false;
+                    }
+                }
+                else
+                {
+                    if (_iterator == 0)
+                    {
+                        first_question.Visible = false;
+                        previous_question.Visible = false;
+                        next_question.Visible = true;
+                        last_question.Visible = true;
+                    }
+                    else if (_iterator == 1)
+                    {
+                        first_question.Visible = false;
+                        previous_question.Visible = true;
+                        next_question.Visible = true;
+                        last_question.Visible = false;
+                    }
+                    else if (_iterator > 1 && _iterator < count - 1)
+                    {
+                        first_question.Visible = true;
+                        previous_question.Visible = true;
+                        next_question.Visible = true;
+                        last_question.Visible = false;
+                    }
+                    else
+                    {
+                        first_question.Visible = true;
+                        previous_question.Visible = true;
+                        next_question.Visible = false;
+                        last_question.Visible = false;
+                    }
+                }
+                var finish = new Button("Finish");
+                finish.X = Pos.Center()+1;
+                finish.Y = Pos.Bottom(previous_question) + 3;
+                finish.Clicked += () =>
+                {
+                    _memory_bools[_iterator] = (answer1.Checked, answer2.Checked, answer3.Checked, answer4.Checked);
+                    if (_iterator != count - 1)
+                    {
+                        if (GUIHelper.ForcedFinish())
+                        {
+                            var list_answers = new List<QuizAnswerResult>();
+                            for (int i = 0; i < count; i++)
+                            {
+                                list_answers.Add(_player.SetAnswerResult(i, 0, _memory_bools[i].answer1));
+                                list_answers.Add(_player.SetAnswerResult(i, 1, _memory_bools[i].answer2));
+                                list_answers.Add(_player.SetAnswerResult(i, 2, _memory_bools[i].answer3));
+                                list_answers.Add(_player.SetAnswerResult(i, 3, _memory_bools[i].answer4));
+                                var is_correct=_player.CheckingAllAnswer(i, _memory_bools[i].answer1, _memory_bools[i].answer2, _memory_bools[i].answer3, _memory_bools[i].answer4);
+                                _player.AddItemToQuizResult(i, list_answers, is_correct);
+                            }
+                            bool is_mixed = header.Text == "Mixed Quiz (Mixed)";
+                            _player.SaveResults(is_mixed);
+                            MessageBox.Query(30, 7, "Quiz is passed!", $"You got {count} points!", "Ok");
+                            _iterator = 0;
+                            _is_playing = false;
+                            top.Running = false;
+                        }
+                    }
+                    else
+                    {
+                        if (GUIHelper.Finish())
+                        {                        
+                            var list_answers = new List<QuizAnswerResult>();
+                            for (int i = 0; i < count; i++)
+                            {
+                                list_answers.Add(_player.SetAnswerResult(i, 0, _memory_bools[i].answer1));
+                                list_answers.Add(_player.SetAnswerResult(i, 1, _memory_bools[i].answer2));
+                                list_answers.Add(_player.SetAnswerResult(i, 2, _memory_bools[i].answer3));
+                                list_answers.Add(_player.SetAnswerResult(i, 3, _memory_bools[i].answer4));
+                                var is_correct = _player.CheckingAllAnswer(i,_memory_bools[i].answer1, _memory_bools[i].answer2, _memory_bools[i].answer3, _memory_bools[i].answer4);
+                                _player.AddItemToQuizResult(i, list_answers, is_correct);
+                            }
+                            bool is_mixed = header.Text == "Mixed Quiz (Mixed)";
+                            _player.SaveResults(is_mixed);
+                            MessageBox.Query(30, 7, "Quiz is passed!", $"You got {count} points!", "Ok");
+                            _iterator = 0;
+                            _is_playing = false;
+                            top.Running = false;
+                        }
+                    }         
+                };
+                var cancel = new Button("Cancel");
+                cancel.X = Pos.Left(finish) -12;
+                cancel.Y = Pos.Top(finish);
+                cancel.Clicked += () =>
+                {
+                    _iterator = 0;
+                    _is_playing = false;
+                    back = true;
+                    top.Running = false;
+                };
+
+                win.Add(header, question_label, question, answer1, answer2, answer3, answer4, next_question, previous_question, first_question, last_question, finish, cancel);
             }
             win.Add();
             Application.Run();
@@ -209,6 +442,17 @@ namespace QuizGame.GUI
                 }
             }
             return $"Quizes passed: {quizes_passed} | Total Scores: {total_scores} | {_role}";
+        }
+        private void MemoryBoolsInit(int count)
+        {
+            if (_memory_bools is null)
+            {
+                _memory_bools = new (bool answer1, bool answer2, bool answer3, bool answer4)[count];
+            }
+        }
+        private void MemoryBoolsResize(ref (bool answer1, bool answer2, bool answer3, bool answer4) [] array , int count)
+        {
+            Array.Resize<(bool answer1, bool answer2, bool answer3, bool answer4)>(ref array,count);
         }
     }
 }

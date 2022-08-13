@@ -314,6 +314,8 @@ namespace QuizGame.GUI
                 if (existing_quiz==$"{_buffer_theme}{_buffer_level}")
                 {
                     MessageBox.ErrorQuery(30, 7, "Error!", "Sorry! A quiz with these theme and level exists!\nPlease specify a unique name!", "Ok");
+                    theme_text.CanFocus = true;
+                    levels.CanFocus = true;
                     _buffer_theme = "";
                     top.Running = false;
                 }

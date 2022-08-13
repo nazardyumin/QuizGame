@@ -12,10 +12,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="Quizes\QuizParts\QuizAnsweredItem.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="NStack.Core" Version="0.17.1" />
     <PackageReference Include="System.ValueTuple" Version="4.5.0" />
     <PackageReference Include="Terminal.Gui" Version="1.7.0" />

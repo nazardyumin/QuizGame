@@ -5,7 +5,10 @@
     private RatingPosition? _position;
     public QuizPlayer(User user):base(user)
     {
+        _quiz = new Quiz();
         _result = new QuizResult();
+        _result.AnsweredQuestions = new();
+        _result.Scores = 0;
     }
     public void SetQuiz(Quiz quiz)
     {
@@ -33,6 +36,14 @@
     {
         return _quiz.Questions.Count();
     }
+    public string GetTheme()
+    {
+        return _quiz.Theme;
+    }
+    public string GetLevel()
+    {
+        return _quiz.Level;
+    }
     public string GetQuestion(int index)
     {
         return _quiz.Questions[index].Question;
@@ -50,22 +61,46 @@
     {
         return (_quiz.Questions[index1].Answers[index2].Answer);
     }
-    public bool CheckingAnswer(int index, int item1, int item2, int item3, int item4)
+    private bool IsAnsweredCorrect(int index1, int index2, bool is_checked)    //найти косяк с неправильной записью объекта в UserList!!
     {
+        bool check=false;
+        if (_quiz.Questions[index1].Answers[index2].IsCorrect == 1 && is_checked == true) check = true;
+        if (_quiz.Questions[index1].Answers[index2].IsCorrect == 0 && is_checked == false) check = true;
+        return check;
+    }
+    public QuizAnswerResult SetAnswerResult(int index1, int index2, bool is_checked)
+    {
+        var result = new QuizAnswerResult();
+        result.Answer = _quiz.Questions[index1].Answers[index2].Answer; 
+        result.IsCorrect= _quiz.Questions[index1].Answers[index2].IsCorrect;
+        result.IsChecked = is_checked;
+        result.IsAnsweredCorrect = IsAnsweredCorrect(index1,index2,is_checked);
+        return result;
+    }
+    public bool CheckingAllAnswer(int index, bool res1, bool res2, bool res3, bool res4)
+    { 
         bool check1 = false;
         bool check2 = false;
         bool check3 = false;
         bool check4 = false;
-        if (_quiz.Questions[index].Answers[0].IsCorrect == item1) check1 = true;
-        if (_quiz.Questions[index].Answers[1].IsCorrect == item2) check2 = true;
-        if (_quiz.Questions[index].Answers[2].IsCorrect == item3) check3 = true;
-        if (_quiz.Questions[index].Answers[3].IsCorrect == item4) check4 = true;
+        if (_quiz.Questions[index].Answers[0].IsCorrect == 1 && res1 == true) check1 = true;
+        if (_quiz.Questions[index].Answers[0].IsCorrect == 0 && res1 == false) check1 = true;
+        if (_quiz.Questions[index].Answers[1].IsCorrect == 1 && res2 == true) check2 = true;
+        if (_quiz.Questions[index].Answers[1].IsCorrect == 0 && res2 == false) check2 = true;
+        if (_quiz.Questions[index].Answers[2].IsCorrect == 1 && res3 == true) check3 = true;
+        if (_quiz.Questions[index].Answers[2].IsCorrect == 0 && res3 == false) check3 = true;
+        if (_quiz.Questions[index].Answers[3].IsCorrect == 1 && res4 == true) check4 = true;
+        if (_quiz.Questions[index].Answers[3].IsCorrect == 0 && res4 == false) check4 = true;
         if (check1 == true && check2 == true && check3 == true && check4 == true) return true;
         else return false;
     }
-    public void AddItemToQuizResult(QuizQuestion question, bool is_correct)
+    public void AddItemToQuizResult(int index, List<QuizAnswerResult> list_answers,bool is_correct)
     {
-        var item = new QuizAnsweredItem(question, is_correct);
+        string question = _quiz.Questions[index].Question;
+        var item = new QuizQuestionResult();
+        item.Question = question;
+        item.Answers = list_answers;
+        item.IsCorrect=is_correct;
         _result.AnsweredQuestions.Add(item);
         if (is_correct) _result.Scores++;
     }
@@ -73,20 +108,35 @@
     {
         _result.Theme = _quiz.Theme;
         _result.Level = _quiz.Level;
-        var database = new UsersDataBase();
-        database.LoadFromFile();
-        var user = database.SearchByLogin(_user.Login);
         if (_user.Results is not null)
         {
             _user.Results.Add(_result);
-            user.Results.Add(_result);
         }
         else
         {
             _user.Results = new();
             _user.Results.Add(_result);
-            user.Results = new();
-            user.Results.Add(_result);
+        }
+    }
+    public void ReSaveUserTofile()
+    {
+        var database = new UsersDataBase();
+        database.LoadFromFile();
+        int index = database.Users.IndexOf(database.SearchByLogin(_user.Login));
+        if (database.Users[index].Results is not null)
+        {
+            foreach (var item in _user.Results)
+            {
+                database.Users[index].Results.Add(item);
+            }
+        }
+        else
+        {
+            database.Users[index].Results = new List<QuizResult>();
+            foreach (var item in _user.Results)
+            {
+                database.Users[index].Results.Add(item);
+            }
         }
         database.SaveToFile();
     }
@@ -110,11 +160,12 @@
                 else
                 {
                     _quiz.Top20.Add(_position);
-                    var ordered = (List<RatingPosition>)_quiz.Top20.OrderByDescending((p) => p.Scores);
-                    _quiz.Top20.Clear();
+                    var ordered =_quiz.Top20.OrderByDescending((p) => p.Scores);
+                    int i = 0;
                     foreach (var item in ordered)
                     {
-                        _quiz.Top20.Add(item);
+                        _quiz.Top20[i] = item;
+                        i++;
                     }
                 }
             }
@@ -132,17 +183,28 @@
             SerializerHelper.SaveHighscores(_position);
         }
     }
-    public void SaveResults()
+    public void SaveResults(bool is_mixed)
     {
         AddQuizResultToUser();
         PositionInit();
-        SaveResultToTop20();
-        QuizSaver.ReSaveToFile(_quiz);
+        if (!is_mixed)
+        {
+            SaveResultToTop20();
+            QuizSaver.ReSaveToFile(_quiz);
+        }
         SaveResultToHighscoresFile();
     }
-    public List<RatingPosition>? GetTop20()
+    public List<string>? GetTop20()
     {
-        return _quiz.Top20;
+        List <string> list=new();
+        if (_quiz.Top20 is not null )
+        {
+            foreach (var item in _quiz.Top20)
+            {
+                list.Add($"{item.Name} {item.Scores}");
+            }
+        }
+        return list;
     }
     public List<RatingPosition>? GetHighScores()
     {
@@ -151,5 +213,12 @@
     public List<QuizResult>? GetQuizResults()
     {
         return _user.Results;
+    }
+    public void ResetQuizResult()
+    {
+        _result.Theme = "";
+        _result.Level = "";
+        _result.AnsweredQuestions.Clear();
+        _result.Scores = 0;
     }
 }

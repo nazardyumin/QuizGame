@@ -26,5 +26,27 @@ namespace QuizGame.Helpers
                 default: return false;
             }
         }
+        public static bool Finish()
+        {
+            var n = MessageBox.Query(30, 7, "Finish", "Are you shure?", "Yes", "No");
+            switch (n)
+            {
+                case 0: return true;
+                case 1: return false;
+                case -1: return false;
+                default: return false;
+            }
+        }
+        public static bool ForcedFinish()
+        {
+            var n = MessageBox.Query(30, 7, "Finish", "Are you shure that you've answered\nall the questions?", "Yes", "No");
+            switch (n)
+            {
+                case 0: return true;
+                case 1: return false;
+                case -1: return false;
+                default: return false;
+            }
+        }
     }
 }

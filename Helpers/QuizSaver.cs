@@ -28,23 +28,8 @@ public static class QuizSaver
     {
         string path = PathsConfig.Init().PathToQuizes;
         var list = QuizLoader.FromFile();
-        var quiz_from_file = QuizLoader.FindQuiz(quiz_local.Theme,list);
-        if (quiz_from_file.Top20 is not null)
-        {
-            quiz_from_file.Top20.Clear();
-            foreach (var item in quiz_local.Top20)
-            {
-                quiz_from_file.Top20.Add(item);
-            }
-        }
-        else
-        {
-            quiz_from_file.Top20 = new List<RatingPosition>();
-            foreach (var item in quiz_local.Top20)
-            {
-                quiz_from_file.Top20.Add(item);
-            }
-        }
+        var index=list.IndexOf(QuizLoader.FindQuiz($"{quiz_local.Theme} ({ quiz_local.Level})",list));
+        list[index] = quiz_local;
         File.Delete(path + "QuizesList.json");
         using var file = new FileStream(path + "QuizesList.json", FileMode.Create, FileAccess.Write);
         JsonSerializer.SerializeAsync(file, list);

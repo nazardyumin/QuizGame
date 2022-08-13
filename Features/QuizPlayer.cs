@@ -61,23 +61,7 @@
     {
         return (_quiz.Questions[index1].Answers[index2].Answer);
     }
-    private bool IsAnsweredCorrect(int index1, int index2, bool is_checked)    //найти косяк с неправильной записью объекта в UserList!!
-    {
-        bool check=false;
-        if (_quiz.Questions[index1].Answers[index2].IsCorrect == 1 && is_checked == true) check = true;
-        if (_quiz.Questions[index1].Answers[index2].IsCorrect == 0 && is_checked == false) check = true;
-        return check;
-    }
-    public QuizAnswerResult SetAnswerResult(int index1, int index2, bool is_checked)
-    {
-        var result = new QuizAnswerResult();
-        result.Answer = _quiz.Questions[index1].Answers[index2].Answer; 
-        result.IsCorrect= _quiz.Questions[index1].Answers[index2].IsCorrect;
-        result.IsChecked = is_checked;
-        result.IsAnsweredCorrect = IsAnsweredCorrect(index1,index2,is_checked);
-        return result;
-    }
-    public bool CheckingAllAnswer(int index, bool res1, bool res2, bool res3, bool res4)
+    public bool CheckingAnswer(int index, bool res1, bool res2, bool res3, bool res4)
     { 
         bool check1 = false;
         bool check2 = false;
@@ -94,12 +78,10 @@
         if (check1 == true && check2 == true && check3 == true && check4 == true) return true;
         else return false;
     }
-    public void AddItemToQuizResult(int index, List<QuizAnswerResult> list_answers,bool is_correct)
+    public void AddItemToQuizResult(int index,bool is_correct)
     {
-        string question = _quiz.Questions[index].Question;
         var item = new QuizQuestionResult();
-        item.Question = question;
-        item.Answers = list_answers;
+        item.Question = _quiz.Questions[index].Question;
         item.IsCorrect=is_correct;
         _result.AnsweredQuestions.Add(item);
         if (is_correct) _result.Scores++;
@@ -108,35 +90,17 @@
     {
         _result.Theme = _quiz.Theme;
         _result.Level = _quiz.Level;
-        if (_user.Results is not null)
-        {
-            _user.Results.Add(_result);
-        }
-        else
-        {
-            _user.Results = new();
-            _user.Results.Add(_result);
-        }
-    }
-    public void ReSaveUserTofile()
-    {
         var database = new UsersDataBase();
         database.LoadFromFile();
-        int index = database.Users.IndexOf(database.SearchByLogin(_user.Login));
-        if (database.Users[index].Results is not null)
+        int index=database.Users.IndexOf(database.SearchByLogin(_user.Login));
+        if (database.Users[index] is not null)
         {
-            foreach (var item in _user.Results)
-            {
-                database.Users[index].Results.Add(item);
-            }
+            database.Users[index].Results.Add(_result);
         }
         else
         {
-            database.Users[index].Results = new List<QuizResult>();
-            foreach (var item in _user.Results)
-            {
-                database.Users[index].Results.Add(item);
-            }
+            database.Users[index].Results = new();
+            database.Users[index].Results.Add(_result);
         }
         database.SaveToFile();
     }
@@ -221,4 +185,8 @@
         _result.AnsweredQuestions.Clear();
         _result.Scores = 0;
     }
+    public int GetScores()
+    {
+        return _result.Scores;
+    } 
 }

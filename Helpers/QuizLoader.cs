@@ -36,7 +36,7 @@ public static class QuizLoader
         creator.SetTheme("Mixed Quiz");
         creator.SetLevel("Mixed");
         Random random = new();
-        var quiz_list = QuizLoader.FromFile();
+        var quiz_list = FromFile();
         foreach (var item in quiz_list)
         {
             int i = random.Next(0, item.Questions.Count());

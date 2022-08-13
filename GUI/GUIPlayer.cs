@@ -39,8 +39,8 @@ namespace QuizGame.GUI
             top.Add(win);
             var menu = new MenuBar(new MenuBarItem[] {new MenuBarItem ("_Menu", new MenuItem []
             {new MenuItem ("_Settings", "", () =>{action=SettingsWindow; top.Running = false; }),
-             new MenuItem ("_Logout", "", () => { _player.ReSaveUserTofile(); logout=true; top.Running = false; }),
-             new MenuItem("_Quit", "", () => {  if (GUIHelper.Quit()) {_player.ReSaveUserTofile(); keep_on = false;top.Running = false; } }) })});
+             new MenuItem ("_Logout", "", () => {  logout=true; top.Running = false; }),
+             new MenuItem("_Quit", "", () => {  if (GUIHelper.Quit()) { keep_on = false;top.Running = false; } }) })});
             top.Add(menu);
             var hello = new Label(GetPlayerInfo())
             {
@@ -104,8 +104,8 @@ namespace QuizGame.GUI
             };
             top.Add(win);
             var menu = new MenuBar(new MenuBarItem[] {new MenuBarItem ("_Menu", new MenuItem []
-            {new MenuItem ("_Logout", "", () => {_player.ReSaveUserTofile(); logout=true; top.Running = false; }),
-             new MenuItem("_Quit", "", () => {  if (GUIHelper.Quit()) {_player.ReSaveUserTofile(); keep_on = false; top.Running = false;} }) })});
+            {new MenuItem ("_Logout", "", () => { logout=true; top.Running = false; }),
+             new MenuItem("_Quit", "", () => {  if (GUIHelper.Quit()) { keep_on = false; top.Running = false;} }) })});
             top.Add(menu);
             var hello = new Label(GetPlayerInfo())
             {
@@ -164,9 +164,9 @@ namespace QuizGame.GUI
                 count = _player.GetCount();
                 MemoryBoolsInit(count);
                 MemoryBoolsResize(ref _memory_bools, count);
-                _player.ResetQuizResult();
                 _buffer_question = _player.GetQuestion(_iterator);
                 _buffer_answers = _player.GetListAnswers(_iterator);
+                _player.ResetQuizResult();
                 if (_player.GetTop20().Count()>0)
                 {
                     if (_player.GetTop20().Count()<20)
@@ -344,19 +344,14 @@ namespace QuizGame.GUI
                     {
                         if (GUIHelper.ForcedFinish())
                         {
-                            var list_answers = new List<QuizAnswerResult>();
+                            var list_answers = new List<QuizQuestionResult>();
                             for (int i = 0; i < count; i++)
                             {
-                                list_answers.Add(_player.SetAnswerResult(i, 0, _memory_bools[i].answer1));
-                                list_answers.Add(_player.SetAnswerResult(i, 1, _memory_bools[i].answer2));
-                                list_answers.Add(_player.SetAnswerResult(i, 2, _memory_bools[i].answer3));
-                                list_answers.Add(_player.SetAnswerResult(i, 3, _memory_bools[i].answer4));
-                                var is_correct=_player.CheckingAllAnswer(i, _memory_bools[i].answer1, _memory_bools[i].answer2, _memory_bools[i].answer3, _memory_bools[i].answer4);
-                                _player.AddItemToQuizResult(i, list_answers, is_correct);
+                                _player.AddItemToQuizResult(i, _player.CheckingAnswer(i, _memory_bools[i].answer1, _memory_bools[i].answer2, _memory_bools[i].answer3, _memory_bools[i].answer4));
                             }
                             bool is_mixed = header.Text == "Mixed Quiz (Mixed)";
                             _player.SaveResults(is_mixed);
-                            MessageBox.Query(30, 7, "Quiz is passed!", $"You got {count} points!", "Ok");
+                            MessageBox.Query(30, 7, "Quiz is passed!", $"You got {_player.GetScores()} points!", "Ok");
                             _iterator = 0;
                             _is_playing = false;
                             top.Running = false;
@@ -366,19 +361,14 @@ namespace QuizGame.GUI
                     {
                         if (GUIHelper.Finish())
                         {                        
-                            var list_answers = new List<QuizAnswerResult>();
+                            var list_answers = new List<QuizQuestionResult>();
                             for (int i = 0; i < count; i++)
                             {
-                                list_answers.Add(_player.SetAnswerResult(i, 0, _memory_bools[i].answer1));
-                                list_answers.Add(_player.SetAnswerResult(i, 1, _memory_bools[i].answer2));
-                                list_answers.Add(_player.SetAnswerResult(i, 2, _memory_bools[i].answer3));
-                                list_answers.Add(_player.SetAnswerResult(i, 3, _memory_bools[i].answer4));
-                                var is_correct = _player.CheckingAllAnswer(i,_memory_bools[i].answer1, _memory_bools[i].answer2, _memory_bools[i].answer3, _memory_bools[i].answer4);
-                                _player.AddItemToQuizResult(i, list_answers, is_correct);
+                                _player.AddItemToQuizResult(i, _player.CheckingAnswer(i, _memory_bools[i].answer1, _memory_bools[i].answer2, _memory_bools[i].answer3, _memory_bools[i].answer4));
                             }
                             bool is_mixed = header.Text == "Mixed Quiz (Mixed)";
                             _player.SaveResults(is_mixed);
-                            MessageBox.Query(30, 7, "Quiz is passed!", $"You got {count} points!", "Ok");
+                            MessageBox.Query(30, 7, "Quiz is passed!", $"You got {_player.GetScores()} points!", "Ok");
                             _iterator = 0;
                             _is_playing = false;
                             top.Running = false;
@@ -433,10 +423,13 @@ namespace QuizGame.GUI
         {
             int quizes_passed = 0;
             int total_scores = 0;
-            if (_user.Results is not null)
+            var database = new UsersDataBase();
+            database.LoadFromFile();
+            int index = database.Users.IndexOf(database.SearchByLogin(_user.Login));
+            if (database.Users[index].Results is not null)
             {
-                quizes_passed = _user.Results.Count();
-                foreach (var item in _user.Results)
+                quizes_passed = database.Users[index].Results.Count();
+                foreach (var item in database.Users[index].Results)
                 {
                     total_scores += item.Scores;
                 }

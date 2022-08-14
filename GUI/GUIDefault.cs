@@ -302,12 +302,12 @@ namespace QuizGame.GUI
                     if (newpass == old_pass_text.Text)
                     {
                         MessageBox.ErrorQuery(30, 7, "Error!", "The New and the Old Passwords match!", "Ok");
-                        old_pass_text.Text = "";
+                        new_pass_text.Text = new_pass_text2.Text = old_pass_text.Text = "";
                     }
                     else if (old_pass_text.Text != _user.Password)
                     {
                         MessageBox.ErrorQuery(30, 7, "Error!", "The Old Password is invalid!", "Ok");
-                        old_pass_text.Text = "";
+                        new_pass_text.Text = new_pass_text2.Text = old_pass_text.Text = "";
                     }
                     else
                     {

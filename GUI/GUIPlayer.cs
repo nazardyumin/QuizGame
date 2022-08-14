@@ -253,7 +253,6 @@ namespace QuizGame.GUI
                 previous_question.Y = Pos.Bottom(answer4) + 5;
                 previous_question.Clicked += () =>
                 {
-
                     _memory_bools[_iterator] = (answer1.Checked, answer2.Checked, answer3.Checked, answer4.Checked);
                     _iterator--;                    
                     top.Running = false;
@@ -425,7 +424,6 @@ namespace QuizGame.GUI
                 };
                 win.Add(header, question_label, question, answer1, answer2, answer3, answer4, next_question, previous_question, first_question, last_question, finish, cancel);
             }
-            win.Add();
             Application.Run();
             return (keep_on, logout, back, action);
         }

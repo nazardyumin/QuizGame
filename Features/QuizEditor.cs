@@ -41,10 +41,64 @@ public class QuizEditor : Default
     }
     public string GetQuestion(int index)
     {
-        return _quiz.Questions[index].Question;
+        if (_quiz.Questions.Count()>0)
+        {
+            return _quiz.Questions[index].Question;
+        }
+        else
+        {
+            return "";
+        }
+    }
+    public List<(string, int)> GetAnswers(int index)
+    {
+        var list = new List<(string, int)>();
+        if (_quiz.Questions.Count() > 0)
+        {
+            foreach (var item in _quiz.Questions[index].Answers)
+            {
+                list.Add((item.Answer, item.IsCorrect));
+            }
+        }
+        else
+        {
+            for(int i=0;i<4;i++)
+            {
+                list.Add(("", 0));
+            }
+        }
+        return list;
     }
     public (string, int) GetAnswer(int index1, int index2)
     {
         return (_quiz.Questions[index1].Answers[index2].Answer, _quiz.Questions[index1].Answers[index2].IsCorrect);
-    }  
+    }
+    public List<string> GetAllQuizThemes()
+    {
+        var quizlist = QuizLoader.FromFile();
+        var listthemes = new List<string>();
+        foreach (var item in quizlist)
+        {
+            listthemes.Add($"{item.Theme} ({item.Level})");
+        }
+        return listthemes;
+    }
+    public string GetTheme()
+    {
+        return _quiz.Theme;
+    }
+    public string GetLevel()
+    {
+        return _quiz.Level;
+    }
+    public int GetLevelInt()
+    {
+        if (_quiz.Level == "Easy") return 0;
+        else if (_quiz.Level == "Normal") return 1;
+        else return 2;
+    }
+    public void DeleteItem(int index)
+    {
+        _quiz.Questions.Remove(_quiz.Questions[index]);
+    }
 }

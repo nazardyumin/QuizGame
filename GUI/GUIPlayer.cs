@@ -244,13 +244,18 @@ namespace QuizGame.GUI
                 var answer4 = new CheckBox(_buffer_answers[3]);
                 answer4.X = Pos.Center();
                 answer4.Y = Pos.Bottom(answer3) + 1;
+                answer1.Checked = _memory_bools[_iterator].answer1;
+                answer2.Checked = _memory_bools[_iterator].answer2;
+                answer3.Checked = _memory_bools[_iterator].answer3;
+                answer4.Checked = _memory_bools[_iterator].answer4;
                 var previous_question = new Button("<");
                 previous_question.X = Pos.Center() - 6;
                 previous_question.Y = Pos.Bottom(answer4) + 5;
                 previous_question.Clicked += () =>
                 {
+
                     _memory_bools[_iterator] = (answer1.Checked, answer2.Checked, answer3.Checked, answer4.Checked);
-                    _iterator--;
+                    _iterator--;                    
                     top.Running = false;
                 };
                 var first_question = new Button("<<<");
@@ -362,6 +367,7 @@ namespace QuizGame.GUI
                             _player.SaveResults(is_mixed);
                             MessageBox.Query(30, 7, "Quiz is passed!", $"You got {_player.GetScores()} points!", "Ok");
                             _iterator = 0;
+                            MemoryBoolsReset(count);
                             _is_playing = false;
                             top.Running = false;
                         }
@@ -379,6 +385,7 @@ namespace QuizGame.GUI
                             _player.SaveResults(is_mixed);
                             MessageBox.Query(30, 7, "Quiz is passed!", $"You got {_player.GetScores()} points!", "Ok");
                             _iterator = 0;
+                            MemoryBoolsReset(count);
                             _is_playing = false;
                             top.Running = false;
                         }
@@ -390,6 +397,7 @@ namespace QuizGame.GUI
                 cancel.Clicked += () =>
                 {
                     _iterator = 0;
+                    MemoryBoolsReset(count);
                     _is_playing = false;
                     top.Running = false;
                 };
@@ -576,7 +584,17 @@ namespace QuizGame.GUI
         }
         private void MemoryBoolsResize(ref (bool answer1, bool answer2, bool answer3, bool answer4) [] array , int count)
         {
-            Array.Resize(ref array,count);
+            if (array.Length!=count)
+            {
+                Array.Resize(ref array, count);
+            }
+        }
+        private void MemoryBoolsReset(int count)
+        {
+            for (int i=0;i<count;i++)
+            {
+                _memory_bools[i] = (false, false, false, false);
+            }
         }
     }
 }

@@ -199,7 +199,10 @@
     }
     public List<QuizResult>? GetQuizResults()
     {
-        return _user.Results;
+        var database = new UsersDataBase();
+        database.LoadFromFile();
+        var user = database.SearchByLogin(_user.Login);
+        return user.Results;
     }
     public void ResetQuizResult()
     {

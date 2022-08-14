@@ -27,14 +27,18 @@ public class UsersDataBase
         if (!Directory.Exists(Path))
         {
             Directory.CreateDirectory(Path);
+            FileStream? helpfile = null;
+            var file = new FileStream(Path + "UsersList.json", FileMode.OpenOrCreate, FileAccess.Read);
+            var newfile = SerializerHelper.IfEmptyUsersListFile(ref file, ref helpfile, Path + "UsersList.json");
+            var list = JsonSerializer.DeserializeAsync<List<User>>(newfile).Result;
+            newfile.Close();
+            Users = list;
         }
-        FileStream? helpfile = null;
-        var file = new FileStream(Path + "UsersList.json", FileMode.OpenOrCreate, FileAccess.Read);
-        var newfile = SerializerHelper.IfEmptyUsersListFile(ref file, ref helpfile, Path + "UsersList.json");
-        var list = JsonSerializer.DeserializeAsync<List<User>>(newfile).Result;
-        newfile.Close();
-        if (list is not null)
+        else
         {
+            var file = new FileStream(Path + "UsersList.json", FileMode.Open, FileAccess.Read);
+            var list = JsonSerializer.DeserializeAsync<List<User>>(file).Result;
+            file.Close();
             Users = list;
         }
     }

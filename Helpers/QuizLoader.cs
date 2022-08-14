@@ -13,13 +13,21 @@ public static class QuizLoader
         if (!Directory.Exists(path))
         {
             Directory.CreateDirectory(path);
+            FileStream? helpfile = null;
+            var file = new FileStream(path + "QuizesList.json", FileMode.OpenOrCreate, FileAccess.Read);
+            var newfile = SerializerHelper.IfEmptyQuizesListFile(ref file, ref helpfile, path + "QuizesList.json");
+            var list = JsonSerializer.DeserializeAsync<List<Quiz>>(newfile).Result;
+            newfile.Close();
+            return list;
         }
-        FileStream? helpfile = null;
-        var file1 = new FileStream(path + "QuizesList.json", FileMode.OpenOrCreate, FileAccess.Read);
-        var newfile = SerializerHelper.IfEmptyQuizesListFile(ref file1, ref helpfile, path + "QuizesList.json");
-        var list = JsonSerializer.DeserializeAsync<List<Quiz>>(newfile).Result;
-        newfile.Close();
-        return list;
+        else
+        {
+            FileStream? helpfile = null;
+            var file = new FileStream(path + "QuizesList.json", FileMode.OpenOrCreate, FileAccess.Read);
+            var list = JsonSerializer.DeserializeAsync<List<Quiz>>(file).Result;
+            file.Close();
+            return list;
+        }
     }
     public static Quiz FindQuiz(string theme, List<Quiz> list)  
     {

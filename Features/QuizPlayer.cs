@@ -90,6 +90,7 @@
     {
         _result.Theme = _quiz.Theme;
         _result.Level = _quiz.Level;
+        _result.Date = $"{DateTime.Now:g}";
         var database = new UsersDataBase();
         database.LoadFromFile();
         int index=database.Users.IndexOf(database.SearchByLogin(_user.Login));

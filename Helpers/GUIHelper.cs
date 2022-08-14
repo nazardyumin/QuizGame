@@ -48,5 +48,16 @@ namespace QuizGame.Helpers
                 default: return false;
             }
         }
+        public static bool Cancel()
+        {
+            var n = MessageBox.Query(35, 10, "Cancel", "\nBy clicking \"Yes\" you will exit\nthe editing window!!!\nAre you shure?", "Yes", "No");
+            switch (n)
+            {
+                case 0: return true;
+                case 1: return false;
+                case -1: return false;
+                default: return false;
+            }
+        }
     }
 }

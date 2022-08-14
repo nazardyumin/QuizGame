@@ -93,14 +93,17 @@
         var database = new UsersDataBase();
         database.LoadFromFile();
         int index=database.Users.IndexOf(database.SearchByLogin(_user.Login));
-        if (database.Users[index] is not null)
+        if (database.Users[index] is not null && _user.Results is not null)
         {
             database.Users[index].Results.Add(_result);
+            _user.Results.Add(_result);
         }
         else
         {
             database.Users[index].Results = new();
             database.Users[index].Results.Add(_result);
+            _user.Results = new();
+            _user.Results.Add(_result);
         }
         database.SaveToFile();
     }

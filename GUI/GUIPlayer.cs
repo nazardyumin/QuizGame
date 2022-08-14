@@ -365,7 +365,14 @@ namespace QuizGame.GUI
                             }
                             bool is_mixed = header.Text == "Mixed Quiz (Mixed)";
                             _player.SaveResults(is_mixed);
-                            MessageBox.Query(30, 7, "Quiz is passed!", $"You got {_player.GetScores()} points!", "Ok");
+                            if (_player.GetScores()==1)
+                            {
+                                MessageBox.Query(30, 7, "Quiz is passed!", "You got 1 point!", "Ok");
+                            }
+                            else
+                            {
+                                MessageBox.Query(30, 7, "Quiz is passed!", $"You got {_player.GetScores()} points!", "Ok");
+                            }                           
                             _iterator = 0;
                             MemoryBoolsReset(count);
                             _is_playing = false;
@@ -383,7 +390,14 @@ namespace QuizGame.GUI
                             }
                             bool is_mixed = header.Text == "Mixed Quiz (Mixed)";
                             _player.SaveResults(is_mixed);
-                            MessageBox.Query(30, 7, "Quiz is passed!", $"You got {_player.GetScores()} points!", "Ok");
+                            if (_player.GetScores() == 1)
+                            {
+                                MessageBox.Query(30, 7, "Quiz is passed!", "You got 1 point!", "Ok");
+                            }
+                            else
+                            {
+                                MessageBox.Query(30, 7, "Quiz is passed!", $"You got {_player.GetScores()} points!", "Ok");
+                            }
                             _iterator = 0;
                             MemoryBoolsReset(count);
                             _is_playing = false;

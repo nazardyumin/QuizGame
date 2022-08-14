@@ -997,6 +997,16 @@ namespace QuizGame.GUI
                         delete_item.Visible = true;
                         add_item.Visible = false;
                     }
+                    else if (count > 3 && _iterator == 1)
+                    {
+                        fast_back.Visible = false;
+                        step_back.Visible = true;
+                        step_forward.Visible = true;
+                        fast_forward.Visible = true;
+                        edit_item.Visible = true;
+                        delete_item.Visible = true;
+                        add_item.Visible = false;
+                    }
                     else if (count > 3 && _iterator == count-1)
                     {
                         fast_back.Visible = true;
@@ -1006,6 +1016,16 @@ namespace QuizGame.GUI
                         edit_item.Visible = true;
                         delete_item.Visible = true;
                         add_item.Visible = true;
+                    }
+                    else if (count > 3 && _iterator == count-2)
+                    {
+                        fast_back.Visible = true;
+                        step_back.Visible = true;
+                        step_forward.Visible = true;
+                        fast_forward.Visible = false;
+                        edit_item.Visible = true;
+                        delete_item.Visible = true;
+                        add_item.Visible = false;
                     }
                     else
                     {

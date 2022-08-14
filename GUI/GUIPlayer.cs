@@ -284,68 +284,82 @@ namespace QuizGame.GUI
                     _iterator = count-1;
                     top.Running = false;
                 };
-                if (count > 3)
+                if (count <= 1)
                 {
-                    if (_iterator == 0)
-                    {
-                        first_question.Visible = false;
-                        previous_question.Visible = false;
-                        next_question.Visible = true;
-                        last_question.Visible = true;
-                    }
-                    else if (_iterator == 1)
-                    {
-                        first_question.Visible = false;
-                        previous_question.Visible = true;
-                        next_question.Visible = true;
-                        last_question.Visible = true;
-                    }
-                    else if (_iterator > 1 && _iterator < count - 1)
-                    {
-                        first_question.Visible = true;
-                        previous_question.Visible = true;
-                        next_question.Visible = true;
-                        if (_iterator < count - 2) last_question.Visible = true;
-                        else last_question.Visible = false;
-                    }
-                    else
-                    {
-                        first_question.Visible = true;
-                        previous_question.Visible = true;
-                        next_question.Visible = false;
-                        last_question.Visible = false;
-                    }
+                    first_question.Visible = false;
+                    previous_question.Visible = false;
+                    next_question.Visible = false;
+                    last_question.Visible = false;
+                }
+                else if (count == 2 && _iterator == 0)
+                {
+                    first_question.Visible = false;
+                    previous_question.Visible = false;
+                    next_question.Visible = true;
+                    last_question.Visible = false;
+                }
+                else if (count == 2 && _iterator == 1)
+                {
+                    first_question.Visible = false;
+                    previous_question.Visible = true;
+                    next_question.Visible = false;
+                    last_question.Visible = false;
+                }
+                else if (count == 3 && _iterator == 0)
+                {
+                    first_question.Visible = false;
+                    previous_question.Visible = false;
+                    next_question.Visible = true;
+                    last_question.Visible = true;
+                }
+                else if (count == 3 && _iterator == 1)
+                {
+                    first_question.Visible = false;
+                    previous_question.Visible = true;
+                    next_question.Visible = true;
+                    last_question.Visible = false;
+                }
+                else if (count == 3 && _iterator == 2)
+                {
+                    first_question.Visible = true;
+                    previous_question.Visible = true;
+                    next_question.Visible = false;
+                    last_question.Visible = false;
+                }
+                else if (count > 3 && _iterator == 0)
+                {
+                    first_question.Visible = false;
+                    previous_question.Visible = false;
+                    next_question.Visible = true;
+                    last_question.Visible = true;
+                }
+                else if (count > 3 && _iterator == 1)
+                {
+                    first_question.Visible = false;
+                    previous_question.Visible = true;
+                    next_question.Visible = true;
+                    last_question.Visible = true;
+                }
+                else if (count > 3 && _iterator == count - 1)
+                {
+                    first_question.Visible = true;
+                    previous_question.Visible = true;
+                    next_question.Visible = false;
+                    last_question.Visible = false;
+                }
+                else if (count > 3 && _iterator == count - 2)
+                {
+                    first_question.Visible = true;
+                    previous_question.Visible = true;
+                    next_question.Visible = true;
+                    last_question.Visible = false;
                 }
                 else
                 {
-                    if (_iterator == 0)
-                    {
-                        first_question.Visible = false;
-                        previous_question.Visible = false;
-                        next_question.Visible = true;
-                        last_question.Visible = true;
-                    }
-                    else if (_iterator == 1)
-                    {
-                        first_question.Visible = false;
-                        previous_question.Visible = true;
-                        next_question.Visible = true;
-                        last_question.Visible = false;
-                    }
-                    else if (_iterator > 1 && _iterator < count - 1)
-                    {
-                        first_question.Visible = true;
-                        previous_question.Visible = true;
-                        next_question.Visible = true;
-                        last_question.Visible = false;
-                    }
-                    else
-                    {
-                        first_question.Visible = true;
-                        previous_question.Visible = true;
-                        next_question.Visible = false;
-                        last_question.Visible = false;
-                    }
+                    first_question.Visible = true;
+                    previous_question.Visible = true;
+                    next_question.Visible = true;
+                    last_question.Visible = true;
                 }
                 var finish = new Button("Finish");
                 finish.X = Pos.Center()+1;

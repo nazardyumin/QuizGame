@@ -351,6 +351,10 @@ namespace QuizGame.GUI
                     back = true;
                     top.Running = false;
                 }
+                else
+                {
+                    top.Running = false;
+                }
             };
             if (_iterator+1<0)
             {

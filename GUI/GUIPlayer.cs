@@ -378,6 +378,10 @@ namespace QuizGame.GUI
                             _is_playing = false;
                             top.Running = false;
                         }
+                        else
+                        {
+                            top.Running = false;
+                        }
                     }
                     else
                     {
@@ -401,6 +405,10 @@ namespace QuizGame.GUI
                             _iterator = 0;
                             MemoryBoolsReset(count);
                             _is_playing = false;
+                            top.Running = false;
+                        }
+                        else
+                        {
                             top.Running = false;
                         }
                     }         

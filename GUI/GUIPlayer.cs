@@ -11,6 +11,7 @@ namespace QuizGame.GUI
         private string _buffer_question;
         private List<string> _buffer_answers;
         private bool _is_playing;
+        private bool _is_watching;
         private (bool answer1, bool answer2, bool answer3, bool answer4)[] _memory_bools;
         public GUIPlayer(User user) : base(user)
         {
@@ -20,6 +21,8 @@ namespace QuizGame.GUI
             _iterator = 0;
             _buffer_answers = new();
             _is_playing = false;
+            _is_watching = false;
+            _memory_bools = new (bool answer1, bool answer2, bool answer3, bool answer4)[1];
         }
         private (bool keep_on, bool logout, bool back, SomeAction action) MainMenuWindow()
         {
@@ -42,30 +45,37 @@ namespace QuizGame.GUI
              new MenuItem ("_Logout", "", () => {  logout=true; top.Running = false; }),
              new MenuItem("_Quit", "", () => {  if (GUIHelper.Quit()) { keep_on = false;top.Running = false; } }) })});
             top.Add(menu);
-            var hello = new Label(GetPlayerInfo())
+            var hello = new Label($"{_player.GetPlayerInfo()}{_role}")
             {
-                X = Pos.AnchorEnd(GetPlayerInfo().Length) - 1,
+                X = Pos.AnchorEnd($"{_player.GetPlayerInfo()}{_role}".Length)-1,
                 Y = Pos.AnchorEnd(1)
             };
             hello.ColorScheme = Colors.Menu;
             win.Add(hello);
-            var create_quiz = new Button("Play Quiz");
-            create_quiz.X = Pos.Center();
-            create_quiz.Y = 5;
-            create_quiz.Clicked += () =>
+            var play_quiz = new Button("Play Quiz");
+            play_quiz.X = Pos.Center();
+            play_quiz.Y = 5;
+            play_quiz.Clicked += () =>
             {
                 action = PlayQuizWindow;
                 top.Running = false;
             };
-            var edit_quiz = new Button("Watch Results");
-            edit_quiz.X = Pos.Center();
-            edit_quiz.Y = Pos.Top(create_quiz) + 2;
-            edit_quiz.Clicked += () =>
+            var watch_results = new Button("Watch Results");
+            watch_results.X = Pos.Center();
+            watch_results.Y = Pos.Top(play_quiz) + 2;
+            watch_results.Clicked += () =>
             {
                 action = WatchResultsWindow;
                 top.Running = false;
             };
-            win.Add(create_quiz, edit_quiz);
+            var watch_highscores = new Button("Watch Highscores");
+            watch_highscores.X = Pos.Center();
+            watch_highscores.Y = Pos.Top(watch_results) + 2;
+            watch_highscores.Clicked += () =>
+            {
+                MessageBox.Query(30, 15, "Highscores", $"{_player.GetHighScores()}", "Ok");
+            };
+            win.Add(play_quiz, watch_results,watch_highscores);
             Application.Run();
             return (keep_on, logout, back, action);
         }
@@ -107,9 +117,9 @@ namespace QuizGame.GUI
             {new MenuItem ("_Logout", "", () => { logout=true; top.Running = false; }),
              new MenuItem("_Quit", "", () => {  if (GUIHelper.Quit()) { keep_on = false; top.Running = false;} }) })});
             top.Add(menu);
-            var hello = new Label(GetPlayerInfo())
+            var hello = new Label($"{_player.GetPlayerInfo()}{ _role }")
             {
-                X = Pos.AnchorEnd(GetPlayerInfo().Length) - 1,
+                X = Pos.AnchorEnd($"{_player.GetPlayerInfo()}{_role}".Length)-1,
                 Y = Pos.AnchorEnd(1)
             };
             hello.ColorScheme = Colors.Menu;
@@ -162,7 +172,6 @@ namespace QuizGame.GUI
                 hello.Visible = false;
                 menu.Visible = false;
                 count = _player.GetCount();
-                MemoryBoolsInit(count);
                 MemoryBoolsResize(ref _memory_bools, count);
                 _buffer_question = _player.GetQuestion(_iterator);
                 _buffer_answers = _player.GetListAnswers(_iterator);
@@ -382,10 +391,8 @@ namespace QuizGame.GUI
                 {
                     _iterator = 0;
                     _is_playing = false;
-                    back = true;
                     top.Running = false;
                 };
-
                 win.Add(header, question_label, question, answer1, answer2, answer3, answer4, next_question, previous_question, first_question, last_question, finish, cancel);
             }
             win.Add();
@@ -394,16 +401,164 @@ namespace QuizGame.GUI
         }
         private (bool keep_on, bool logout, bool back, SomeAction action) WatchResultsWindow()
         {
+            bool logout;
+            bool keep_on;
+            bool back;
+            SomeAction action = null;
+            (bool keep_on, bool logout, bool back, SomeAction action) stop;
+            do
+            {
+                stop = WatchResultsMenu();
+                logout = stop.logout;
+                keep_on = stop.keep_on;
+                back = stop.back;
+            } while (logout == false && keep_on == true && back == false);
+            return (keep_on, logout, back, action);
+        }
+        private (bool keep_on, bool logout, bool back, SomeAction action) WatchResultsMenu()
+        {
             bool logout = false;
             bool keep_on = true;
             bool back = false;
             SomeAction action = null;
+            Application.Init();
+            var top = Application.Top;
+            var win = new Window("QuizGame")
+            {
+                X = 0,
+                Y = 1,
+                Width = Dim.Fill(),
+                Height = Dim.Fill()
+            };
+            top.Add(win);
+            var menu = new MenuBar(new MenuBarItem[] {new MenuBarItem ("_Menu", new MenuItem []
+            {new MenuItem ("_Logout", "", () => { logout=true; top.Running = false; }),
+             new MenuItem("_Quit", "", () => {  if (GUIHelper.Quit()) { keep_on = false; top.Running = false;} }) })});
+            top.Add(menu);
+            var hello = new Label($"{_player.GetPlayerInfo()}{_role}")
+            {
+                X = Pos.AnchorEnd($"{_player.GetPlayerInfo()}{_role}".Length)-1,
+                Y = Pos.AnchorEnd(1)
+            };
+            hello.ColorScheme = Colors.Menu;
+            win.Add(hello);
+            var list = _player.GetQuizResults();
+            if (_is_watching == false)
+            {
+                var header = new Label("Available Results: ")
+                {
+                    X = Pos.Center(),
+                    Y = 2
+                };       
+                if (list is not null)
+                {
+                    int i = 0;
+                    int space = 4;
+                    var buttons = new Button[list.Count()];
+                    var iterators = new int[list.Count()];
+                    foreach (var item in list)
+                    {
+                        iterators[i] = i;
+                        buttons[i] = new Button($"{item.Theme} ({item.Level}) {item.Date}");
+                        buttons[i].X= Pos.Center();
+                        buttons[i].Y=Pos.Bottom(header)+space;
+                        i++;
+                        space += 2;                      
+                    }
+                    int j = 0;
+                    foreach (var item in iterators)
+                    {
+                        buttons[j].Clicked += () =>
+                        {
+                            _iterator = item;
+                            _is_watching = true;
+                            top.Running = false;
+                        };
+                        j++;
+                    }
+                    win.Add(buttons);
+                    var return_back = new Button("Back")
+                    {
+                        X = Pos.Center(),
+                        Y = Pos.Bottom(buttons[buttons.Length - 1]) + 3
+                    };
+                    return_back.Clicked += () =>
+                    {
+                        back = true;
+                        top.Running = false;
+                    };
+                    win.Add(return_back);
+                }
+                else
+                {
+                    var no_results = new Label("No results available!")
+                    {
+                        X = Pos.Center(),
+                        Y = Pos.Bottom(header) + 4
+                    };
+                    var return_back = new Button("Back")
+                    {
+                        X = Pos.Center(),
+                        Y = Pos.Bottom(no_results) + 3
+                    };
+                    return_back.Clicked += () =>
+                    {
+                        back = true;
+                        top.Running = false;
+                    };
+                    win.Add(no_results,return_back);
+                }
+                win.Add(header);
+            }
+            else
+            {
+                var theme = new Label($"{list[_iterator].Theme} ({list[_iterator].Level}) {list[_iterator].Date}")
+                {
+                    X = Pos.Center(),
+                    Y = 2
+                };
+                var scores = new Label($"Scores: {list[_iterator].Scores} of {list[_iterator].AnsweredQuestions.Count()}")
+                {
+                    X = Pos.Center(),
+                    Y = Pos.Bottom(theme)+2,
+                };
+                var questions = list[_iterator].AnsweredQuestions;
+                var question_labels = new Label[questions.Count()];
+                int i = 0;
+                int space = 4;
+                foreach (var item in questions)
+                {
+                    question_labels[i] = new Label($"{item.Question}")
+                    {
+                        X = Pos.Center(),
+                        Y = Pos.Bottom(scores) + space
+                    };
+                    if (item.IsCorrect) question_labels[i].ColorScheme = Colors.TopLevel;
+                    else question_labels[i].ColorScheme = Colors.Error;
+                    i++;
+                    space += 2;                    
+                }
+                var return_back = new Button("Back")
+                {
+                    X = Pos.Center(),
+                    Y= Pos.Bottom(question_labels[question_labels.Length - 1]) + 3,
+                };
+                return_back.Clicked += () =>
+                {
+                    _iterator = 0;
+                    _is_watching = false;
+                    top.Running = false;
+                };
+                win.Add(question_labels);
+                win.Add(theme,scores,return_back);
+            }
+            Application.Run();
             return (keep_on, logout, back, action);
         }
         public (bool keep_on, bool logout) PlayerMenu()
         {
-            bool keep_on = true;
-            bool logout = false;
+            bool keep_on;
+            bool logout;
             do
             {
                 var reply = MainMenuWindow();
@@ -419,33 +574,9 @@ namespace QuizGame.GUI
             } while (logout == false && keep_on == true);
             return (keep_on, logout);
         }
-        private string GetPlayerInfo()
-        {
-            int quizes_passed = 0;
-            int total_scores = 0;
-            var database = new UsersDataBase();
-            database.LoadFromFile();
-            int index = database.Users.IndexOf(database.SearchByLogin(_user.Login));
-            if (database.Users[index].Results is not null)
-            {
-                quizes_passed = database.Users[index].Results.Count();
-                foreach (var item in database.Users[index].Results)
-                {
-                    total_scores += item.Scores;
-                }
-            }
-            return $"Quizes passed: {quizes_passed} | Total Scores: {total_scores} | {_role}";
-        }
-        private void MemoryBoolsInit(int count)
-        {
-            if (_memory_bools is null)
-            {
-                _memory_bools = new (bool answer1, bool answer2, bool answer3, bool answer4)[count];
-            }
-        }
         private void MemoryBoolsResize(ref (bool answer1, bool answer2, bool answer3, bool answer4) [] array , int count)
         {
-            Array.Resize<(bool answer1, bool answer2, bool answer3, bool answer4)>(ref array,count);
+            Array.Resize(ref array,count);
         }
     }
 }

@@ -174,9 +174,28 @@
         }
         return list;
     }
-    public List<RatingPosition>? GetHighScores()
+    public string? GetHighScores()
     {
-        return SerializerHelper.LoadHighscores();
+        string highscores="";
+        var list=SerializerHelper.LoadHighscores();
+        if (list is not null)
+        {
+            if (list.Count()>9)
+            {
+                for (int i=0;i<10; i++)
+                {
+                    highscores+= $"{list[i].Name} {list[i].Scores}\n";
+                }
+            }
+            else
+            {
+                foreach (var item in list)
+                {
+                    highscores += $"{item.Name} {item.Scores}\n";
+                }
+            }      
+        }
+        return highscores;
     }
     public List<QuizResult>? GetQuizResults()
     {
@@ -192,5 +211,22 @@
     public int GetScores()
     {
         return _result.Scores;
-    } 
+    }
+    public string GetPlayerInfo()
+    {
+        int quizes_passed = 0;
+        int total_scores = 0;
+        var database = new UsersDataBase();
+        database.LoadFromFile();
+        int index = database.Users.IndexOf(database.SearchByLogin(_user.Login));
+        if (database.Users[index].Results is not null)
+        {
+            quizes_passed = database.Users[index].Results.Count();
+            foreach (var item in database.Users[index].Results)
+            {
+                total_scores += item.Scores;
+            }
+        }
+        return $"Quizes passed: {quizes_passed} | Total Scores: {total_scores} | ";
+    }
 }

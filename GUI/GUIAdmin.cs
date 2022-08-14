@@ -16,6 +16,7 @@ namespace QuizGame.GUI
         protected List<(string, int)> _buffer_answers;
         protected bool _is_editing;
         protected bool _is_adding;
+        protected bool _is_cancelling;
         public GUIAdmin(User user) : base(user)
         {
             _creator = new(user);
@@ -28,7 +29,8 @@ namespace QuizGame.GUI
             _buffer_answers = new List<(string, int)>() { ("", 0), ("", 0), ("", 0), ("", 0), };
             _is_editing = false;
             _is_adding = false;
-    }
+            _is_cancelling = false;
+        }
         protected (bool keep_on, bool logout, bool back, SomeAction action) MainMenuWindow()
         {
             bool logout = false;
@@ -586,8 +588,16 @@ namespace QuizGame.GUI
                 }
                 else
                 {
-                    _buffer_question = _creator.GetQuestion(_iterator);
-                    _buffer_answers = _creator.GetAnswers(_iterator);
+                    if(_is_cancelling)
+                    {
+                        RestoreInputData();
+                        _is_cancelling = false;
+                    }
+                    else
+                    {
+                        _buffer_question = _creator.GetQuestion(_iterator);
+                        _buffer_answers = _creator.GetAnswers(_iterator);
+                    }
                 }
                 _buffer_theme = _creator.GetTheme();
                 _buffer_level = _creator.GetLevelInt();
@@ -851,6 +861,9 @@ namespace QuizGame.GUI
                         }
                         else
                         {
+                            RememberInputData(question_text.Text.ToString(), answer1_text.Text.ToString(), answer2_text.Text.ToString(), answer3_text.Text.ToString(), answer4_text.Text.ToString(),
+                                  is_correct1.SelectedItem, is_correct2.SelectedItem, is_correct3.SelectedItem, is_correct4.SelectedItem);
+                            _is_cancelling = true;
                             top.Running = false;
                         }
                     }

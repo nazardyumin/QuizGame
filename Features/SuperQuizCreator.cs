@@ -1,6 +1,6 @@
-﻿public class UsersCreator : QuizCreator
+﻿public class SuperQuizCreator : QuizCreator
 {
-    public UsersCreator(User user):base(user)
+    public SuperQuizCreator(User user):base(user)
     {
     }
     public void DeleteQuiz(int index)

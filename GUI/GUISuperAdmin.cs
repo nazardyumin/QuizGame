@@ -6,7 +6,7 @@ namespace QuizGame.GUI
 {
     public class GUISuperAdmin : GUIAdmin
     {
-        UsersCreator _superCreator;
+        SuperQuizCreator _superCreator;
         public GUISuperAdmin(User user) : base(user)
         {
             _superCreator = new(user);

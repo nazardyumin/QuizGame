@@ -1,5 +1,5 @@
 ﻿using System.Text.Json;
-public class SerializerHelper
+public static class SerializerHelper
 {
     public static FileStream IfEmptyRatingPositionFile(ref FileStream file, ref FileStream helpfile, string path)
     {

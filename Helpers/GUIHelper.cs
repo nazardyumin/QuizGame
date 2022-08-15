@@ -59,5 +59,16 @@ namespace QuizGame.Helpers
                 default: return false;
             }
         }
+        public static bool Delete()
+        {
+            var n = MessageBox.Query(35, 10, "Delete", "\nBy clicking \"Yes\" you permanently\ndelete the Quiz!!!\n\nContinue?", "Yes", "No");
+            switch (n)
+            {
+                case 0: return true;
+                case 1: return false;
+                case -1: return false;
+                default: return false;
+            }
+        }
     }
 }

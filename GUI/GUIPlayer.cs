@@ -131,41 +131,61 @@ namespace QuizGame.GUI
                     X = Pos.Center(),
                     Y = 2
                 };
-                var buffer=new ustring[_player.GetAllQuizThemes().Count];
-                for(int i=0;i<buffer.Length;i++)
+                if (_player.GetAllQuizThemes().Count() == 0)
                 {
-                    buffer[i] = _player.GetAllQuizThemes()[i];
+                    var no_quizes = new Label("No Quizes available!")
+                    {
+                        X = Pos.Center(),
+                        Y = Pos.Bottom(header) + 4
+                    };
+                    var return_back = new Button("Back");
+                    return_back.X = Pos.Center();
+                    return_back.Y = Pos.Bottom(no_quizes) + 3;
+                    return_back.Clicked += () =>
+                    {
+                        back = true;
+                        top.Running = false;
+                    };
+                    win.Add(no_quizes,return_back);
                 }
-                var themes_list = new RadioGroup(buffer);
-                themes_list.X = Pos.Center();
-                themes_list.Y = Pos.Top(header) + 3;
-                var play = new Button("Play");
-                play.X = Pos.Center();
-                play.Y = Pos.Bottom(themes_list) + 3;
-                play.Clicked += () =>
+                else
                 {
-                    _is_playing = true;
-                    _player.SetQuiz(_player.FindQuiz(themes_list.SelectedItem));
-                    top.Running = false;
-                };
-                var mixed_quiz = new Button("MixedQuiz");
-                mixed_quiz.X = Pos.Right(play)+2;
-                mixed_quiz.Y = Pos.Top(play);
-                mixed_quiz.Clicked += () =>
-                {
-                    _is_playing = true;
-                    _player.SetQuiz(_player.MixedQuiz());
-                    top.Running = false;
-                };
-                var cancel = new Button("Cancel");
-                cancel.X = Pos.Left(play) - 12;
-                cancel.Y = Pos.Top(play);
-                cancel.Clicked += () =>
-                {
-                    back = true;
-                    top.Running = false;
-                };
-                win.Add(header,themes_list,play,cancel,mixed_quiz);
+                    var buffer = new ustring[_player.GetAllQuizThemes().Count];
+                    for (int i = 0; i < buffer.Length; i++)
+                    {
+                        buffer[i] = _player.GetAllQuizThemes()[i];
+                    }
+                    var themes_list = new RadioGroup(buffer);
+                    themes_list.X = Pos.Center();
+                    themes_list.Y = Pos.Top(header) + 3;
+                    var play = new Button("Play");
+                    play.X = Pos.Center();
+                    play.Y = Pos.Bottom(themes_list) + 3;
+                    play.Clicked += () =>
+                    {
+                        _is_playing = true;
+                        _player.SetQuiz(_player.FindQuiz(themes_list.SelectedItem));
+                        top.Running = false;
+                    };
+                    var mixed_quiz = new Button("MixedQuiz");
+                    mixed_quiz.X = Pos.Right(play) + 2;
+                    mixed_quiz.Y = Pos.Top(play);
+                    mixed_quiz.Clicked += () =>
+                    {
+                        _is_playing = true;
+                        _player.SetQuiz(_player.MixedQuiz());
+                        top.Running = false;
+                    };
+                    var cancel = new Button("Cancel");
+                    cancel.X = Pos.Left(play) - 12;
+                    cancel.Y = Pos.Top(play);
+                    cancel.Clicked += () =>
+                    {
+                        back = true;
+                        top.Running = false;
+                    };
+                    win.Add(header,themes_list, play, cancel, mixed_quiz);
+                }              
             }
             else
             {
@@ -529,7 +549,7 @@ namespace QuizGame.GUI
                         back = true;
                         top.Running = false;
                     };
-                    win.Add(return_back);
+                    win.Add(header,return_back);
                 }
                 else
                 {
@@ -550,7 +570,6 @@ namespace QuizGame.GUI
                     };
                     win.Add(no_results,return_back);
                 }
-                win.Add(header);
             }
             else
             {

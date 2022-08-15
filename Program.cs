@@ -21,7 +21,7 @@ do
         else if (reply1.user.IsSuperAdmin)
         {
             var GUIsuperadmin = new GUISuperAdmin(reply1.user);
-            (bool keep_on, bool logout) reply2 = GUIsuperadmin.SuperAdminMenu();
+            (bool keep_on, bool logout) reply2 = GUIsuperadmin.AdminMenu();
             keep_on_using = reply2.keep_on;
             logout = reply2.logout;
             if (keep_on_using == false) break;

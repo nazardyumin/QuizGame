@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-public class QuizEditor : Default
+﻿public class QuizEditor : Default
 {
     protected Quiz? _quiz { get; set; }
     public QuizEditor(User user):base(user)

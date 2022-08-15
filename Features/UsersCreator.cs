@@ -3,11 +3,10 @@
     public UsersCreator(User user):base(user)
     {
     }
-    public void CreateAdmin()
+    public void DeleteQuiz(int index)
     {
-
-    }
-    public void CreateSuperAdmin()
-    {
+        var list_quizes = QuizLoader.FromFile();
+        list_quizes.Remove(list_quizes[index]);
+        QuizSaver.RefreshQuizList(list_quizes);
     }
 }

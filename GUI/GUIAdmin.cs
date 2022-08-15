@@ -548,32 +548,52 @@ namespace QuizGame.GUI
                     X = Pos.Center(),
                     Y = 2
                 };
-                var buffer = new ustring[_creator.GetAllQuizThemes().Count];
-                for (int i = 0; i < buffer.Length; i++)
+                if (_creator.GetAllQuizThemes().Count()==0)
                 {
-                    buffer[i] = _creator.GetAllQuizThemes()[i];
+                    var no_quizes = new Label("No Quizes available!")
+                    {
+                        X = Pos.Center(),
+                        Y = Pos.Bottom(header) + 4
+                    };
+                    var return_back = new Button("Back");
+                    return_back.X = Pos.Center();
+                    return_back.Y = Pos.Bottom(no_quizes) + 3;
+                    return_back.Clicked += () =>
+                    {
+                        back = true;
+                        top.Running = false;
+                    };
+                    win.Add(no_quizes,return_back);
                 }
-                var themes_list = new RadioGroup(buffer);
-                themes_list.X = Pos.Center();
-                themes_list.Y = Pos.Top(header) + 3;
-                var cancel = new Button("Cancel");
-                cancel.X = Pos.Center() - 11;
-                cancel.Y = Pos.Bottom(themes_list) + 3;
-                cancel.Clicked += () =>
+                else
                 {
-                    back = true;
-                    top.Running = false;
-                };
-                var edit = new Button("Edit");
-                edit.X = Pos.Right(cancel) + 2;
-                edit.Y = Pos.Top(cancel);
-                edit.Clicked += () =>
-                {
-                    _is_editing = true;
-                    _creator.QuizInit(_creator.FindQuiz(themes_list.SelectedItem));
-                    top.Running = false;
-                };
-                win.Add(header, themes_list, edit, cancel);
+                    var buffer = new ustring[_creator.GetAllQuizThemes().Count];
+                    for (int i = 0; i < buffer.Length; i++)
+                    {
+                        buffer[i] = _creator.GetAllQuizThemes()[i];
+                    }
+                    var themes_list = new RadioGroup(buffer);
+                    themes_list.X = Pos.Center();
+                    themes_list.Y = Pos.Top(header) + 3;
+                    var cancel = new Button("Cancel");
+                    cancel.X = Pos.Center() - 11;
+                    cancel.Y = Pos.Bottom(themes_list) + 3;
+                    cancel.Clicked += () =>
+                    {
+                        back = true;
+                        top.Running = false;
+                    };
+                    var edit = new Button("Edit");
+                    edit.X = Pos.Right(cancel) + 2;
+                    edit.Y = Pos.Top(cancel);
+                    edit.Clicked += () =>
+                    {
+                        _is_editing = true;
+                        _creator.QuizInit(_creator.FindQuiz(themes_list.SelectedItem));
+                        top.Running = false;
+                    };
+                    win.Add(header, themes_list, edit, cancel);
+                }      
             }
             else
             {
@@ -1233,7 +1253,7 @@ namespace QuizGame.GUI
             }
             _memory_answers.Clear();
         }
-        public (bool keep_on, bool logout) AdminMenu()
+        public virtual (bool keep_on, bool logout) AdminMenu()
         {
             bool keep_on = true;
             bool logout = false;

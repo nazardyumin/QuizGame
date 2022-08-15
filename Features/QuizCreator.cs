@@ -1,6 +1,4 @@
-﻿using System.Text.Json;
-
-public class QuizCreator : QuizEditor
+﻿public class QuizCreator : QuizEditor
 {
     private string? _question;
     private List<QuizAnswer> _answers;

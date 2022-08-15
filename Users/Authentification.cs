@@ -42,6 +42,46 @@
             return (true, user);
         }
     }
+    public (bool, User? user) RegisterAdmin(string firstname, string lastname, string dateofbirth, string login, string password, int which_admin)
+    {
+        if (_usersDataBase.SearchByLogin(login) is not null)
+        {
+            return (false, null);
+        }
+        else
+        {
+            User user;
+            if(which_admin==0)
+            {
+                user = new User
+                {
+                    FirstName = firstname,
+                    LastName = lastname,
+                    DateOfBirth = dateofbirth,
+                    Login = login,
+                    Password = password,
+                    IsAdmin = true,
+                    IsSuperAdmin = false
+                };
+            }
+            else
+            {
+                user = new User
+                {
+                    FirstName = firstname,
+                    LastName = lastname,
+                    DateOfBirth = dateofbirth,
+                    Login = login,
+                    Password = password,
+                    IsAdmin = false,
+                    IsSuperAdmin = true
+                };
+            }       
+            _usersDataBase.Add(user);
+            SaveNewUser();
+            return (true, user);
+        }
+    }
     private void SaveNewUser()
     {
         _usersDataBase.SaveToFile();

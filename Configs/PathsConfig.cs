@@ -1,6 +1,6 @@
 ﻿using System.Text.Json;
 
-public static class PathsConfig
+public class PathsConfig
 {
     public string PathToUserList { get; set; }
     public string PathToHighscores { get; set; }

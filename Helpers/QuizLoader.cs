@@ -1,55 +1,64 @@
-﻿using System.Text.Json;
+using System.Text.Json;
+using QuizGame.Users;
 
-public static class QuizLoader
+namespace QuizGame.Helpers
 {
-    public static List<Quiz> FromFile()
+    public static class QuizLoader
     {
-        string path = PathsConfig.Init().PathToQuizes;
-        if (!Directory.Exists(path))
+        public static List<Quiz> FromFile()
         {
-            Directory.CreateDirectory(path);
-            FileStream? helpfile = null;
-            var file = new FileStream(path + "QuizesList.json", FileMode.OpenOrCreate, FileAccess.Read);
-            var newfile = SerializerHelper.IfEmptyQuizesListFile(ref file, ref helpfile, path + "QuizesList.json");
-            var list = JsonSerializer.DeserializeAsync<List<Quiz>>(newfile).Result;
-            newfile.Close();
-            return list;
-        }
-        else
-        {
-            FileStream? helpfile = null;
-            var file = new FileStream(path + "QuizesList.json", FileMode.OpenOrCreate, FileAccess.Read);
-            var list = JsonSerializer.DeserializeAsync<List<Quiz>>(file).Result;
-            file.Close();
-            return list;
-        }
-    }
-    public static Quiz FindQuiz(string theme, List<Quiz> list)  
-    {
-        var quiz = list.Find((q) => $"{q.Theme} ({q.Level})" == theme);
-        return quiz;
-    }
-    public static Quiz FindQuiz(int index)
-    {
-        return FromFile()[index];
-    }
-    public static Quiz MakeMixedQuiz()
-    {
-        var creator = new QuizCreator(new User());
-        creator.SetTheme("Mixed Quiz");
-        creator.SetLevel("Mixed");
-        Random random = new();
-        var quiz_list = FromFile();
-        foreach (var item in quiz_list)
-        {
-            int i = random.Next(0, item.Questions.Count());
-            creator.SetQuestion(item.Questions[i].Question);
-            foreach (var answers in item.Questions[i].Answers)
+            var path = PathsConfig.Init().PathToQuizes;
+            if (!Directory.Exists(path))
             {
-                creator.SetAnswer(answers.Answer, answers.IsCorrect);
+                Directory.CreateDirectory(path);
+                FileStream? helpfile = null;
+                var file = new FileStream(path + "QuizesList.json", FileMode.OpenOrCreate, FileAccess.Read);
+                var newfile = SerializerHelper.IfEmptyQuizesListFile(ref file, ref helpfile!, path + "QuizesList.json");
+                var list = Deserialize(newfile);
+                newfile.Close();
+                return list!;
             }
-            creator.AddItem();
+            else
+            {
+                var file = new FileStream(path + "QuizesList.json", FileMode.OpenOrCreate, FileAccess.Read);
+                var list = Deserialize(file);
+                file.Close();
+                return list!;
+            }
         }
-        return creator.GetQuiz();
+        public static Quiz FindQuiz(string theme, List<Quiz> list)
+        {
+            var quiz = list.Find((q) => $"{q.Theme} ({q.Level})" == theme);
+            return quiz!;
+        }
+        public static Quiz FindQuiz(int index)
+        {
+            return FromFile()[index];
+        }
+        public static Quiz MakeMixedQuiz()
+        {
+            var creator = new QuizCreator(new User());
+            creator.SetTheme("Mixed Quiz");
+            creator.SetLevel("Mixed");
+            Random random = new();
+            var quiz_list = FromFile();
+            foreach (var (item, i) in from item in quiz_list
+                                      let i = random.Next(0, item.Questions!.Count)
+                                      select (item, i))
+            {
+                creator.SetQuestion(item.Questions![i].Question);
+                foreach (var answers in item.Questions![i].Answers!)
+                {
+                    creator.SetAnswer(answers.Answer, answers.IsCorrect);
+                }
+
+                creator.AddItem();
+            }
+            return creator.GetQuiz();
+        }
+        private static List<Quiz>? Deserialize(FileStream file)
+        {
+            return JsonSerializer.DeserializeAsync<List<Quiz>>(file).AsTask().Result;
+        }
     }
 }

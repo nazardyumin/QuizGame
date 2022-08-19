@@ -1,53 +1,65 @@
-﻿using System.Text.Json;
-public class UsersDataBase
+using System.Text.Json;
+
+namespace QuizGame.Users
 {
-    public List<User> Users;
-    public string Path;
-    public UsersDataBase()
+    public class UsersDataBase
     {
-        Users = new List<User>();
-        Path = PathInit();
-    }
-    public void Add(User user)
-    {
-        Users.Add(user);
-    }
-    public User? SearchByLogin(string login)
-    {
-        return Users.Find((u) => u.Login == login);
-    }
-    public void SaveToFile()
-    {
-        File.Delete(Path + "UsersList.json");
-        using var file = new FileStream(Path + "UsersList.json", FileMode.Create, FileAccess.Write);
-        JsonSerializer.SerializeAsync(file, Users);
-    }
-    public void LoadFromFile()
-    {
-        if (!Directory.Exists(Path))
+        private List<User> users;
+        private readonly string path;
+        public UsersDataBase()
         {
-            Directory.CreateDirectory(Path);
-            FileStream? helpfile = null;
-            var file = new FileStream(Path + "UsersList.json", FileMode.OpenOrCreate, FileAccess.Read);
-            var newfile = SerializerHelper.IfEmptyUsersListFile(ref file, ref helpfile, Path + "UsersList.json");
-            var list = JsonSerializer.DeserializeAsync<List<User>>(newfile).Result;
-            newfile.Close();
-            Users = list;
+            users = new List<User>();
+            path = PathInit();
         }
-        else
+        public void Add(User user)
         {
-            var file = new FileStream(Path + "UsersList.json", FileMode.Open, FileAccess.Read);
-            var list = JsonSerializer.DeserializeAsync<List<User>>(file).Result;
-            file.Close();
-            Users = list;
+            users.Add(user);
         }
-    }
-    public void Clear()
-    {
-        Users.Clear();
-    }
-    private string PathInit()
-    {
-        return PathsConfig.Init().PathToUserList;
+        public User? SearchByLogin(string login)
+        {
+            return users.Find((u) => u.Login == login);
+        }
+        public void SaveToFile()
+        {
+            File.Delete(path + "UsersList.json");
+            using var file = new FileStream(path + "UsersList.json", FileMode.Create, FileAccess.Write);
+            Serialize(file, users);
+        }
+        public void LoadFromFile()
+        {
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+                FileStream? helpfile = null;
+                var file = new FileStream(path + "UsersList.json", FileMode.OpenOrCreate, FileAccess.Read);
+                var newfile = SerializerHelper.IfEmptyUsersListFile(ref file, ref helpfile!, path + "UsersList.json");
+                var list = Deserialize(newfile);
+                newfile.Close();
+                users = list!;
+            }
+            else
+            {
+                var file = new FileStream(path + "UsersList.json", FileMode.Open, FileAccess.Read);
+                var list = Deserialize(file);
+                file.Close();
+                users = list!;
+            }
+        }
+        public void Clear()
+        {
+            users.Clear();
+        }
+        private string PathInit()
+        {
+            return PathsConfig.Init().PathToUserList;
+        }
+        private List<User> Deserialize(FileStream file)
+        {
+            return JsonSerializer.DeserializeAsync<List<User>>(file).AsTask().Result!;
+        }
+        private void Serialize(FileStream file, List<User> users)
+        {
+            JsonSerializer.SerializeAsync(file, users);
+        }
     }
 }

@@ -1,21 +1,24 @@
-﻿using System.Text.Json;
+using System.Text.Json;
 
-public class PathsConfig
+namespace QuizGame.Configs
 {
-    public string PathToUserList { get; set; }
-    public string PathToHighscores { get; set; }
-    public string PathToQuizes { get; set; }
-    public static PathsConfig Init()
+    public class PathsConfig
     {
-        using var file = new FileStream("PathsConfig.json", FileMode.Open, FileAccess.Read);
-        var config = JsonSerializer.DeserializeAsync<PathsConfig>(file).Result;
-        if (config.PathToUserList == "" || config.PathToHighscores == "" || config.PathToQuizes == "")
+        public string? PathToUserList { get; set; }
+        public string? PathToHighscores { get; set; }
+        public string? PathToQuizes { get; set; }
+        public static PathsConfig Init()
         {
-            config.PathToUserList = config.PathToHighscores = config.PathToQuizes = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-            config.PathToUserList += @"\\MyQuizGame\\Users\\";
-            config.PathToHighscores += @"\\MyQuizGame\\Highscores\\";
-            config.PathToQuizes += @"\\MyQuizGame\\Quizes\\";
+            using var file = new FileStream("PathsConfig.json", FileMode.Open, FileAccess.Read);
+            var config = JsonSerializer.DeserializeAsync<PathsConfig>(file).AsTask().Result;
+            if (config!.PathToUserList == "" || config.PathToHighscores == "" || config.PathToQuizes == "")
+            {
+                config.PathToUserList = config.PathToHighscores = config.PathToQuizes = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+                config.PathToUserList += @"\\MyQuizGame\\Users\\";
+                config.PathToHighscores += @"\\MyQuizGame\\Highscores\\";
+                config.PathToQuizes += @"\\MyQuizGame\\Quizes\\";
+            }
+            return config;
         }
-        return config;
     }
 }

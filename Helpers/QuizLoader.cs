@@ -1,4 +1,7 @@
 using System.Text.Json;
+using QuizGame.Configs;
+using QuizGame.Features;
+using QuizGame.Quizes;
 using QuizGame.Users;
 
 namespace QuizGame.Helpers
@@ -10,7 +13,7 @@ namespace QuizGame.Helpers
             var path = PathsConfig.Init().PathToQuizes;
             if (!Directory.Exists(path))
             {
-                Directory.CreateDirectory(path);
+                Directory.CreateDirectory(path!);
                 FileStream? helpfile = null;
                 var file = new FileStream(path + "QuizesList.json", FileMode.OpenOrCreate, FileAccess.Read);
                 var newfile = SerializerHelper.IfEmptyQuizesListFile(ref file, ref helpfile!, path + "QuizesList.json");
@@ -46,10 +49,10 @@ namespace QuizGame.Helpers
                                       let i = random.Next(0, item.Questions!.Count)
                                       select (item, i))
             {
-                creator.SetQuestion(item.Questions![i].Question);
+                creator.SetQuestion(item!.Questions![i].Question!);
                 foreach (var answers in item.Questions![i].Answers!)
                 {
-                    creator.SetAnswer(answers.Answer, answers.IsCorrect);
+                    creator.SetAnswer(answers.Answer!, answers.IsCorrect);
                 }
 
                 creator.AddItem();

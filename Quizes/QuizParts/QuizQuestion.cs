@@ -1,5 +1,8 @@
-﻿public class QuizQuestion
+namespace QuizGame.Quizes.QuizParts
 {
-    public string Question { get; set; }
-    public List<QuizAnswer>? Answers { get; set; }
+    public class QuizQuestion
+    {
+        public string? Question { get; set; }
+        public List<QuizAnswer>? Answers { get; set; }
+    }
 }

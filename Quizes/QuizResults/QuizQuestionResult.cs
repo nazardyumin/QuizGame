@@ -1,5 +1,8 @@
-﻿public class QuizQuestionResult
+namespace QuizGame.Quizes.QuizResults
 {
-    public string Question { get; set; }
-    public bool IsCorrect { get; set; }
+    public class QuizQuestionResult
+    {
+        public string? Question { get; set; }
+        public bool IsCorrect { get; set; }
+    }
 }

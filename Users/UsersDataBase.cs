@@ -1,4 +1,6 @@
 using System.Text.Json;
+using QuizGame.Configs;
+using QuizGame.Helpers;
 
 namespace QuizGame.Users
 {
@@ -49,15 +51,15 @@ namespace QuizGame.Users
         {
             users.Clear();
         }
-        private string PathInit()
+        private static string PathInit()
         {
-            return PathsConfig.Init().PathToUserList;
+            return PathsConfig.Init().PathToUserList!;
         }
         private List<User> Deserialize(FileStream file)
         {
             return JsonSerializer.DeserializeAsync<List<User>>(file).AsTask().Result!;
         }
-        private void Serialize(FileStream file, List<User> users)
+        private static void Serialize(FileStream file, List<User> users)
         {
             JsonSerializer.SerializeAsync(file, users);
         }

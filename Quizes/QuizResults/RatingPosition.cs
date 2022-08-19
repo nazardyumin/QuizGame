@@ -1,5 +1,8 @@
-﻿public class RatingPosition
+namespace QuizGame.Quizes.QuizResults
 {
-    public int? Scores { get; set; }
-    public string? Name { get; set; }
+    public class RatingPosition
+    {
+        public int? Scores { get; set; }
+        public string? Name { get; set; }
+    }
 }

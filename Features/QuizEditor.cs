@@ -1,98 +1,105 @@
-﻿public class QuizEditor : Default
+using QuizGame.Helpers;
+using QuizGame.Quizes;
+using QuizGame.Users;
+
+namespace QuizGame.Features
 {
-    protected Quiz? _quiz { get; set; }
-    public QuizEditor(User user):base(user)
-    {    
-    }
-    public Quiz? FindQuiz(int index)
+    public class QuizEditor : Default
     {
-        return QuizLoader.FindQuiz(index);
-    }
-    public void QuizInit(Quiz quiz)
-    {
-        _quiz = quiz;
-    }
-    public void SetTheme(string theme)
-    {
-        _quiz.Theme = theme;
-    }
-    public void SetLevel(string level)
-    {
-        _quiz.Level = level;
-    }
-    public void EditQuestion(string question, int index)
-    {
-        _quiz.Questions[index].Question = question;
-    }
-    public void EditAnswer(string answer, int iscorrect, int index1, int index2)
-    {
-        _quiz.Questions[index1].Answers[index2].Answer = answer;
-        _quiz.Questions[index1].Answers[index2].IsCorrect = iscorrect;
-    }
-    public int GetCount()
-    {
-        return _quiz.Questions.Count();
-    }
-    public string GetQuestion(int index)
-    {
-        if (_quiz.Questions.Count()>0)
+        protected Quiz? _quiz;
+        public QuizEditor(User user) : base(user)
         {
-            return _quiz.Questions[index].Question;
         }
-        else
+        public Quiz? FindQuiz(int index)
         {
-            return "";
+            return QuizLoader.FindQuiz(index);
         }
-    }
-    public List<(string, int)> GetAnswers(int index)
-    {
-        var list = new List<(string, int)>();
-        if (_quiz.Questions.Count() > 0)
+        public void QuizInit(Quiz quiz)
         {
-            foreach (var item in _quiz.Questions[index].Answers)
+            _quiz = quiz;
+        }
+        public void SetTheme(string theme)
+        {
+            _quiz!.Theme = theme;
+        }
+        public void SetLevel(string level)
+        {
+            _quiz!.Level = level;
+        }
+        public void EditQuestion(string question, int index)
+        {
+            _quiz!.Questions![index].Question = question;
+        }
+        public void EditAnswer(string answer, int iscorrect, int index1, int index2)
+        {
+            _quiz!.Questions![index1].Answers![index2].Answer = answer;
+            _quiz!.Questions![index1].Answers![index2].IsCorrect = iscorrect;
+        }
+        public int GetCount()
+        {
+            return _quiz!.Questions!.Count;
+        }
+        public string GetQuestion(int index)
+        {
+            if (_quiz!.Questions!.Count > 0)
             {
-                list.Add((item.Answer, item.IsCorrect));
+                return _quiz!.Questions![index].Question!;
+            }
+            else
+            {
+                return "";
             }
         }
-        else
+        public List<(string, int)> GetAnswers(int index)
         {
-            for(int i=0;i<4;i++)
+            var list = new List<(string, int)>();
+            if (_quiz!.Questions!.Count > 0)
             {
-                list.Add(("", 0));
+                foreach (var item in _quiz!.Questions![index].Answers!)
+                {
+                    list.Add((item.Answer!, item.IsCorrect));
+                }
             }
+            else
+            {
+                for (var i = 0; i < 4; i++)
+                {
+                    list.Add(("", 0));
+                }
+            }
+            return list;
         }
-        return list;
-    }
-    public (string, int) GetAnswer(int index1, int index2)
-    {
-        return (_quiz.Questions[index1].Answers[index2].Answer, _quiz.Questions[index1].Answers[index2].IsCorrect);
-    }
-    public List<string> GetAllQuizThemes()
-    {
-        var quizlist = QuizLoader.FromFile();
-        var listthemes = new List<string>();
-        foreach (var item in quizlist)
+        public (string, int) GetAnswer(int index1, int index2)
         {
-            listthemes.Add($"{item.Theme} ({item.Level})");
+            return (_quiz!.Questions![index1].Answers![index2].Answer!, _quiz!.Questions![index1].Answers![index2].IsCorrect);
         }
-        return listthemes;
-    }
-    public string GetTheme()
-    {
-        return _quiz.Theme;
-    }
-    public string GetLevel()
-    {
-        return _quiz.Level;
-    }
-    public int GetLevelInt()
-    {
-        if (_quiz.Level == "Easy") return 0;
-        else if (_quiz.Level == "Normal") return 1;
-        else return 2;
-    }
-    public void DeleteItem(int index)
-    {
-        _quiz.Questions.Remove(_quiz.Questions[index]);
+        public List<string> GetAllQuizThemes()
+        {
+            var quizlist = QuizLoader.FromFile();
+            var listthemes = new List<string>();
+            foreach (var item in quizlist)
+            {
+                listthemes.Add($"{item.Theme} ({item.Level})");
+            }
+            return listthemes;
+        }
+        public string GetTheme()
+        {
+            return _quiz!.Theme!;
+        }
+        public string GetLevel()
+        {
+            return _quiz!.Level!;
+        }
+        public int GetLevelInt()
+        {
+            if (_quiz!.Level == "Easy") return 0;
+            else if (_quiz.Level == "Normal") return 1;
+            else return 2;
+        }
+        public void DeleteItem(int index)
+        {
+            _quiz!.Questions!.Remove(_quiz.Questions[index]);
+        }
     }
 }

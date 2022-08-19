@@ -1,9 +1,10 @@
-﻿using QuizGame.Helpers;
+using QuizGame.Helpers;
+using QuizGame.Users;
 using Terminal.Gui;
 
 namespace QuizGame.GUI
 {
-    public static class GUICommon
+    public static class GuiCommon
     {
         private static (bool is_existed_user, bool comeback, bool keep_on) Welcome()
         {
@@ -29,19 +30,23 @@ namespace QuizGame.GUI
             };
             var menu = new MenuBar(new MenuBarItem[] { new MenuBarItem("_Menu", new MenuItem[] { new MenuItem("_Quit", "", () =>
             {
-                 if (GUIHelper.Quit()){ comeback = false; keep_on = false; top.Running = false; } }) }) });
+                 if (GuiHelper.Quit()){ comeback = false; keep_on = false; top.Running = false; } }) }) });
             top.Add(win, menu);
             var logo = new Label(quizgame) { X = Pos.Center(), Y = 2 };
-            var signin = new Button("Enter");
-            signin.X = Pos.Center();
-            signin.Y = 15;
+            var signin = new Button("Enter")
+            {
+                X = Pos.Center(),
+                Y = 15
+            };
             signin.Clicked += () =>
             {
                 top.Running = false;
             };
-            var reg = new Button("Register");
-            reg.X = Pos.Center();
-            reg.Y = 17;
+            var reg = new Button("Register")
+            {
+                X = Pos.Center(),
+                Y = 17
+            };
             reg.Clicked += () =>
             {
                 is_existed_user = false;
@@ -66,7 +71,7 @@ namespace QuizGame.GUI
             };
             top.Add(win);
             var menu = new MenuBar(new MenuBarItem[] {new MenuBarItem ("_Menu", new MenuItem []
-            {new MenuItem("_Quit", "", () => { if (GUIHelper.Quit()) {comeback=false; keep_on = false;top.Running = false; } }) })});
+            {new MenuItem("_Quit", "", () => { if (GuiHelper.Quit()) {comeback=false; keep_on = false;top.Running = false; } }) })});
             top.Add(menu);
             var login = new Label("Login: ")
             {
@@ -93,14 +98,16 @@ namespace QuizGame.GUI
                 Width = Dim.Width(loginText)
             };
             win.Add(loginText, passText);
-            var signin = new Button("Enter");
-            signin.X = Pos.Center() + 1;
-            signin.Y = Pos.Top(passText) + 3;
-            User user = null;
+            var signin = new Button("Enter")
+            {
+                X = Pos.Center() + 1,
+                Y = Pos.Top(passText) + 3
+            };
+            User? user = null;
             signin.Clicked += () =>
             {
                 Authentification Auth = new();
-                var reply = Auth.SignIn(loginText.Text.ToString(), passText.Text.ToString());
+                var reply = Auth.SignIn(loginText.Text.ToString()!, passText.Text.ToString()!);
                 if (reply == ("login", false, null))
                 {
                     MessageBox.ErrorQuery(30, 7, "Error!", "Invalid Login!", "Ok");
@@ -114,20 +121,22 @@ namespace QuizGame.GUI
                 }
                 else
                 {
-                    user = reply.user;
+                    user = reply.user!;
                     top.Running = false;
                 }
             };
-            var back = new Button("Cancel");
-            back.X = Pos.Left(signin) - 11;
-            back.Y = Pos.Top(signin);
+            var back = new Button("Cancel")
+            {
+                X = Pos.Left(signin) - 11,
+                Y = Pos.Top(signin)
+            };
             back.Clicked += () =>
             {
                 comeback = true; top.Running = false;
             };
             win.Add(signin, back);
             Application.Run();
-            return (comeback, keep_on, user);
+            return (comeback!, keep_on!, user!);
         }
         private static (bool comeback, bool keep_on, User user) RegistrationWindow()
         {
@@ -144,7 +153,7 @@ namespace QuizGame.GUI
             };
             top.Add(win);
             var menu = new MenuBar(new MenuBarItem[] {new MenuBarItem ("_Menu", new MenuItem []
-            {new MenuItem("_Quit", "", () => { if (GUIHelper.Quit()) {comeback=false; keep_on = false; top.Running = false; } }) })});
+            {new MenuItem("_Quit", "", () => { if (GuiHelper.Quit()) {comeback=false; keep_on = false; top.Running = false; } }) })});
             top.Add(menu);
             var header = new Label("New user registration: ")
             {
@@ -221,24 +230,28 @@ namespace QuizGame.GUI
                 Width = Dim.Width(loginText)
             };
             win.Add(first_nameText, last_nameText, loginText, passText, passText2, dateText);
-            var register = new Button("Done");
-            register.X = Pos.Center() + 1;
-            register.Y = Pos.Top(dateText) + 3;
-            var back = new Button("Cancel");
-            back.X = Pos.Left(register) - 11;
-            back.Y = Pos.Top(register);
+            var register = new Button("Done")
+            {
+                X = Pos.Center() + 1,
+                Y = Pos.Top(dateText) + 3
+            };
+            var back = new Button("Cancel")
+            {
+                X = Pos.Left(register) - 11,
+                Y = Pos.Top(register)
+            };
             back.Clicked += () =>
             {
                 comeback = true; top.Running = false;
             };
-            User newuser = null;
+            User? newuser = null;
             register.Clicked += () =>
             {
                 if (first_nameText.Text == "" || last_nameText.Text == "" || loginText.Text == "" || passText.Text == "" || passText2.Text == "" || dateText.Text == "")
                 {
                     MessageBox.ErrorQuery(30, 7, "Error!", "Not all fields are filled in!", "Ok");
                 }
-                else if (char.IsDigit(loginText.Text.ToString()[0]))
+                else if (char.IsDigit(loginText.Text.ToString()![0]))
                 {
                     MessageBox.ErrorQuery(30, 7, "Error!", "Login cannot start with a digit!", "Ok");
                     loginText.Text = "";
@@ -252,7 +265,7 @@ namespace QuizGame.GUI
                 else
                 {
                     Authentification Auth = new();
-                    var reply = Auth.Register(first_nameText.Text.ToString(), last_nameText.Text.ToString(), dateText.Text.ToString(), loginText.Text.ToString(), passText.Text.ToString());
+                    var reply = Auth.Register(first_nameText.Text.ToString()!, last_nameText.Text.ToString()!, dateText.Text.ToString()!, loginText.Text.ToString()!, passText.Text.ToString()!);
                     if (reply == (false, null))
                     {
                         MessageBox.ErrorQuery(30, 7, "Error!", "This login is already occupied!", "Ok");
@@ -269,13 +282,12 @@ namespace QuizGame.GUI
             };
             win.Add(register, back);
             Application.Run();
-            return (comeback, keep_on, newuser);
+            return (comeback!, keep_on!, newuser!);
         }
         public static (bool keep_on, User user) StartMenu()
         {
-            User user = null;
-            bool keep_on = true;
-            (bool comeback, bool keep_on, User user) reply = (false, true, null);
+            bool keep_on;
+            (bool comeback, bool keep_on, User? user) reply = (false, true, null);
             do
             {
                 (bool is_existed_user, bool comeback, bool keep_on) welcome = Welcome();
@@ -292,7 +304,7 @@ namespace QuizGame.GUI
                     keep_on = reply.keep_on;
                 }
             } while (reply.comeback);
-            return (keep_on, reply.user);
+            return (keep_on!, reply.user!);
         }
     }
 }

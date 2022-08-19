@@ -1,12 +1,18 @@
-﻿public class SuperQuizCreator : QuizCreator
+using QuizGame.Helpers;
+using QuizGame.Users;
+
+namespace QuizGame.Features
 {
-    public SuperQuizCreator(User user):base(user)
+    public class SuperQuizCreator : QuizCreator
     {
-    }
-    public void DeleteQuiz(int index)
-    {
-        var list_quizes = QuizLoader.FromFile();
-        list_quizes.Remove(list_quizes[index]);
-        QuizSaver.RefreshQuizList(list_quizes);
+        public SuperQuizCreator(User user) : base(user)
+        {
+        }
+        public void DeleteQuiz(int index)
+        {
+            var list_quizes = QuizLoader.FromFile();
+            list_quizes.Remove(list_quizes[index]);
+            QuizSaver.RefreshQuizList(list_quizes);
+        }
     }
 }

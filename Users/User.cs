@@ -1,3 +1,5 @@
+using QuizGame.Quizes.QuizResults;
+
 namespace QuizGame.Users
 {
     public class User

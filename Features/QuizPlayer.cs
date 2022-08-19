@@ -1,4 +1,7 @@
 using System.Text;
+using QuizGame.Helpers;
+using QuizGame.Quizes;
+using QuizGame.Quizes.QuizResults;
 using QuizGame.Users;
 
 namespace QuizGame.Features
@@ -11,9 +14,11 @@ namespace QuizGame.Features
         public QuizPlayer(User user) : base(user)
         {
             _quiz = new Quiz();
-            _result = new QuizResult();
-            _result.AnsweredQuestions = new();
-            _result.Scores = 0;
+            _result = new QuizResult
+            {
+                AnsweredQuestions = new(),
+                Scores = 0
+            };
         }
         public void SetQuiz(Quiz quiz)
         {
@@ -51,7 +56,7 @@ namespace QuizGame.Features
         }
         public string GetQuestion(int index)
         {
-            return _quiz!.Questions![index].Question;
+            return _quiz!.Questions![index].Question!;
         }
         public List<string> GetListAnswers(int index)
         {
@@ -64,7 +69,7 @@ namespace QuizGame.Features
         }
         private string GetAnswer(int index1, int index2)
         {
-            return _quiz!.Questions![index1].Answers![index2].Answer;
+            return _quiz!.Questions![index1].Answers![index2].Answer!;
         }
         public bool CheckingAnswer(int index, bool res1, bool res2, bool res3, bool res4)
         {
@@ -85,10 +90,12 @@ namespace QuizGame.Features
         }
         public void AddItemToQuizResult(int index, bool is_correct)
         {
-            var item = new QuizQuestionResult();
-            item.Question = _quiz!.Questions![index].Question;
-            item.IsCorrect = is_correct;
-            _result!.AnsweredQuestions.Add(item);
+            var item = new QuizQuestionResult
+            {
+                Question = _quiz!.Questions![index].Question,
+                IsCorrect = is_correct
+            };
+            _result!.AnsweredQuestions!.Add(item);
             if (is_correct) _result.Scores++;
         }
         private void AddQuizResultToUser()
@@ -106,18 +113,24 @@ namespace QuizGame.Features
             }
             else
             {
-                user.Results = new();
-                user.Results.Add(_result);
-                _user.Results = new();
-                _user.Results.Add(_result);
+                user.Results = new()
+                {
+                    _result
+                };
+                _user.Results = new()
+                {
+                    _result
+                };
             }
             database.SaveToFile();
         }
         private void PositionInit()
         {
-            _position = new RatingPosition();
-            _position.Scores = _result!.Scores;
-            _position.Name = _user.FirstName + " " + _user.LastName;
+            _position = new RatingPosition
+            {
+                Scores = _result!.Scores,
+                Name = _user.FirstName + " " + _user.LastName
+            };
         }
         private void SaveResultToTop20()
         {
@@ -144,8 +157,10 @@ namespace QuizGame.Features
                 }
                 else
                 {
-                    _quiz.Top20 = new List<RatingPosition>();
-                    _quiz.Top20.Add(_position);
+                    _quiz.Top20 = new List<RatingPosition>
+                    {
+                        _position
+                    };
                 }
             }
         }
@@ -214,7 +229,7 @@ namespace QuizGame.Features
         {
             _result!.Theme = "";
             _result.Level = "";
-            _result.AnsweredQuestions.Clear();
+            _result.AnsweredQuestions!.Clear();
             _result.Scores = 0;
         }
         public int GetScores()

@@ -266,7 +266,7 @@ namespace QuizGame.GUI
                     MessageBox.ErrorQuery(30, 7, "Error!", "Passwords don't match!", "Ok");
                     passText.Text = "";
                     passText2.Text = "";
-                }                
+                }
                 else
                 {
                     Authentification Auth = new();

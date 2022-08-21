@@ -130,7 +130,7 @@ namespace QuizGame.Features
             {
                 Login = _user!.Login,
                 Name = _user.FirstName + " " + _user.LastName,
-                Scores = _result!.Scores         
+                Scores = _result!.Scores
             };
         }
         private void SaveResultToTop20()

@@ -158,7 +158,7 @@ namespace QuizGame.GUI
                 Y = Pos.Top(theme) + 2,
                 SelectedItem = _buffer_level
             };
-            if (count > 0 || _buffer_theme != "")
+            if (count > 0 && _buffer_theme != "")
             {
                 theme_text.CanFocus = false;
                 levels.CanFocus = false;
@@ -316,55 +316,64 @@ namespace QuizGame.GUI
             };
             save.Clicked += () =>
             {
-                var checker = _creator.FindQuiz(_buffer_theme!);
-                string existing_quiz = "";
-                if (checker is not null)
+                if (theme_text.Text == "")
                 {
-                    existing_quiz = $"{checker.Theme}{checker.Level}";
-                }
-                if (existing_quiz == $"{_buffer_theme}{_buffer_level}")
-                {
-                    MessageBox.ErrorQuery(30, 7, "Error!", "Sorry! A quiz with these theme and level exists!\nPlease specify a unique name!", "Ok");
-                    theme_text.CanFocus = true;
-                    levels.CanFocus = true;
-                    _buffer_theme = "";
-                    top.Running = false;
-                }
-                if (GuiHelper.Save())
-                {
-                    _creator.SetTheme(_buffer_theme!);
-                    string what_level = "";
-                    switch (_buffer_level)
-                    {
-                        case 0:
-                            what_level = "Easy";
-                            break;
-                        case 1:
-                            what_level = "Normal";
-                            break;
-                        case 2:
-                            what_level = "Hard";
-                            break;
-                        default:
-                            break;
-                    }
-                    _creator.SetLevel(what_level);
-                    QuizSaver.ToFile(_creator.GetQuiz());
-                    _buffer_theme = "";
-                    _buffer_level = 0;
-                    _buffer_question = "";
-                    for (int j = 0; j < 4; j++)
-                    {
-                        _buffer_answers[j] = ("", 0);
-                    }
-                    _iterator = 0;
-                    _creator.Clear();
-                    back = true;
+                    MessageBox.ErrorQuery(30, 7, "Error!", "Theme is not specified!", "Ok");
                     top.Running = false;
                 }
                 else
                 {
-                    top.Running = false;
+                    _buffer_theme = theme_text.Text.ToString();
+                    var checker = _creator.FindQuiz(_buffer_theme!);
+                    string existing_quiz = "";
+                    if (checker is not null)
+                    {
+                        existing_quiz = $"{checker.Theme}{checker.Level}";
+                    }
+                    if (existing_quiz == $"{_buffer_theme}{_buffer_level}")
+                    {
+                        MessageBox.ErrorQuery(30, 7, "Error!", "Sorry! A quiz with these theme and level exists!\nPlease specify a unique name!", "Ok");
+                        theme_text.CanFocus = true;
+                        levels.CanFocus = true;
+                        _buffer_theme = "";
+                        top.Running = false;
+                    }
+                    if (GuiHelper.Save())
+                    {
+                        _creator.SetTheme(_buffer_theme!);
+                        string what_level = "";
+                        switch (_buffer_level)
+                        {
+                            case 0:
+                                what_level = "Easy";
+                                break;
+                            case 1:
+                                what_level = "Normal";
+                                break;
+                            case 2:
+                                what_level = "Hard";
+                                break;
+                            default:
+                                break;
+                        }
+                        _creator.SetLevel(what_level);
+                        QuizSaver.ToFile(_creator.GetQuiz());
+                        _buffer_theme = "";
+                        _buffer_level = 0;
+                        _buffer_question = "";
+                        for (int j = 0; j < 4; j++)
+                        {
+                            _buffer_answers[j] = ("", 0);
+                        }
+                        _iterator = 0;
+                        _creator.Clear();
+                        back = true;
+                        top.Running = false;
+                    }
+                    else
+                    {
+                        top.Running = false;
+                    }
                 }
             };
             if (_iterator + 1 < 0)
@@ -453,6 +462,10 @@ namespace QuizGame.GUI
                 if (question_text.Text == "" || answer1_text.Text == "" || answer2_text.Text == "" || answer3_text.Text == "" || answer4_text.Text == "")
                 {
                     MessageBox.ErrorQuery(30, 7, "Error!", "Not all fields are filled in!", "Ok");
+                }
+                else if (is_correct1.SelectedItem == 0 && is_correct2.SelectedItem == 0 && is_correct3.SelectedItem == 0 && is_correct4.SelectedItem == 0)
+                {
+                    MessageBox.ErrorQuery(30, 7, "Error!", "Correct answer is not chosen!", "Ok");
                 }
                 else
                 {
@@ -644,7 +657,8 @@ namespace QuizGame.GUI
                 {
                     X = Pos.Left(theme) + 8,
                     Y = Pos.Top(theme),
-                    Width = 20
+                    Width = 20,
+                    CanFocus = false
                 };
                 var level = new Label("Level: ")
                 {
@@ -655,7 +669,8 @@ namespace QuizGame.GUI
                 {
                     X = Pos.Right(level) + 1,
                     Y = Pos.Top(theme) + 2,
-                    SelectedItem = _buffer_level
+                    SelectedItem = _buffer_level,
+                    CanFocus = false
                 };
                 var question = new Label($"Question {_iterator + 1}: ")
                 {

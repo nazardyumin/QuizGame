@@ -60,9 +60,9 @@ namespace QuizGame.Helpers
             var highscores = LoadHighscores();
             if (highscores is not null)
             {
-                if (highscores.Find((i) => i.Name == position.Name) is not null)
+                if (highscores.Find((i) => i.Login == position.Login) is not null)
                 {
-                    var item = highscores.Find((i) => i.Name == position.Name);
+                    var item = highscores.Find((i) => i.Login == position.Login);
                     item!.Scores += position.Scores;
                 }
                 else

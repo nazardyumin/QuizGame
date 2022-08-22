@@ -256,6 +256,11 @@ namespace QuizGame.GUI
                     MessageBox.ErrorQuery(30, 7, "Error!", "Login cannot start with a digit!", "Ok");
                     loginText.Text = "";
                 }
+                else if (loginText.Text.ToString()!.Contains(' '))
+                {
+                    MessageBox.ErrorQuery(30, 7, "Error!", "Login cannot contain spaces!", "Ok");
+                    loginText.Text = "";
+                }
                 else if (passText.Text != passText2.Text)
                 {
                     MessageBox.ErrorQuery(30, 7, "Error!", "Passwords don't match!", "Ok");

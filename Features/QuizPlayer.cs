@@ -128,8 +128,9 @@ namespace QuizGame.Features
         {
             _position = new RatingPosition
             {
-                Scores = _result!.Scores,
-                Name = _user.FirstName + " " + _user.LastName
+                Login = _user!.Login,
+                Name = _user.FirstName + " " + _user.LastName,
+                Scores = _result!.Scores
             };
         }
         private void SaveResultToTop20()
@@ -138,7 +139,7 @@ namespace QuizGame.Features
             {
                 if (_quiz!.Top20 is not null)
                 {
-                    if (_quiz.Top20.Find((i) => i.Name == _position!.Name) is not null)
+                    if (_quiz.Top20.Find((i) => i.Login == _position!.Login) is not null)
                     {
                         var item = _quiz.Top20.Find((i) => i.Name == _position.Name);
                         if (item!.Scores < _position.Scores) item.Scores = _position.Scores;

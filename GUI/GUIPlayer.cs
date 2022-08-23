@@ -96,14 +96,14 @@ namespace QuizGame.GUI
             (bool keep_on, bool logout, bool back, SomeAction action) stop;
             do
             {
-                stop = PlayQuizGamepLay();
+                stop = PlayQuizGameplay();
                 logout = stop.logout;
                 keep_on = stop.keep_on;
                 back = stop.back;
             } while (!logout && keep_on && !back);
             return (keep_on!, logout!, back!, action!);
         }
-        private (bool keep_on, bool logout, bool back, SomeAction action) PlayQuizGamepLay()
+        private (bool keep_on, bool logout, bool back, SomeAction action) PlayQuizGameplay()
         {
             bool logout = false;
             bool keep_on = true;

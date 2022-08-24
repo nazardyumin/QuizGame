@@ -76,6 +76,11 @@ namespace QuizGame.Quizes.QuizResults
             var list = LoadFromFile(path, theme);
             return list;
         }
+        public static void DeleteTop20File(string theme)
+        {
+            var path = PathInit();
+            File.Delete(path + theme! + "Top20.json");
+        }
         private static string PathInit()
         {
             return PathsConfig.Init().PathToTop20!;

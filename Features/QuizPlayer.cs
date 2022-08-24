@@ -103,8 +103,7 @@ namespace QuizGame.Features
             _result!.Theme = _quiz!.Theme;
             _result.Level = _quiz.Level;
             _result.Date = $"{DateTime.Now:g}";
-            var database = new QuizResultsDataBase();
-            database.Add(_user.Login!, _result);
+            QuizResultsSerializer.Add(_user.Login!, _result);
         }
         private void PositionInit()
         {
@@ -117,35 +116,7 @@ namespace QuizGame.Features
         }
         private void SaveResultToTop20()
         {
-            if (_position!.Scores > 0)
-            {
-                if (_quiz!.Top20 is not null)
-                {
-                    if (_quiz.Top20.Find((i) => i.Login == _position!.Login) is not null)
-                    {
-                        var item = _quiz.Top20.Find((i) => i.Name == _position.Name);
-                        if (item!.Scores < _position.Scores) item.Scores = _position.Scores;
-                    }
-                    else
-                    {
-                        _quiz.Top20.Add(_position);
-                        var ordered = _quiz.Top20.OrderByDescending((p) => p.Scores);
-                        var i = 0;
-                        foreach (var item in ordered)
-                        {
-                            _quiz.Top20[i] = item;
-                            i++;
-                        }
-                    }
-                }
-                else
-                {
-                    _quiz.Top20 = new List<RatingPosition>
-                    {
-                        _position
-                    };
-                }
-            }
+            Top20Serializer.Add($"{_quiz!.Theme} ({_quiz.Level})", _position!);
         }
         private void SaveResultToHighscoresFile()
         {
@@ -168,9 +139,10 @@ namespace QuizGame.Features
         public List<string>? GetTop20()
         {
             List<string> list = new();
-            if (_quiz!.Top20 is not null)
+            var top20 = Top20Serializer.GetTop20($"{_quiz!.Theme} ({_quiz.Level})");
+            if (top20!.Count > 0)
             {
-                foreach (var item in _quiz.Top20)
+                foreach (var item in top20)
                 {
                     list.Add($"{item.Name} {item.Scores}");
                 }
@@ -203,8 +175,7 @@ namespace QuizGame.Features
         }
         public List<QuizResult>? GetQuizResults()
         {
-            var database = new QuizResultsDataBase();
-            return database.GetQuizResults(_user.Login!);
+            return QuizResultsSerializer.GetQuizResults(_user.Login!);
         }
         public void ResetQuizResult()
         {
@@ -221,8 +192,7 @@ namespace QuizGame.Features
         {
             var quizes_passed = 0;
             var total_scores = 0;
-            var database = new QuizResultsDataBase();
-            var list = database.GetQuizResults(_user.Login!);
+            var list = QuizResultsSerializer.GetQuizResults(_user.Login!);
             if (list!.Count > 0)
             {
                 quizes_passed = list.Count;

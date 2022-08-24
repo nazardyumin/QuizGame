@@ -1,3 +1,5 @@
+using QuizGame.Quizes.QuizResults;
+
 namespace QuizGame.Users
 {
     public class Authentification
@@ -41,6 +43,7 @@ namespace QuizGame.Users
                 };
                 _usersDataBase.Add(user);
                 SaveNewUser();
+                QuizResultsSerializer.CreateQuizResultsUserFile(user.Login);
                 return (true, user);
             }
         }

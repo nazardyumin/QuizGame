@@ -46,6 +46,10 @@ namespace QuizGame.Helpers
                 var newfile = new FileStream("DefaultQuizesList.json", FileMode.Open, FileAccess.Read);
                 var defaultquizes = DeserializeQuizes(newfile);
                 newfile.Close();
+                foreach (var item in defaultquizes)
+                {
+                    Top20Serializer.CreateTop20File($"{item.Theme} ({item.Level})");
+                }
                 var tempfile = new FileStream(path, FileMode.Open, FileAccess.Write);
                 JsonSerializer.SerializeAsync(tempfile, defaultquizes);
                 tempfile.Close();
@@ -54,19 +58,12 @@ namespace QuizGame.Helpers
             }
             return file;
         }
-        public static FileStream IfEmptyQuizResultsFile(ref FileStream file, ref FileStream helpfile, string path)
+        public static void IfEmptyQuizResultsFile(string path)
         {
-            if (file.Length == 0)
-            {
-                file.Close();
-                var testrecord = new Dictionary<string, List<QuizResult>>();
-                var tempfile = new FileStream(path, FileMode.Open, FileAccess.Write);
-                JsonSerializer.SerializeAsync(tempfile, testrecord);
-                tempfile.Close();
-                helpfile = new FileStream(path, FileMode.Open, FileAccess.Read);
-                return helpfile;
-            }
-            return file;
+            var testrecord = new Dictionary<string, List<QuizResult>>();
+            var file = new FileStream(path, FileMode.Create, FileAccess.Write);
+            JsonSerializer.SerializeAsync(file, testrecord);
+            file.Close();
         }
         public static void SaveHighscores(RatingPosition position)
         {

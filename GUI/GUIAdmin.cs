@@ -1,6 +1,7 @@
 using NStack;
 using QuizGame.Features;
 using QuizGame.Helpers;
+using QuizGame.Quizes.QuizResults;
 using QuizGame.Users;
 using Terminal.Gui;
 
@@ -358,6 +359,7 @@ namespace QuizGame.GUI
                         }
                         _creator.SetLevel(what_level);
                         QuizSaver.ToFile(_creator.GetQuiz());
+                        Top20Serializer.CreateTop20File($"{_creator.GetTheme()} ({_creator.GetLevel()})");
                         _buffer_theme = "";
                         _buffer_level = 0;
                         _buffer_question = "";

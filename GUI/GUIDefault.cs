@@ -347,8 +347,7 @@ namespace QuizGame.GUI
             {
                 var quizes_passed = 0;
                 var total_scores = 0;
-                var database = new QuizResultsDataBase();
-                var list = database.GetQuizResults(_user.Login!);
+                var list = QuizResultsSerializer.GetQuizResults(_user.Login!);
                 if (list!.Count > 0)
                 {
                     quizes_passed = list.Count;

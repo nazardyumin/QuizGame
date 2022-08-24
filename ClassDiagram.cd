@@ -31,7 +31,7 @@
   <Class Name="QuizGame.Quizes.Quiz">
     <Position X="4.5" Y="4.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>IAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAFAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAFAAAAAAAAAAA=</HashCode>
       <FileName>Quizes\Quiz.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -117,14 +117,14 @@
     </NestedTypes>
     <TypeIdentifier>
       <HashCode>gAAAAAAAAAAAEgAAAEAQAAAAAAAIAIAAEAABAAAAABA=</HashCode>
-      <FileName>GUI\GuiDefault.cs</FileName>
+      <FileName>GUI\GUIDefault.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="QuizGame.GUI.GuiPlayer">
     <Position X="13" Y="13.25" Width="1.75" />
     <TypeIdentifier>
       <HashCode>AAAABAAAAAAABBSAIQAACgEAEBAAAgAAAAAADAAAAAA=</HashCode>
-      <FileName>GUI\GuiPlayer.cs</FileName>
+      <FileName>GUI\GUIPlayer.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="QuizGame.GUI.GuiAdmin">
@@ -144,7 +144,7 @@
   <Class Name="QuizGame.Configs.PathsConfig">
     <Position X="6.5" Y="0.5" Width="1.75" />
     <TypeIdentifier>
-      <HashCode>AAAAAgAAAAAAAAAAQAAAAAAAAAAAAAAAAAADAAAEAAA=</HashCode>
+      <HashCode>AAAAAgAAAAAAAAAAQAAAAAAAAABAAAAAAAADAAAEAAA=</HashCode>
       <FileName>Configs\PathsConfig.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -183,11 +183,18 @@
       <FileName>Users\UsersDataBase.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="QuizGame.Quizes.QuizResults.QuizResultsDataBase">
+  <Class Name="QuizGame.Quizes.QuizResults.QuizResultsSerializer">
     <Position X="11.75" Y="4.25" Width="2" />
     <TypeIdentifier>
-      <HashCode>AAIAAAAgAAAAAAAAAAACAAAAAiBAAAAACAAAAAAgEAA=</HashCode>
-      <FileName>Quizes\QuizResults\QuizResultsDataBase.cs</FileName>
+      <HashCode>AAIAAAAgAAAAAAAAAAAAAAAAAqBAAAAAAAAAAAAgEAA=</HashCode>
+      <FileName>Quizes\QuizResults\QuizResultsSerializer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="QuizGame.Quizes.QuizResults.Top20Serializer">
+    <Position X="16.5" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAgAAEAAAAAAAAAAAAAAiBCAAAAAAAAAAAAEAA=</HashCode>
+      <FileName>Quizes\QuizResults\Top20Serializer.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Font Name="Segoe UI" Size="9" />

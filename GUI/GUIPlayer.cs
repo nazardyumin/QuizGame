@@ -47,9 +47,10 @@ namespace QuizGame.GUI
              new MenuItem ("_Logout", "", () => {  logout=true; top.Running = false; }),
              new MenuItem("_Quit", "", () => {  if (GuiHelper.Quit()) { keep_on = false;top.Running = false; } }) })});
             top.Add(menu);
-            var hello = new Label($"{_player.GetPlayerInfo()}{_role}")
+            string buffer_role = $"{_player.GetPlayerInfo()}{_role}";
+            var hello = new Label(buffer_role)
             {
-                X = Pos.AnchorEnd($"{_player.GetPlayerInfo()}{_role}".Length) - 1,
+                X = Pos.AnchorEnd(buffer_role.Length) - 1,
                 Y = Pos.AnchorEnd(1),
                 ColorScheme = Colors.Menu
             };
@@ -124,9 +125,10 @@ namespace QuizGame.GUI
             {new MenuItem ("_Logout", "", () => { logout=true; top.Running = false; }),
              new MenuItem("_Quit", "", () => {  if (GuiHelper.Quit()) { keep_on = false; top.Running = false;} }) })});
             top.Add(menu);
-            var hello = new Label($"{_player.GetPlayerInfo()}{_role}")
+            string buffer_role = $"{_player.GetPlayerInfo()}{_role}";
+            var hello = new Label(buffer_role)
             {
-                X = Pos.AnchorEnd($"{_player.GetPlayerInfo()}{_role}".Length) - 1,
+                X = Pos.AnchorEnd(buffer_role.Length) - 1,
                 Y = Pos.AnchorEnd(1),
                 ColorScheme = Colors.Menu
             };
@@ -528,9 +530,10 @@ namespace QuizGame.GUI
             {new MenuItem ("_Logout", "", () => { logout=true; top.Running = false; }),
              new MenuItem("_Quit", "", () => {  if (GuiHelper.Quit()) { keep_on = false; top.Running = false;} }) })});
             top.Add(menu);
-            var hello = new Label($"{_player.GetPlayerInfo()}{_role}")
+            string buffer_role = $"{_player.GetPlayerInfo()}{_role}";
+            var hello = new Label(buffer_role)
             {
-                X = Pos.AnchorEnd($"{_player.GetPlayerInfo()}{_role}".Length) - 1,
+                X = Pos.AnchorEnd(buffer_role.Length) - 1,
                 Y = Pos.AnchorEnd(1),
                 ColorScheme = Colors.Menu
             };

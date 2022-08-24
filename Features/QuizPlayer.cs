@@ -98,31 +98,13 @@ namespace QuizGame.Features
             _result!.AnsweredQuestions!.Add(item);
             if (is_correct) _result.Scores++;
         }
-        private void AddQuizResultToUser()
+        private void AddQuizResultToDataBase()
         {
             _result!.Theme = _quiz!.Theme;
             _result.Level = _quiz.Level;
             _result.Date = $"{DateTime.Now:g}";
-            var database = new UsersDataBase();
-            database.LoadFromFile();
-            var user = database.SearchByLogin(_user.Login!);
-            if (user!.Results is not null && _user!.Results is not null)
-            {
-                user.Results.Add(_result);
-                _user.Results.Add(_result);
-            }
-            else
-            {
-                user.Results = new()
-                {
-                    _result
-                };
-                _user.Results = new()
-                {
-                    _result
-                };
-            }
-            database.SaveToFile();
+            var database = new QuizResultsDataBase();
+            database.Add(_user.Login!, _result);
         }
         private void PositionInit()
         {
@@ -174,7 +156,7 @@ namespace QuizGame.Features
         }
         public void SaveResults(bool is_mixed)
         {
-            AddQuizResultToUser();
+            AddQuizResultToDataBase();
             PositionInit();
             if (!is_mixed)
             {
@@ -221,10 +203,8 @@ namespace QuizGame.Features
         }
         public List<QuizResult>? GetQuizResults()
         {
-            var database = new UsersDataBase();
-            database.LoadFromFile();
-            var user = database.SearchByLogin(_user.Login!);
-            return user!.Results;
+            var database = new QuizResultsDataBase();
+            return database.GetQuizResults(_user.Login!);
         }
         public void ResetQuizResult()
         {
@@ -241,13 +221,12 @@ namespace QuizGame.Features
         {
             var quizes_passed = 0;
             var total_scores = 0;
-            var database = new UsersDataBase();
-            database.LoadFromFile();
-            var user = database.SearchByLogin(_user.Login!);
-            if (user!.Results is not null)
+            var database = new QuizResultsDataBase();
+            var list = database.GetQuizResults(_user.Login!);
+            if (list!.Count > 0)
             {
-                quizes_passed = user.Results.Count;
-                foreach (var item in user.Results)
+                quizes_passed = list.Count;
+                foreach (var item in list)
                 {
                     total_scores += item.Scores;
                 }

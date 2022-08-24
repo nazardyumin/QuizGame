@@ -6,8 +6,7 @@
     "Login": "admin",
     "Password": "admin",
     "IsAdmin": true,
-    "IsSuperAdmin": false,
-    "Results": null
+    "IsSuperAdmin": false
   },
   {
     "FirstName": "Default",
@@ -16,7 +15,6 @@
     "Login": "superadmin",
     "Password": "superadmin",
     "IsAdmin": false,
-    "IsSuperAdmin": true,
-    "Results": null
+    "IsSuperAdmin": true
   }
 ]

@@ -1,4 +1,5 @@
 using QuizGame.Helpers;
+using QuizGame.Quizes.QuizResults;
 using QuizGame.Users;
 using Terminal.Gui;
 
@@ -74,9 +75,9 @@ namespace QuizGame.GUI
             {new MenuItem ("_Logout", "", () => { logout=true; top.Running = false; }),
              new MenuItem("_Quit", "", () => {  if (GuiHelper.Quit()) {keep_on = false;top.Running = false; } }) })});
             top.Add(menu);
-            var hello = new Label(_role)
+            var hello = new Label($"{AdditionalInfo()}{_role}")
             {
-                X = Pos.AnchorEnd(_role.Length) - 1,
+                X = Pos.AnchorEnd($"{AdditionalInfo()}{_role}".Length) - 1,
                 Y = Pos.AnchorEnd(1),
                 ColorScheme = Colors.Menu
             };
@@ -139,9 +140,9 @@ namespace QuizGame.GUI
             {new MenuItem ("_Logout", "", () => { logout=true; top.Running = false; }),
              new MenuItem("_Quit", "", () => {  if (GuiHelper.Quit()) {keep_on = false; top.Running = false;} }) })});
             top.Add(menu);
-            var hello = new Label(_role)
+            var hello = new Label($"{AdditionalInfo()}{_role}")
             {
-                X = Pos.AnchorEnd(_role.Length) - 1,
+                X = Pos.AnchorEnd($"{AdditionalInfo()}{_role}".Length) - 1,
                 Y = Pos.AnchorEnd(1),
                 ColorScheme = Colors.Menu
             };
@@ -237,9 +238,9 @@ namespace QuizGame.GUI
             {new MenuItem ("_Logout", "", () => { logout=true; top.Running = false; }),
              new MenuItem("_Quit", "", () => {  if (GuiHelper.Quit()) {keep_on = false; top.Running = false;} }) })});
             top.Add(menu);
-            var hello = new Label(_role)
+            var hello = new Label($"{AdditionalInfo()}{_role}")
             {
-                X = Pos.AnchorEnd(_role.Length) - 1,
+                X = Pos.AnchorEnd($"{AdditionalInfo()}{_role}".Length) - 1,
                 Y = Pos.AnchorEnd(1),
                 ColorScheme = Colors.Menu
             };
@@ -339,6 +340,29 @@ namespace QuizGame.GUI
         protected (bool keep_on, bool logout, bool back, SomeAction action) HelpFunction()
         {
             return (true, false, false, SettingsWindow);
+        }
+        private string AdditionalInfo()
+        {
+            if (!_user.IsAdmin && !_user.IsSuperAdmin)
+            {
+                var quizes_passed = 0;
+                var total_scores = 0;
+                var database = new QuizResultsDataBase();
+                var list = database.GetQuizResults(_user.Login!);
+                if (list!.Count > 0)
+                {
+                    quizes_passed = list.Count;
+                    foreach (var item in list)
+                    {
+                        total_scores += item.Scores;
+                    }
+                }
+                return $"Quizes passed: {quizes_passed} | Total Scores: {total_scores} | ";
+            }
+            else
+            {
+                return "";
+            }
         }
     }
 }

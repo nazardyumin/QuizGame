@@ -51,7 +51,7 @@ namespace QuizGame.Users
         {
             users.Clear();
         }
-        private static string PathInit()
+        private string PathInit()
         {
             return PathsConfig.Init().PathToUserList!;
         }
@@ -59,7 +59,7 @@ namespace QuizGame.Users
         {
             return JsonSerializer.DeserializeAsync<List<User>>(file).AsTask().Result!;
         }
-        private static void Serialize(FileStream file, List<User> users)
+        private void Serialize(FileStream file, List<User> users)
         {
             JsonSerializer.SerializeAsync(file, users);
         }

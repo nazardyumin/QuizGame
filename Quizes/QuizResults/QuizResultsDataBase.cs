@@ -15,7 +15,7 @@ namespace QuizGame.Quizes.QuizResults
         public void Add(string login, QuizResult result)
         {
             LoadFromFile();
-            if (quizResults is not null)
+            if (quizResults!.Count>0)
             {
                 if (quizResults.ContainsKey(login))
                 {
@@ -28,10 +28,7 @@ namespace QuizGame.Quizes.QuizResults
             }
             else
             {
-                quizResults = new()
-                {
-                    { login, new List<QuizResult> { result } }
-                };
+                quizResults.Add(login, new List<QuizResult> { result });
             }
             SaveToFile();
         }

@@ -539,7 +539,7 @@ namespace QuizGame.GUI
                     X = Pos.Center(),
                     Y = 2
                 };
-                if (list is not null)
+                if (list!.Count > 0)
                 {
                     int i = 0;
                     int space = 4;

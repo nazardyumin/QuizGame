@@ -1,5 +1,3 @@
-using QuizGame.Quizes.QuizResults;
-
 namespace QuizGame.Users
 {
     public class User
@@ -11,6 +9,5 @@ namespace QuizGame.Users
         public string? Password { get; set; }
         public bool IsAdmin { get; set; }
         public bool IsSuperAdmin { get; set; }
-        public List<QuizResult>? Results { get; set; }
     }
 }

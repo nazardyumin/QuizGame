@@ -50,56 +50,56 @@
     </TypeIdentifier>
   </Class>
   <Class Name="QuizGame.Quizes.QuizResults.RatingPosition">
-    <Position X="11.75" Y="4.25" Width="1.5" />
+    <Position X="14.25" Y="4.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAgAAAAAAAQAAAAAAAAAAAAQAAAAAAA=</HashCode>
       <FileName>Quizes\QuizResults\RatingPosition.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="QuizGame.Features.Default">
-    <Position X="0.5" Y="7.25" Width="2.25" />
+    <Position X="0.5" Y="7.75" Width="2.25" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAgAAAAAAAAAABAAAAAIAAAAAAAAAAAAA=</HashCode>
       <FileName>Features\Default.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="QuizGame.Features.QuizPlayer">
-    <Position X="0.5" Y="9.75" Width="2.25" />
+    <Position X="0.5" Y="10.25" Width="2.25" />
     <TypeIdentifier>
-      <HashCode>CIwAAEAAABQAAAACEAAIAIABAQRCAgAABQgAhBAgAAA=</HashCode>
+      <HashCode>CIwAAEAAABQAAAACEAAAIIABAQRCAgAABQgAhBAgAAA=</HashCode>
       <FileName>Features\QuizPlayer.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="QuizGame.Features.QuizEditor">
-    <Position X="3.25" Y="7.25" Width="1.75" />
+    <Position X="3.25" Y="7.75" Width="1.75" />
     <TypeIdentifier>
       <HashCode>AI0AAAAEARAAAAAAAQAQAYABAEBAAAAABAAAAAAAEAA=</HashCode>
       <FileName>Features\QuizEditor.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="QuizGame.Features.QuizCreator">
-    <Position X="5.5" Y="7.25" Width="1.5" />
+    <Position X="5.5" Y="7.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AIAEBAAAAAAAAABAAAAAACAAgAAAAAAAAAAAAABAgAA=</HashCode>
       <FileName>Features\QuizCreator.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="QuizGame.Features.SuperQuizCreator">
-    <Position X="7.5" Y="7.25" Width="1.75" />
+    <Position X="7.5" Y="7.75" Width="1.75" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAA=</HashCode>
       <FileName>Features\SuperQuizCreator.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="QuizGame.GUI.GuiCommon">
-    <Position X="10.5" Y="7.25" Width="2" />
+    <Position X="10.5" Y="7.75" Width="2" />
     <TypeIdentifier>
       <HashCode>AAAAgAAAAEAAAAAAAAAAAAgAAAAAAAABAAAAAAAAAAA=</HashCode>
       <FileName>GUI\GuiCommon.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="QuizGame.GUI.GuiDefault">
-    <Position X="13" Y="7.25" Width="1.75" />
+    <Position X="13" Y="7.75" Width="1.75" />
     <Compartments>
       <Compartment Name="Nested Types" Collapsed="false" />
     </Compartments>
@@ -116,26 +116,26 @@
       </Delegate>
     </NestedTypes>
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAEgAAAEAQAAAAAAAIAIAAEAABAAAAABA=</HashCode>
+      <HashCode>gAAAAAAAAAAAEgAAAEAQAAAAAAAIAIAAEAABAAAAABA=</HashCode>
       <FileName>GUI\GuiDefault.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="QuizGame.GUI.GuiPlayer">
-    <Position X="13" Y="12.75" Width="1.75" />
+    <Position X="13" Y="13.25" Width="1.75" />
     <TypeIdentifier>
-      <HashCode>EAAABAAAAAAABBSAIQAACgEAEAAAAgAAAAAADAAAAAA=</HashCode>
+      <HashCode>AAAABAAAAAAABBSAIQAACgEAEBAAAgAAAAAADAAAAAA=</HashCode>
       <FileName>GUI\GuiPlayer.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="QuizGame.GUI.GuiAdmin">
-    <Position X="15.25" Y="7.25" Width="2" />
+    <Position X="15.25" Y="7.75" Width="2" />
     <TypeIdentifier>
       <HashCode>AEAAEACAAACABAAAYQAAAgEIAAwAIAAAJBAIAAAQEAA=</HashCode>
       <FileName>GUI\GuiAdmin.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="QuizGame.GUI.GuiSuperAdmin">
-    <Position X="17.75" Y="7.25" Width="1.75" />
+    <Position X="17.75" Y="7.75" Width="1.75" />
     <TypeIdentifier>
       <HashCode>AAAAIAAAAACAAAAAAAAAAgAgAQAAAAAAAAAIAAAAAEA=</HashCode>
       <FileName>GUI\GuiSuperAdmin.cs</FileName>
@@ -144,26 +144,26 @@
   <Class Name="QuizGame.Configs.PathsConfig">
     <Position X="6.5" Y="0.5" Width="1.75" />
     <TypeIdentifier>
-      <HashCode>AAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAADAAAEAAA=</HashCode>
+      <HashCode>AAAAAgAAAAAAAAAAQAAAAAAAAAAAAAAAAAADAAAEAAA=</HashCode>
       <FileName>Configs\PathsConfig.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="QuizGame.Helpers.GuiHelper">
-    <Position X="17.75" Y="10.75" Width="1.75" />
+    <Position X="17.75" Y="11.25" Width="1.75" />
     <TypeIdentifier>
       <HashCode>AAAAAIAAQAAAAAAAAAAAAAAAAAEAAAAAAAAAAAABAQg=</HashCode>
       <FileName>Helpers\GuiHelper.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="QuizGame.Helpers.QuizLoader">
-    <Position X="3.25" Y="12.5" Width="2.25" />
+    <Position X="3.25" Y="13" Width="2.25" />
     <TypeIdentifier>
       <HashCode>AIAAAAAAAAAAAAAIAAAAAAAAAABAAAAEAAAAAAAAAAA=</HashCode>
       <FileName>Helpers\QuizLoader.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="QuizGame.Helpers.QuizSaver">
-    <Position X="6" Y="12.5" Width="1.5" />
+    <Position X="6" Y="13" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAQAAAEAAAAEAAAAAAAAAAAAA=</HashCode>
       <FileName>Helpers\QuizSaver.cs</FileName>
@@ -172,7 +172,7 @@
   <Class Name="QuizGame.Helpers.SerializerHelper">
     <Position X="8.75" Y="0.5" Width="2" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAABAAQAAABQAAAAAEAACAAAAIAAAAAAAIAA=</HashCode>
+      <HashCode>AAAAAAAAAABAAQAAABQAAAAAEAACAAAAIAAAAAAAoAA=</HashCode>
       <FileName>Helpers\SerializerHelper.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -181,6 +181,13 @@
     <TypeIdentifier>
       <HashCode>IAIAAAAhAAAAAAAAAAACAAAAAiBAAAAAAAAAAABAEAA=</HashCode>
       <FileName>Users\UsersDataBase.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="QuizGame.Quizes.QuizResults.QuizResultsDataBase">
+    <Position X="11.75" Y="4.25" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAgAAAAAAAAAAACAAAAAiBAAAAACAAAAAAgEAA=</HashCode>
+      <FileName>Quizes\QuizResults\QuizResultsDataBase.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Font Name="Segoe UI" Size="9" />

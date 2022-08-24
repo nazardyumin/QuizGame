@@ -54,6 +54,20 @@ namespace QuizGame.Helpers
             }
             return file;
         }
+        public static FileStream IfEmptyQuizResultsFile(ref FileStream file, ref FileStream helpfile, string path)
+        {
+            if (file.Length == 0)
+            {
+                file.Close();
+                var testrecord = new Dictionary<string, List<QuizResult>>();
+                var tempfile = new FileStream(path, FileMode.Open, FileAccess.Write);
+                JsonSerializer.SerializeAsync(tempfile, testrecord);
+                tempfile.Close();
+                helpfile = new FileStream(path, FileMode.Open, FileAccess.Read);
+                return helpfile;
+            }
+            return file;
+        }
         public static void SaveHighscores(RatingPosition position)
         {
             var path = PathsConfig.Init().PathToHighscores;

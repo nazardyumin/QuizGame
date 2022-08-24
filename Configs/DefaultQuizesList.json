@@ -1,1 +1,335 @@
-[{"Theme":"History","Questions":[{"Question":"The year of Lenin \u0027s birth?","Answers":[{"Answer":"1917","IsCorrect":0},{"Answer":"1870","IsCorrect":1},{"Answer":"1867","IsCorrect":0},{"Answer":"1900","IsCorrect":0}]},{"Question":"In what years was there a civil war in Russia?","Answers":[{"Answer":"1917-1922","IsCorrect":1},{"Answer":"1941-1945","IsCorrect":0},{"Answer":"1990-2022","IsCorrect":0},{"Answer":"1812-1814","IsCorrect":0}]},{"Question":"In what year was the Olympic Games held in Sochi?","Answers":[{"Answer":"2000","IsCorrect":0},{"Answer":"2011","IsCorrect":0},{"Answer":"1980","IsCorrect":0},{"Answer":"2014","IsCorrect":1}]},{"Question":"In what year was serfdom abolished in Russia?","Answers":[{"Answer":"1861","IsCorrect":1},{"Answer":"1995","IsCorrect":0},{"Answer":"2022","IsCorrect":0},{"Answer":"1812","IsCorrect":0}]},{"Question":"What was Stalin\u0027s name?","Answers":[{"Answer":"Moisha","IsCorrect":0},{"Answer":"Joseph","IsCorrect":1},{"Answer":"Giuseppe","IsCorrect":0},{"Answer":"Mikhail","IsCorrect":0}]}],"Level":"Normal","Top20":null},{"Theme":"Geography","Questions":[{"Question":"The capital of Russia is ...?","Answers":[{"Answer":"Ufa","IsCorrect":0},{"Answer":"Saint-Petesburg","IsCorrect":0},{"Answer":"Voronezh","IsCorrect":0},{"Answer":"Moscow","IsCorrect":1}]},{"Question":"How many states are there in USA?","Answers":[{"Answer":"51","IsCorrect":0},{"Answer":"50","IsCorrect":1},{"Answer":"49","IsCorrect":0},{"Answer":"52","IsCorrect":0}]},{"Question":"How many poles does the Earth have","Answers":[{"Answer":"1","IsCorrect":0},{"Answer":"2","IsCorrect":1},{"Answer":"2,5","IsCorrect":0},{"Answer":"3","IsCorrect":0}]},{"Question":"The coldest ocean on Earth?","Answers":[{"Answer":"Southern","IsCorrect":1},{"Answer":"Arctic","IsCorrect":0},{"Answer":"Indian","IsCorrect":0},{"Answer":"Pacific","IsCorrect":0}]},{"Question":"Which country\u0027s capital is Ouagadougou?","Answers":[{"Answer":"Australia","IsCorrect":0},{"Answer":"Burkina Faso","IsCorrect":1},{"Answer":"Russia","IsCorrect":0},{"Answer":"Mozambique","IsCorrect":0}]}],"Level":"Easy","Top20":null},{"Theme":"Music","Questions":[{"Question":"The author of the opera Carmen?","Answers":[{"Answer":"Georges Bizet","IsCorrect":1},{"Answer":"Dieter Bohlen","IsCorrect":0},{"Answer":"Michael Jackson","IsCorrect":0},{"Answer":"Igor Stravinsky","IsCorrect":0}]},{"Question":"How many notes are there in a musical literacy?","Answers":[{"Answer":"12","IsCorrect":0},{"Answer":"32","IsCorrect":0},{"Answer":"7","IsCorrect":1},{"Answer":"64","IsCorrect":0}]},{"Question":"Which musical instrument doesn\u0027t have strings?","Answers":[{"Answer":"Guitar","IsCorrect":0},{"Answer":"Piano","IsCorrect":0},{"Answer":"Violin","IsCorrect":0},{"Answer":"Drum","IsCorrect":1}]},{"Question":"Who didn\u0027t participate in the Beatles band?","Answers":[{"Answer":"Paul McCartney","IsCorrect":0},{"Answer":"John Lennon","IsCorrect":0},{"Answer":"Harrison Ford","IsCorrect":1},{"Answer":"George Harrisson","IsCorrect":0}]},{"Question":"Which country is the ABBA from?","Answers":[{"Answer":"Russia","IsCorrect":0},{"Answer":"Sweden","IsCorrect":1},{"Answer":"Poland","IsCorrect":0},{"Answer":"Switzerland","IsCorrect":0}]}],"Level":"Hard","Top20":null}]
+[
+  {
+    "Theme": "History",
+    "Questions": [
+      {
+        "Question": "The year of Lenin \u0027s birth?",
+        "Answers": [
+          {
+            "Answer": "1917",
+            "IsCorrect": 0
+          },
+          {
+            "Answer": "1870",
+            "IsCorrect": 1
+          },
+          {
+            "Answer": "1867",
+            "IsCorrect": 0
+          },
+          {
+            "Answer": "1900",
+            "IsCorrect": 0
+          }
+        ]
+      },
+      {
+        "Question": "In what years was there a civil war in Russia?",
+        "Answers": [
+          {
+            "Answer": "1917-1922",
+            "IsCorrect": 1
+          },
+          {
+            "Answer": "1941-1945",
+            "IsCorrect": 0
+          },
+          {
+            "Answer": "1990-2022",
+            "IsCorrect": 0
+          },
+          {
+            "Answer": "1812-1814",
+            "IsCorrect": 0
+          }
+        ]
+      },
+      {
+        "Question": "In what year was the Olympic Games held in Sochi?",
+        "Answers": [
+          {
+            "Answer": "2000",
+            "IsCorrect": 0
+          },
+          {
+            "Answer": "2011",
+            "IsCorrect": 0
+          },
+          {
+            "Answer": "1980",
+            "IsCorrect": 0
+          },
+          {
+            "Answer": "2014",
+            "IsCorrect": 1
+          }
+        ]
+      },
+      {
+        "Question": "In what year was serfdom abolished in Russia?",
+        "Answers": [
+          {
+            "Answer": "1861",
+            "IsCorrect": 1
+          },
+          {
+            "Answer": "1995",
+            "IsCorrect": 0
+          },
+          {
+            "Answer": "2022",
+            "IsCorrect": 0
+          },
+          {
+            "Answer": "1812",
+            "IsCorrect": 0
+          }
+        ]
+      },
+      {
+        "Question": "What was Stalin\u0027s name?",
+        "Answers": [
+          {
+            "Answer": "Moisha",
+            "IsCorrect": 0
+          },
+          {
+            "Answer": "Joseph",
+            "IsCorrect": 1
+          },
+          {
+            "Answer": "Giuseppe",
+            "IsCorrect": 0
+          },
+          {
+            "Answer": "Mikhail",
+            "IsCorrect": 0
+          }
+        ]
+      }
+    ],
+    "Level": "Normal"
+  },
+  {
+    "Theme": "Geography",
+    "Questions": [
+      {
+        "Question": "The capital of Russia is ...?",
+        "Answers": [
+          {
+            "Answer": "Ufa",
+            "IsCorrect": 0
+          },
+          {
+            "Answer": "Saint-Petesburg",
+            "IsCorrect": 0
+          },
+          {
+            "Answer": "Voronezh",
+            "IsCorrect": 0
+          },
+          {
+            "Answer": "Moscow",
+            "IsCorrect": 1
+          }
+        ]
+      },
+      {
+        "Question": "How many states are there in USA?",
+        "Answers": [
+          {
+            "Answer": "51",
+            "IsCorrect": 0
+          },
+          {
+            "Answer": "50",
+            "IsCorrect": 1
+          },
+          {
+            "Answer": "49",
+            "IsCorrect": 0
+          },
+          {
+            "Answer": "52",
+            "IsCorrect": 0
+          }
+        ]
+      },
+      {
+        "Question": "How many poles does the Earth have",
+        "Answers": [
+          {
+            "Answer": "1",
+            "IsCorrect": 0
+          },
+          {
+            "Answer": "2",
+            "IsCorrect": 1
+          },
+          {
+            "Answer": "2,5",
+            "IsCorrect": 0
+          },
+          {
+            "Answer": "3",
+            "IsCorrect": 0
+          }
+        ]
+      },
+      {
+        "Question": "The coldest ocean on Earth?",
+        "Answers": [
+          {
+            "Answer": "Southern",
+            "IsCorrect": 1
+          },
+          {
+            "Answer": "Arctic",
+            "IsCorrect": 0
+          },
+          {
+            "Answer": "Indian",
+            "IsCorrect": 0
+          },
+          {
+            "Answer": "Pacific",
+            "IsCorrect": 0
+          }
+        ]
+      },
+      {
+        "Question": "Which country\u0027s capital is Ouagadougou?",
+        "Answers": [
+          {
+            "Answer": "Australia",
+            "IsCorrect": 0
+          },
+          {
+            "Answer": "Burkina Faso",
+            "IsCorrect": 1
+          },
+          {
+            "Answer": "Russia",
+            "IsCorrect": 0
+          },
+          {
+            "Answer": "Mozambique",
+            "IsCorrect": 0
+          }
+        ]
+      }
+    ],
+    "Level": "Easy"
+  },
+  {
+    "Theme": "Music",
+    "Questions": [
+      {
+        "Question": "The author of the opera Carmen?",
+        "Answers": [
+          {
+            "Answer": "Georges Bizet",
+            "IsCorrect": 1
+          },
+          {
+            "Answer": "Dieter Bohlen",
+            "IsCorrect": 0
+          },
+          {
+            "Answer": "Michael Jackson",
+            "IsCorrect": 0
+          },
+          {
+            "Answer": "Igor Stravinsky",
+            "IsCorrect": 0
+          }
+        ]
+      },
+      {
+        "Question": "How many notes are there in a musical literacy?",
+        "Answers": [
+          {
+            "Answer": "12",
+            "IsCorrect": 0
+          },
+          {
+            "Answer": "32",
+            "IsCorrect": 0
+          },
+          {
+            "Answer": "7",
+            "IsCorrect": 1
+          },
+          {
+            "Answer": "64",
+            "IsCorrect": 0
+          }
+        ]
+      },
+      {
+        "Question": "Which musical instrument doesn\u0027t have strings?",
+        "Answers": [
+          {
+            "Answer": "Guitar",
+            "IsCorrect": 0
+          },
+          {
+            "Answer": "Piano",
+            "IsCorrect": 0
+          },
+          {
+            "Answer": "Violin",
+            "IsCorrect": 0
+          },
+          {
+            "Answer": "Drum",
+            "IsCorrect": 1
+          }
+        ]
+      },
+      {
+        "Question": "Who didn\u0027t participate in the Beatles band?",
+        "Answers": [
+          {
+            "Answer": "Paul McCartney",
+            "IsCorrect": 0
+          },
+          {
+            "Answer": "John Lennon",
+            "IsCorrect": 0
+          },
+          {
+            "Answer": "Harrison Ford",
+            "IsCorrect": 1
+          },
+          {
+            "Answer": "George Harrisson",
+            "IsCorrect": 0
+          }
+        ]
+      },
+      {
+        "Question": "Which country is the ABBA from?",
+        "Answers": [
+          {
+            "Answer": "Russia",
+            "IsCorrect": 0
+          },
+          {
+            "Answer": "Sweden",
+            "IsCorrect": 1
+          },
+          {
+            "Answer": "Poland",
+            "IsCorrect": 0
+          },
+          {
+            "Answer": "Switzerland",
+            "IsCorrect": 0
+          }
+        ]
+      }
+    ],
+    "Level": "Hard"
+  }
+]

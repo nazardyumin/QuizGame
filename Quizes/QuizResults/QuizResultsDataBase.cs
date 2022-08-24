@@ -14,23 +14,26 @@ namespace QuizGame.Quizes.QuizResults
         }
         public void Add(string login, QuizResult result)
         {
-            LoadFromFile();
-            if (quizResults!.Count>0)
+            if (result.Scores > 0)
             {
-                if (quizResults.ContainsKey(login))
+                LoadFromFile();
+                if (quizResults!.Count > 0)
                 {
-                    quizResults[login].Add(result);
+                    if (quizResults.ContainsKey(login))
+                    {
+                        quizResults[login].Add(result);
+                    }
+                    else
+                    {
+                        quizResults.Add(login, new List<QuizResult> { result });
+                    }
                 }
                 else
                 {
                     quizResults.Add(login, new List<QuizResult> { result });
                 }
-            }
-            else
-            {
-                quizResults.Add(login, new List<QuizResult> { result });
-            }
-            SaveToFile();
+                SaveToFile();
+            }       
         }
         private void SaveToFile()
         {

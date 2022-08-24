@@ -43,14 +43,14 @@
     </TypeIdentifier>
   </Class>
   <Class Name="QuizGame.Quizes.QuizResults.QuizResult">
-    <Position X="9.75" Y="4.25" Width="1.5" />
+    <Position X="9.75" Y="4.25" Width="1.75" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAgQAAAAAAAAAAAAAAABAAAAAAQAAAA=</HashCode>
       <FileName>Quizes\QuizResults\QuizResult.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="QuizGame.Quizes.QuizResults.RatingPosition">
-    <Position X="14.25" Y="4.25" Width="1.5" />
+    <Position X="15" Y="4.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAgAAAAAAAQAAAAAAAAAAAAQAAAAAAA=</HashCode>
       <FileName>Quizes\QuizResults\RatingPosition.cs</FileName>
@@ -117,14 +117,14 @@
     </NestedTypes>
     <TypeIdentifier>
       <HashCode>gAAAAAAAAAAAEgAAAEAQAAAAAAAIAIAAEAABAAAAABA=</HashCode>
-      <FileName>GUI\GUIDefault.cs</FileName>
+      <FileName>GUI\GuiDefault.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="QuizGame.GUI.GuiPlayer">
     <Position X="13" Y="13.25" Width="1.75" />
     <TypeIdentifier>
       <HashCode>AAAABAAAAAAABBSAIQAACgEAEBAAAgAAAAAADAAAAAA=</HashCode>
-      <FileName>GUI\GUIPlayer.cs</FileName>
+      <FileName>GUI\GuiPlayer.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="QuizGame.GUI.GuiAdmin">
@@ -184,14 +184,14 @@
     </TypeIdentifier>
   </Class>
   <Class Name="QuizGame.Quizes.QuizResults.QuizResultsSerializer">
-    <Position X="11.75" Y="4.25" Width="2" />
+    <Position X="12" Y="4.25" Width="2" />
     <TypeIdentifier>
       <HashCode>AAIAAAAgAAAAAAAAAAAAAAAAAqBAAAAAAAAAAAAgEAA=</HashCode>
       <FileName>Quizes\QuizResults\QuizResultsSerializer.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="QuizGame.Quizes.QuizResults.Top20Serializer">
-    <Position X="16.5" Y="4.25" Width="1.5" />
+    <Position X="17" Y="4.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAIAAAAgAAEAAAAAAAAAAAAAAiBCAAAAAAAAAAAAEAA=</HashCode>
       <FileName>Quizes\QuizResults\Top20Serializer.cs</FileName>

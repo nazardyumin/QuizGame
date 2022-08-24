@@ -452,7 +452,11 @@ namespace QuizGame.GUI
                             }
                             bool is_mixed = header.Text == "Mixed Quiz (Mixed)";
                             _player.SaveResults(is_mixed);
-                            if (_player.GetScores() == 1)
+                            if (_player.GetScores() == 0)
+                            {
+                                MessageBox.ErrorQuery(30, 7, "Quiz is not passed!", "You got 0 points!", "Ok");
+                            }
+                            else if (_player.GetScores() == 1)
                             {
                                 MessageBox.Query(30, 7, "Quiz is passed!", "You got 1 point!", "Ok");
                             }

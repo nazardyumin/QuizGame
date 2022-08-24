@@ -7,7 +7,6 @@ namespace QuizGame.Quizes.QuizResults
     {
         protected Top20Serializer()
         {
-
         }
         public static void CreateTop20File(string theme)
         {

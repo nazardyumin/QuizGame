@@ -58,13 +58,6 @@ namespace QuizGame.Helpers
             }
             return file;
         }
-        public static void IfEmptyQuizResultsFile(string path)
-        {
-            var testrecord = new Dictionary<string, List<QuizResult>>();
-            var file = new FileStream(path, FileMode.Create, FileAccess.Write);
-            JsonSerializer.SerializeAsync(file, testrecord);
-            file.Close();
-        }
         public static void SaveHighscores(RatingPosition position)
         {
             var path = PathsConfig.Init().PathToHighscores;

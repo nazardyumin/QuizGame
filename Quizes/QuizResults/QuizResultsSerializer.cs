@@ -55,11 +55,11 @@ namespace QuizGame.Quizes.QuizResults
         }
         private static void Serialize(ref FileStream file, List<QuizResult> results)
         {
-            JsonSerializer.SerializeAsync(file, results);
+            JsonSerializer.Serialize(file, results);
         }
         private static List<QuizResult> Deserialize(ref FileStream file)
         {
-            return JsonSerializer.DeserializeAsync<List<QuizResult>>(file).AsTask().Result!;
+            return JsonSerializer.Deserialize<List<QuizResult>>(file)!;
         }
     }
 }

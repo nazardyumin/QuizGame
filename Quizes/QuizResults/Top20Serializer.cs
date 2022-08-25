@@ -86,11 +86,11 @@ namespace QuizGame.Quizes.QuizResults
         }
         private static void Serialize(ref FileStream file, List<RatingPosition> results)
         {
-            JsonSerializer.SerializeAsync(file, results);
+            JsonSerializer.Serialize(file, results);
         }
         private static List<RatingPosition> Deserialize(ref FileStream file)
         {
-            return JsonSerializer.DeserializeAsync<List<RatingPosition>>(file).AsTask().Result!;
+            return JsonSerializer.Deserialize<List<RatingPosition>>(file)!;
         }
     }
 }

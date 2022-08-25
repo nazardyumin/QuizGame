@@ -61,7 +61,7 @@ namespace QuizGame.Helpers
         }
         private static List<Quiz>? Deserialize(FileStream file)
         {
-            return JsonSerializer.DeserializeAsync<List<Quiz>>(file).AsTask().Result;
+            return JsonSerializer.Deserialize<List<Quiz>>(file);
         }
     }
 }

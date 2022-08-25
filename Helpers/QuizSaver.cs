@@ -23,7 +23,7 @@ namespace QuizGame.Helpers
             }
             File.Delete(path + "QuizesList.json");
             using var file = new FileStream(path + "QuizesList.json", FileMode.Create, FileAccess.Write);
-            JsonSerializer.SerializeAsync(file, quizList);
+            JsonSerializer.Serialize(file, quizList);
         }
         public static void ReSaveToFile(Quiz quizLocal)
         {
@@ -33,14 +33,14 @@ namespace QuizGame.Helpers
             list[index] = quizLocal;
             File.Delete(path + "QuizesList.json");
             using var file = new FileStream(path + "QuizesList.json", FileMode.Create, FileAccess.Write);
-            JsonSerializer.SerializeAsync(file, list);
+            JsonSerializer.Serialize(file, list);
         }
         public static void RefreshQuizList(List<Quiz> list)
         {
             var path = PathsConfig.Init().PathToQuizes;
             File.Delete(path + "QuizesList.json");
             using var file = new FileStream(path + "QuizesList.json", FileMode.Create, FileAccess.Write);
-            JsonSerializer.SerializeAsync(file, list);
+            JsonSerializer.Serialize(file, list);
         }
     }
 }

@@ -29,9 +29,12 @@ namespace QuizGame.Users
         }
         public void LoadFromFile()
         {
-            if (!Directory.Exists(_path))
+            if (!Directory.Exists(_path)||!File.Exists(_path + "UsersList.json"))
             {
-                Directory.CreateDirectory(_path);
+                if(!Directory.Exists(_path))
+                {
+                    Directory.CreateDirectory(_path);
+                }
                 FileStream? helpFile = null;
                 var file = new FileStream(_path + "UsersList.json", FileMode.OpenOrCreate, FileAccess.Read);
                 var newFile = SerializerHelper.IfEmptyUsersListFile(ref file, ref helpFile!, _path + "UsersList.json");
@@ -57,11 +60,11 @@ namespace QuizGame.Users
         }
         private List<User> Deserialize(FileStream file)
         {
-            return JsonSerializer.DeserializeAsync<List<User>>(file).AsTask().Result!;
+            return JsonSerializer.Deserialize<List<User>>(file)!;
         }
         private void Serialize(FileStream file, List<User> users)
         {
-            JsonSerializer.SerializeAsync(file, users);
+            JsonSerializer.Serialize(file, users);
         }
     }
 }

@@ -12,7 +12,7 @@ namespace QuizGame.Configs
         public static PathsConfig Init()
         {
             using var file = new FileStream("PathsConfig.json", FileMode.Open, FileAccess.Read);
-            var config = JsonSerializer.DeserializeAsync<PathsConfig>(file).AsTask().Result;
+            var config = JsonSerializer.Deserialize<PathsConfig>(file);
             if (config!.PathToUserList == "" || config.PathToHighscores == "" || config.PathToQuizes == "" || config.PathToQuizResults == "" || config.PathToTop20 == "")
             {
                 config.PathToUserList = config.PathToHighscores = config.PathToQuizes = config.PathToQuizResults = config.PathToTop20 = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);

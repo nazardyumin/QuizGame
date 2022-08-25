@@ -21,9 +21,9 @@ namespace QuizGame.Features
         {
             _question = question;
         }
-        public void SetAnswer(string answer, int iscorrect)
+        public void SetAnswer(string answer, int isCorrect)
         {
-            _answers.Add(new QuizAnswer { Answer = answer, IsCorrect = iscorrect });
+            _answers.Add(new QuizAnswer { Answer = answer, IsCorrect = isCorrect });
         }
         public void AddItem()
         {
@@ -44,7 +44,7 @@ namespace QuizGame.Features
         {
             _quiz!.Questions!.Clear();
         }
-        public Quiz? FindQuiz(string theme)
+        public Quiz FindQuiz(string theme)
         {
             return QuizLoader.FindQuiz(theme, QuizLoader.FromFile());
         }

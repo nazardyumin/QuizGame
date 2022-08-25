@@ -7,11 +7,11 @@ namespace QuizGame.GUI
 {
     public class GuiDefault
     {
-        protected User _user;
-        protected string _role;
+        protected readonly User _user;
+        protected readonly string _role;
         protected Change? _changePass;
         protected Change? _changeDate;
-        protected delegate void Change(string New);
+        protected delegate void Change(string @new);
         protected delegate (bool keep_on, bool logout, bool back, SomeAction action) SomeAction();
         protected GuiDefault(User user)
         {
@@ -32,15 +32,14 @@ namespace QuizGame.GUI
         protected (bool keep_on, bool logout, bool back, SomeAction action) SettingsWindow()
         {
             bool logout;
-            bool keep_on;
+            bool keepOn;
             bool back = false;
             SomeAction? action;
-            (bool keep_on, bool logout, bool back, SomeAction action) stop;
             do
             {
-                stop = SettingsMenu();
+                var stop = SettingsMenu();
                 logout = stop.logout;
-                keep_on = stop.keep_on;
+                keepOn = stop.keep_on;
                 action = stop.action;
                 if (stop.action is not null)
                 {
@@ -48,17 +47,17 @@ namespace QuizGame.GUI
                     {
                         stop = stop.action.Invoke();
                         logout = stop.logout;
-                        keep_on = stop.keep_on;
+                        keepOn = stop.keep_on;
                         back = stop.back;
-                    } while (!back && !logout);
+                    } while (!back && !logout && keepOn);
                 }
-            } while (action is not null && !logout);
-            return (keep_on!, logout!, back!, action!);
+            } while (action is not null && !logout && keepOn);
+            return (keepOn, logout, back, action!);
         }
         protected (bool keep_on, bool logout, bool back, SomeAction action) SettingsMenu()
         {
             bool logout = false;
-            bool keep_on = true;
+            bool keepOn = true;
             bool back = false;
             SomeAction? action = null;
             Application.Init();
@@ -73,7 +72,7 @@ namespace QuizGame.GUI
             top.Add(win);
             var menu = new MenuBar(new MenuBarItem[] {new MenuBarItem ("_Menu", new MenuItem []
             {new MenuItem ("_Logout", "", () => { logout=true; top.Running = false; }),
-             new MenuItem("_Quit", "", () => {  if (GuiHelper.Quit()) {keep_on = false;top.Running = false; } }) })});
+             new MenuItem("_Quit", "", () => {  if (GuiHelper.Quit()) {keepOn = false;top.Running = false; } }) })});
             top.Add(menu);
             var hello = new Label($"{AdditionalInfo()}{_role}")
             {
@@ -87,22 +86,22 @@ namespace QuizGame.GUI
                 X = Pos.Center(),
                 Y = 2
             };
-            var changedate = new Button("Change Date Of Birth")
+            var changeDate = new Button("Change Date Of Birth")
             {
                 X = Pos.Center(),
                 Y = 5
             };
-            changedate.Clicked += () =>
+            changeDate.Clicked += () =>
             {
                 action = SettingsChangeDate;
                 top.Running = false;
             };
-            var changepass = new Button("Change Password")
+            var changePass = new Button("Change Password")
             {
                 X = Pos.Center(),
-                Y = Pos.Top(changedate) + 2
+                Y = Pos.Top(changeDate) + 2
             };
-            changepass.Clicked += () =>
+            changePass.Clicked += () =>
             {
                 action = SettingsChangePass;
                 top.Running = false;
@@ -110,20 +109,20 @@ namespace QuizGame.GUI
             var comeback = new Button("Back")
             {
                 X = Pos.Center(),
-                Y = Pos.Top(changepass) + 3
+                Y = Pos.Top(changePass) + 3
             };
             comeback.Clicked += () =>
             {
                 back = true; top.Running = false;
             };
-            win.Add(header, changedate, changepass, comeback);
+            win.Add(header, changeDate, changePass, comeback);
             Application.Run();
-            return (keep_on!, logout!, back!, action!);
+            return (keepOn, logout, back, action!);
         }
         protected (bool keep_on, bool logout, bool back, SomeAction action) SettingsChangeDate()
         {
             bool logout = false;
-            bool keep_on = true;
+            bool keepOn = true;
             bool back = false;
             SomeAction? action = null;
             Application.Init();
@@ -138,7 +137,7 @@ namespace QuizGame.GUI
             top.Add(win);
             var menu = new MenuBar(new MenuBarItem[] {new MenuBarItem ("_Menu", new MenuItem []
             {new MenuItem ("_Logout", "", () => { logout=true; top.Running = false; }),
-             new MenuItem("_Quit", "", () => {  if (GuiHelper.Quit()) {keep_on = false; top.Running = false;} }) })});
+             new MenuItem("_Quit", "", () => {  if (GuiHelper.Quit()) {keepOn = false; top.Running = false;} }) })});
             top.Add(menu);
             var hello = new Label($"{AdditionalInfo()}{_role}")
             {
@@ -152,55 +151,55 @@ namespace QuizGame.GUI
                 X = Pos.Center(),
                 Y = 2
             };
-            var old_date = new Label("Actual Date: ")
+            var oldDate = new Label("Actual Date: ")
             {
                 X = Pos.Center() - 13,
                 Y = Pos.Top(header) + 4
             };
-            var old_date_text = new Label($" {_user.DateOfBirth} ")
+            var oldDateText = new Label($" {_user.DateOfBirth} ")
             {
-                X = Pos.Left(old_date) + 14,
+                X = Pos.Left(oldDate) + 14,
                 Y = Pos.Top(header) + 4,
                 ColorScheme = Colors.Menu
             };
-            var new_date = new Label("New Date: ")
+            var newDate = new Label("New Date: ")
             {
-                X = Pos.Left(old_date) + 3,
+                X = Pos.Left(oldDate) + 3,
                 Y = Pos.Top(header) + 6
             };
-            var new_date_text = new TextField(" ")
+            var newDateText = new TextField(" ")
             {
-                X = Pos.Left(old_date_text),
-                Y = Pos.Top(old_date_text) + 2,
+                X = Pos.Left(oldDateText),
+                Y = Pos.Top(oldDateText) + 2,
                 Width = 12
             };
             var done = new Button("Done")
             {
                 X = Pos.Center() + 1,
-                Y = Pos.Top(new_date_text) + 3
+                Y = Pos.Top(newDateText) + 3
             };
             done.Clicked += () =>
             {
-                var newdate = new_date_text.Text.ToString();
-                if (newdate!.StartsWith(" ")) newdate = newdate[1..];
-                if (newdate.Length == 0)
+                var date = newDateText.Text.ToString();
+                if (date!.StartsWith(" ")) date = date[1..];
+                if (date.Length == 0)
                 {
                     MessageBox.ErrorQuery(30, 7, "Error!", "This field must be filled in!", "Ok");
-                    new_date_text.Text = " ";
+                    newDateText.Text = " ";
                 }
-                else if (newdate == _user.DateOfBirth)
+                else if (date == _user.DateOfBirth)
                 {
                     MessageBox.ErrorQuery(30, 7, "Error!", "The dates match!", "Ok");
-                    new_date_text.Text = " ";
+                    newDateText.Text = " ";
                 }
-                else if (newdate.Length != 10)
+                else if (date.Length != 10)
                 {
                     MessageBox.ErrorQuery(30, 7, "Error!", "Date format is incorrect!", "Ok");
-                    new_date_text.Text = " ";
+                    newDateText.Text = " ";
                 }
                 else
                 {
-                    _changeDate!(newdate);
+                    _changeDate!(date);
                     MessageBox.Query(30, 7, "Well done!", "Сhanges saved successfully!", "Ok");
                     back = true; top.Running = false;
                 }
@@ -208,20 +207,20 @@ namespace QuizGame.GUI
             var comeback = new Button("Cancel")
             {
                 X = Pos.Left(done) - 11,
-                Y = Pos.Top(new_date_text) + 3
+                Y = Pos.Top(newDateText) + 3
             };
             comeback.Clicked += () =>
             {
                 back = true; top.Running = false;
             };
-            win.Add(header, old_date, old_date_text, new_date, new_date_text, done, comeback);
+            win.Add(header, oldDate, oldDateText, newDate, newDateText, done, comeback);
             Application.Run();
-            return (keep_on!, logout!, back!, action!);
+            return (keepOn, logout, back, action!);
         }
         protected (bool keep_on, bool logout, bool back, SomeAction action) SettingsChangePass()
         {
             bool logout = false;
-            bool keep_on = true;
+            bool keepOn = true;
             bool back = false;
             SomeAction? action = null;
             Application.Init();
@@ -236,7 +235,7 @@ namespace QuizGame.GUI
             top.Add(win);
             var menu = new MenuBar(new MenuBarItem[] {new MenuBarItem ("_Menu", new MenuItem []
             {new MenuItem ("_Logout", "", () => { logout=true; top.Running = false; }),
-             new MenuItem("_Quit", "", () => {  if (GuiHelper.Quit()) {keep_on = false; top.Running = false;} }) })});
+             new MenuItem("_Quit", "", () => {  if (GuiHelper.Quit()) {keepOn = false; top.Running = false;} }) })});
             top.Add(menu);
             var hello = new Label($"{AdditionalInfo()}{_role}")
             {
@@ -250,52 +249,52 @@ namespace QuizGame.GUI
                 X = Pos.Center(),
                 Y = 2
             };
-            var new_pass = new Label("New Password: ")
+            var newPass = new Label("New Password: ")
             {
                 X = Pos.Center() - 14,
                 Y = Pos.Top(header) + 4
             };
-            var new_pass_text = new TextField("")
+            var newPassText = new TextField("")
             {
                 Secret = true,
-                X = Pos.Left(new_pass) + 15,
-                Y = Pos.Top(new_pass),
+                X = Pos.Left(newPass) + 15,
+                Y = Pos.Top(newPass),
                 Width = 12
             };
-            var new_pass2 = new Label("New Password: ")
+            var newPass2 = new Label("New Password: ")
             {
-                X = Pos.Left(new_pass),
-                Y = Pos.Top(new_pass) + 2
+                X = Pos.Left(newPass),
+                Y = Pos.Top(newPass) + 2
             };
-            var new_pass_text2 = new TextField("")
+            var newPassText2 = new TextField("")
             {
                 Secret = true,
-                X = Pos.Left(new_pass_text),
-                Y = Pos.Top(new_pass_text) + 2,
+                X = Pos.Left(newPassText),
+                Y = Pos.Top(newPassText) + 2,
                 Width = 12
             };
-            var old_pass = new Label("Old Password: ")
+            var oldPass = new Label("Old Password: ")
             {
-                X = Pos.Left(new_pass),
-                Y = Pos.Top(new_pass_text2) + 2
+                X = Pos.Left(newPass),
+                Y = Pos.Top(newPassText2) + 2
             };
-            var old_pass_text = new TextField("")
+            var oldPassText = new TextField("")
             {
                 Secret = true,
-                X = Pos.Left(new_pass_text),
-                Y = Pos.Top(new_pass_text2) + 2,
+                X = Pos.Left(newPassText),
+                Y = Pos.Top(newPassText2) + 2,
                 Width = 12,
                 ColorScheme = Colors.Error
             };
             var done = new Button("Done")
             {
                 X = Pos.Center() + 1,
-                Y = Pos.Top(old_pass_text) + 3
+                Y = Pos.Top(oldPassText) + 3
             };
             var comeback = new Button("Cancel")
             {
                 X = Pos.Left(done) - 11,
-                Y = Pos.Top(old_pass_text) + 3
+                Y = Pos.Top(oldPassText) + 3
             };
             comeback.Clicked += () =>
             {
@@ -303,39 +302,39 @@ namespace QuizGame.GUI
             };
             done.Clicked += () =>
             {
-                if (new_pass_text.Text == "" || new_pass_text2.Text == "" || old_pass_text.Text == "")
+                if (newPassText.Text == "" || newPassText2.Text == "" || oldPassText.Text == "")
                 {
                     MessageBox.ErrorQuery(30, 7, "Error!", "Not all fields are filled in!", "Ok");
                 }
-                else if (new_pass_text.Text != new_pass_text2.Text)
+                else if (newPassText.Text != newPassText2.Text)
                 {
                     MessageBox.ErrorQuery(30, 7, "Error!", "Confirming the New Password is incorrect!", "Ok");
-                    new_pass_text.Text = new_pass_text2.Text = old_pass_text.Text = "";
+                    newPassText.Text = newPassText2.Text = oldPassText.Text = "";
                 }
                 else
                 {
-                    var newpass = new_pass_text.Text.ToString();
-                    if (newpass == old_pass_text.Text)
+                    var pass = newPassText.Text.ToString();
+                    if (pass == oldPassText.Text)
                     {
                         MessageBox.ErrorQuery(30, 7, "Error!", "The New and the Old Passwords match!", "Ok");
-                        new_pass_text.Text = new_pass_text2.Text = old_pass_text.Text = "";
+                        newPassText.Text = newPassText2.Text = oldPassText.Text = "";
                     }
-                    else if (old_pass_text.Text != _user.Password)
+                    else if (oldPassText.Text != _user.Password)
                     {
                         MessageBox.ErrorQuery(30, 7, "Error!", "The Old Password is invalid!", "Ok");
-                        new_pass_text.Text = new_pass_text2.Text = old_pass_text.Text = "";
+                        newPassText.Text = newPassText2.Text = oldPassText.Text = "";
                     }
                     else
                     {
-                        _changePass!(newpass!);
+                        _changePass!(pass!);
                         MessageBox.Query(30, 7, "Well done!", "Your Password change was successful!\nPlease Enter with the New Password!", "Ok");
                         logout = true; top.Running = false;
                     }
                 }
             };
-            win.Add(header, new_pass, new_pass_text, done, new_pass2, new_pass_text2, old_pass, old_pass_text, comeback);
+            win.Add(header, newPass, newPassText, done, newPass2, newPassText2, oldPass, oldPassText, comeback);
             Application.Run();
-            return (keep_on!, logout!, back!, action!);
+            return (keepOn, logout, back, action!);
         }
         protected (bool keep_on, bool logout, bool back, SomeAction action) HelpFunction()
         {
@@ -345,18 +344,18 @@ namespace QuizGame.GUI
         {
             if (!_user.IsAdmin && !_user.IsSuperAdmin)
             {
-                var quizes_passed = 0;
-                var total_scores = 0;
+                var quizesPassed = 0;
+                var totalScores = 0;
                 var list = QuizResultsSerializer.GetQuizResults(_user.Login!);
                 if (list!.Count > 0)
                 {
-                    quizes_passed = list.Count;
+                    quizesPassed = list.Count;
                     foreach (var item in list)
                     {
-                        total_scores += item.Scores;
+                        totalScores += item.Scores;
                     }
                 }
-                return $"Quizes passed: {quizes_passed} | Total Scores: {total_scores} | ";
+                return $"Quizes passed: {quizesPassed} | Total Scores: {totalScores} | ";
             }
             else
             {

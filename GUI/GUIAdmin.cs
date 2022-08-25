@@ -9,7 +9,7 @@ namespace QuizGame.GUI
 {
     public class GuiAdmin : GuiDefault
     {
-        protected QuizCreator _creator;
+        protected readonly QuizCreator _creator;
         protected int _iterator;
         protected string? _memory_question;
         protected List<(string, int)>? _memory_answers;
@@ -37,7 +37,7 @@ namespace QuizGame.GUI
         protected (bool keep_on, bool logout, bool back, SomeAction action) MainMenuWindow()
         {
             bool logout = false;
-            bool keep_on = true;
+            bool keepOn = true;
             bool back = false;
             SomeAction? action = null;
             Application.Init();
@@ -53,7 +53,7 @@ namespace QuizGame.GUI
             var menu = new MenuBar(new MenuBarItem[] {new MenuBarItem ("_Menu", new MenuItem []
             {new MenuItem ("_Settings", "", () =>{action=SettingsWindow; top.Running = false; }),
              new MenuItem ("_Logout", "", () => { logout=true; top.Running = false; }),
-             new MenuItem("_Quit", "", () => {  if (GuiHelper.Quit()) {keep_on = false;top.Running = false; } }) })});
+             new MenuItem("_Quit", "", () => {  if (GuiHelper.Quit()) {keepOn = false;top.Running = false; } }) })});
             top.Add(menu);
             var hello = new Label(_role)
             {
@@ -62,56 +62,55 @@ namespace QuizGame.GUI
                 ColorScheme = Colors.Menu
             };
             win.Add(hello);
-            var create_quiz = new Button("Create New Quiz")
+            var createQuiz = new Button("Create New Quiz")
             {
                 X = Pos.Center(),
                 Y = 5
             };
-            create_quiz.Clicked += () =>
+            createQuiz.Clicked += () =>
             {
                 action = CreateQuizWindow;
                 top.Running = false;
             };
-            var edit_quiz = new Button("Edit Quiz")
+            var editQuiz = new Button("Edit Quiz")
             {
                 X = Pos.Center(),
-                Y = Pos.Top(create_quiz) + 2
+                Y = Pos.Top(createQuiz) + 2
             };
-            edit_quiz.Clicked += () =>
+            editQuiz.Clicked += () =>
             {
                 action = EditQuizWindow;
                 top.Running = false;
             };
-            win.Add(create_quiz, edit_quiz);
+            win.Add(createQuiz, editQuiz);
             Application.Run();
-            return (keep_on!, logout!, back!, action!);
+            return (keepOn, logout, back, action!);
         }
         protected (bool keep_on, bool logout, bool back, SomeAction action) CreateQuizWindow()
         {
             bool logout;
-            bool keep_on;
+            bool keepOn;
             bool back;
             SomeAction? action = null;
-            (bool keep_on, bool logout, bool back, SomeAction action) stop;
             do
             {
-                stop = CreateQuizAddingItems();
+                var stop = CreateQuizAddingItems();
                 logout = stop.logout;
-                keep_on = stop.keep_on;
+                keepOn = stop.keep_on;
                 back = stop.back;
-            } while (!logout && keep_on && !back);
-            return (keep_on!, logout!, back!, action!);
+            } while (!logout && keepOn && !back);
+            return (keepOn, logout, back, action!);
         }
         protected (bool keep_on, bool logout, bool back, SomeAction action) CreateQuizAddingItems()
         {
             bool logout = false;
-            bool keep_on = true;
+            bool keepOn = true;
             bool back = false;
             SomeAction? action = null;
             Application.Init();
             int count = _creator.GetCount();
-            int our_position = 0;
-            int zero_position = our_position - count;
+            int ourPosition = 0;
+            int zeroPosition = ourPosition - count;
             var top = Application.Top;
             var win = new Window("QuizGame")
             {
@@ -123,7 +122,7 @@ namespace QuizGame.GUI
             top.Add(win);
             var menu = new MenuBar(new MenuBarItem[] {new MenuBarItem ("_Menu", new MenuItem []
             {new MenuItem ("_Logout", "", () => { logout=true; top.Running = false; }),
-             new MenuItem("_Quit", "", () => {  if (GuiHelper.Quit()) {keep_on = false; top.Running = false;} }) })});
+             new MenuItem("_Quit", "", () => {  if (GuiHelper.Quit()) {keepOn = false; top.Running = false;} }) })});
             top.Add(menu);
             var hello = new Label(_role)
             {
@@ -142,7 +141,7 @@ namespace QuizGame.GUI
                 X = 16,
                 Y = Pos.Top(header) + 4
             };
-            var theme_text = new TextField(_buffer_theme)
+            var themeText = new TextField(_buffer_theme)
             {
                 X = Pos.Left(theme) + 8,
                 Y = Pos.Top(theme),
@@ -153,7 +152,7 @@ namespace QuizGame.GUI
                 X = Pos.Left(theme),
                 Y = Pos.Top(theme) + 3
             };
-            var levels = new RadioGroup(new ustring[] { "Easy", "Normal", "Hard" }, 0)
+            var levels = new RadioGroup(new ustring[] { "Easy", "Normal", "Hard" })
             {
                 X = Pos.Right(level) + 1,
                 Y = Pos.Top(theme) + 2,
@@ -161,7 +160,7 @@ namespace QuizGame.GUI
             };
             if (count > 0 && _buffer_theme != "")
             {
-                theme_text.CanFocus = false;
+                themeText.CanFocus = false;
                 levels.CanFocus = false;
             }
             var question = new Label($"Question {count + _iterator + 1}: ")
@@ -176,7 +175,7 @@ namespace QuizGame.GUI
             {
                 question.X = Pos.Left(level) - 5;
             }
-            var question_text = new TextField(_buffer_question)
+            var questionText = new TextField(_buffer_question)
             {
                 X = Pos.Left(levels),
                 Y = Pos.Top(question),
@@ -187,15 +186,15 @@ namespace QuizGame.GUI
                 X = Pos.Left(question) + 2,
                 Y = Pos.Top(question) + 3
             };
-            var answer1_text = new TextField(_buffer_answers![0].Item1)
+            var answer1Text = new TextField(_buffer_answers![0].Item1)
             {
                 X = Pos.Left(levels),
                 Y = Pos.Top(answer1),
                 Width = 40
             };
-            var is_correct1 = new RadioGroup(new ustring[] { "Incorrect", "Correct" })
+            var isCorrect1 = new RadioGroup(new ustring[] { "Incorrect", "Correct" })
             {
-                X = Pos.Right(answer1_text) + 2,
+                X = Pos.Right(answer1Text) + 2,
                 Y = Pos.Top(question) + 3,
                 SelectedItem = _buffer_answers[0].Item2
             };
@@ -204,16 +203,16 @@ namespace QuizGame.GUI
                 X = Pos.Left(answer1),
                 Y = Pos.Top(answer1) + 3
             };
-            var answer2_text = new TextField(_buffer_answers![1].Item1)
+            var answer2Text = new TextField(_buffer_answers![1].Item1)
             {
                 X = Pos.Left(levels),
                 Y = Pos.Top(answer1) + 3,
                 Width = 40
             };
-            var is_correct2 = new RadioGroup(new ustring[] { "Incorrect", "Correct" })
+            var isCorrect2 = new RadioGroup(new ustring[] { "Incorrect", "Correct" })
             {
-                X = Pos.Left(is_correct1),
-                Y = Pos.Top(is_correct1) + 3,
+                X = Pos.Left(isCorrect1),
+                Y = Pos.Top(isCorrect1) + 3,
                 SelectedItem = _buffer_answers[1].Item2
             };
             var answer3 = new Label("Answer 3: ")
@@ -221,16 +220,16 @@ namespace QuizGame.GUI
                 X = Pos.Left(answer1),
                 Y = Pos.Top(answer2) + 3
             };
-            var answer3_text = new TextField(_buffer_answers![2].Item1)
+            var answer3Text = new TextField(_buffer_answers![2].Item1)
             {
                 X = Pos.Left(levels),
                 Y = Pos.Top(answer2) + 3,
                 Width = 40
             };
-            var is_correct3 = new RadioGroup(new ustring[] { "Incorrect", "Correct" })
+            var isCorrect3 = new RadioGroup(new ustring[] { "Incorrect", "Correct" })
             {
-                X = Pos.Left(is_correct1),
-                Y = Pos.Top(is_correct2) + 3,
+                X = Pos.Left(isCorrect1),
+                Y = Pos.Top(isCorrect2) + 3,
                 SelectedItem = _buffer_answers[2].Item2
             };
             var answer4 = new Label("Answer 4: ")
@@ -238,63 +237,56 @@ namespace QuizGame.GUI
                 X = Pos.Left(answer1),
                 Y = Pos.Top(answer3) + 3
             };
-            var answer4_text = new TextField(_buffer_answers![3].Item1)
+            var answer4Text = new TextField(_buffer_answers![3].Item1)
             {
                 X = Pos.Left(levels),
                 Y = Pos.Top(answer3) + 3,
                 Width = 40
             };
-            var is_correct4 = new RadioGroup(new ustring[] { "Incorrect", "Correct" })
+            var isCorrect4 = new RadioGroup(new ustring[] { "Incorrect", "Correct" })
             {
-                X = Pos.Left(is_correct1),
-                Y = Pos.Top(is_correct3) + 3,
+                X = Pos.Left(isCorrect1),
+                Y = Pos.Top(isCorrect3) + 3,
                 SelectedItem = _buffer_answers[3].Item2
             };
-            var add_item = new Button("Add Item")
+            var addItem = new Button("Add Item")
             {
                 X = Pos.Center(),
-                Y = Pos.Top(is_correct4) + 6
+                Y = Pos.Top(isCorrect4) + 6
             };
-            var step_back = new Button("Back")
+            var stepBack = new Button("Back")
             {
-                X = Pos.Left(add_item) - 10,
-                Y = Pos.Top(is_correct4) + 6
+                X = Pos.Left(addItem) - 10,
+                Y = Pos.Top(isCorrect4) + 6
             };
-            var step_forward = new Button("Forward")
+            var stepForward = new Button("Forward")
             {
-                X = Pos.Right(add_item) + 2,
-                Y = Pos.Top(is_correct4) + 6
+                X = Pos.Right(addItem) + 2,
+                Y = Pos.Top(isCorrect4) + 6
             };
-            var edit_item = new Button("Edit Item")
+            var editItem = new Button("Edit Item")
             {
                 X = Pos.Center(),
-                Y = Pos.Top(is_correct4) + 6
+                Y = Pos.Top(isCorrect4) + 6
             };
-            var fast_forward = new Button(">>>")
+            var fastForward = new Button(">>>")
             {
-                X = Pos.Left(step_forward) + 13,
-                Y = Pos.Top(is_correct4) + 6
-            }; var fast_back = new Button("<<<")
+                X = Pos.Left(stepForward) + 13,
+                Y = Pos.Top(isCorrect4) + 6
+            }; var fastBack = new Button("<<<")
             {
-                X = Pos.Left(step_back) - 9,
-                Y = Pos.Top(is_correct4) + 6
+                X = Pos.Left(stepBack) - 9,
+                Y = Pos.Top(isCorrect4) + 6
             };
-            var questions_added = new Label($"Questions added: {count}")
+            var questionsAdded = new Label($"Questions added: {count}")
             {
                 Y = Pos.Top(header) + 4
             };
-            if (count < 10)
-            {
-                questions_added.X = Pos.AnchorEnd(32);
-            }
-            else
-            {
-                questions_added.X = Pos.AnchorEnd(33);
-            }
+            questionsAdded.X = Pos.AnchorEnd(count < 10 ? 32 : 33);
             var cancel = new Button("Cancel")
             {
                 X = Pos.Center() - 11,
-                Y = Pos.Top(add_item) + 4
+                Y = Pos.Top(addItem) + 4
             };
             cancel.Clicked += () =>
             {
@@ -313,28 +305,28 @@ namespace QuizGame.GUI
             var save = new Button("Save")
             {
                 X = Pos.Right(cancel) + 2,
-                Y = Pos.Top(add_item) + 4
+                Y = Pos.Top(addItem) + 4
             };
             save.Clicked += () =>
             {
-                if (theme_text.Text == "")
+                if (themeText.Text == "")
                 {
                     MessageBox.ErrorQuery(30, 7, "Error!", "Theme is not specified!", "Ok");
                     top.Running = false;
                 }
                 else
                 {
-                    _buffer_theme = theme_text.Text.ToString();
+                    _buffer_theme = themeText.Text.ToString();
                     var checker = _creator.FindQuiz(_buffer_theme!);
-                    string existing_quiz = "";
+                    string existingQuiz = "";
                     if (checker is not null)
                     {
-                        existing_quiz = $"{checker.Theme}{checker.Level}";
+                        existingQuiz = $"{checker.Theme}{checker.Level}";
                     }
-                    if (existing_quiz == $"{_buffer_theme}{_buffer_level}")
+                    if (existingQuiz == $"{_buffer_theme}{_buffer_level}")
                     {
                         MessageBox.ErrorQuery(30, 7, "Error!", "Sorry! A quiz with these theme and level exists!\nPlease specify a unique name!", "Ok");
-                        theme_text.CanFocus = true;
+                        themeText.CanFocus = true;
                         levels.CanFocus = true;
                         _buffer_theme = "";
                         top.Running = false;
@@ -342,22 +334,20 @@ namespace QuizGame.GUI
                     if (GuiHelper.Save())
                     {
                         _creator.SetTheme(_buffer_theme!);
-                        string what_level = "";
+                        string whatLevel = "";
                         switch (_buffer_level)
                         {
                             case 0:
-                                what_level = "Easy";
+                                whatLevel = "Easy";
                                 break;
                             case 1:
-                                what_level = "Normal";
+                                whatLevel = "Normal";
                                 break;
                             case 2:
-                                what_level = "Hard";
-                                break;
-                            default:
+                                whatLevel = "Hard";
                                 break;
                         }
-                        _creator.SetLevel(what_level);
+                        _creator.SetLevel(whatLevel);
                         QuizSaver.ToFile(_creator.GetQuiz());
                         Top20Serializer.CreateTop20File($"{_creator.GetTheme()} ({_creator.GetLevel()})");
                         _buffer_theme = "";
@@ -378,64 +368,57 @@ namespace QuizGame.GUI
                     }
                 }
             };
-            if (_iterator + 1 < 0)
+            fastForward.Visible = _iterator + 1 < 0;
+            if (count > 1 && _iterator - 1 > zeroPosition)
             {
-                fast_forward.Visible = true;
+                fastBack.Visible = true;
             }
             else
             {
-                fast_forward.Visible = false;
-            }
-            if (count > 1 && _iterator - 1 > zero_position)
-            {
-                fast_back.Visible = true;
-            }
-            else
-            {
-                fast_back.Visible = false;
+                fastBack.Visible = false;
             }
             if (count == 0)
             {
-                edit_item.Visible = false;
-                add_item.Visible = true;
-                step_back.Visible = false;
-                step_forward.Visible = false;
+                editItem.Visible = false;
+                addItem.Visible = true;
+                stepBack.Visible = false;
+                stepForward.Visible = false;
             }
-            else if (_iterator == zero_position && count > 0)
+            else if (_iterator == zeroPosition && count > 0)
             {
-                add_item.Visible = false;
-                edit_item.Visible = true;
-                step_back.Visible = false;
-                step_forward.Visible = true;
+                addItem.Visible = false;
+                editItem.Visible = true;
+                stepBack.Visible = false;
+                stepForward.Visible = true;
             }
-            else if (_iterator > zero_position && _iterator < 0)
+            else if (_iterator > zeroPosition && _iterator < 0)
             {
-                add_item.Visible = false;
-                edit_item.Visible = true;
-                step_back.X = Pos.Right(edit_item) - 23;
-                step_back.Visible = true;
-                step_forward.Visible = true;
+                addItem.Visible = false;
+                editItem.Visible = true;
+                stepBack.X = Pos.Right(editItem) - 23;
+                stepBack.Visible = true;
+                stepForward.Visible = true;
             }
             else
             {
-                edit_item.Visible = false;
-                add_item.Visible = true;
-                step_back.Visible = true;
-                step_forward.Visible = false;
+                editItem.Visible = false;
+                addItem.Visible = true;
+                stepBack.Visible = true;
+                stepForward.Visible = false;
             }
-            fast_forward.Clicked += () =>
+            fastForward.Clicked += () =>
             {
-                _buffer_theme = theme_text.Text.ToString();
+                _buffer_theme = themeText.Text.ToString();
                 _buffer_level = levels.SelectedItem;
                 _iterator = 0;
                 RestoreInputData();
                 top.Running = false;
             };
-            fast_back.Clicked += () =>
+            fastBack.Clicked += () =>
             {
-                if (_iterator == 0) RememberInputData(question_text.Text.ToString()!, answer1_text.Text.ToString()!, answer2_text.Text.ToString()!, answer3_text.Text.ToString()!, answer4_text.Text.ToString()!,
-                                 is_correct1.SelectedItem, is_correct2.SelectedItem, is_correct3.SelectedItem, is_correct4.SelectedItem);
-                _iterator = zero_position;
+                if (_iterator == 0) RememberInputData(questionText.Text.ToString()!, answer1Text.Text.ToString()!, answer2Text.Text.ToString()!, answer3Text.Text.ToString()!, answer4Text.Text.ToString()!,
+                                 isCorrect1.SelectedItem, isCorrect2.SelectedItem, isCorrect3.SelectedItem, isCorrect4.SelectedItem);
+                _iterator = zeroPosition;
                 int i = _creator.GetCount() + _iterator;
                 _buffer_question = _creator.GetQuestion(i);
                 for (int j = 0; j < 4; j++)
@@ -444,14 +427,14 @@ namespace QuizGame.GUI
                 }
                 top.Running = false;
             };
-            edit_item.Clicked += () =>
+            editItem.Clicked += () =>
             {
                 int i = _creator.GetCount() + _iterator;
-                _creator.EditQuestion(question_text.Text.ToString()!, i);
-                _creator.EditAnswer(answer1_text.Text.ToString()!, is_correct1.SelectedItem, i, 0);
-                _creator.EditAnswer(answer2_text.Text.ToString()!, is_correct2.SelectedItem, i, 1);
-                _creator.EditAnswer(answer3_text.Text.ToString()!, is_correct3.SelectedItem, i, 2);
-                _creator.EditAnswer(answer4_text.Text.ToString()!, is_correct4.SelectedItem, i, 3);
+                _creator.EditQuestion(questionText.Text.ToString()!, i);
+                _creator.EditAnswer(answer1Text.Text.ToString()!, isCorrect1.SelectedItem, i, 0);
+                _creator.EditAnswer(answer2Text.Text.ToString()!, isCorrect2.SelectedItem, i, 1);
+                _creator.EditAnswer(answer3Text.Text.ToString()!, isCorrect3.SelectedItem, i, 2);
+                _creator.EditAnswer(answer4Text.Text.ToString()!, isCorrect4.SelectedItem, i, 3);
                 _buffer_question = _creator.GetQuestion(i);
                 for (int j = 0; j < 4; j++)
                 {
@@ -459,46 +442,46 @@ namespace QuizGame.GUI
                 }
                 top.Running = false;
             };
-            add_item.Clicked += () =>
+            addItem.Clicked += () =>
             {
-                if (question_text.Text == "" || answer1_text.Text == "" || answer2_text.Text == "" || answer3_text.Text == "" || answer4_text.Text == "")
+                if (questionText.Text == "" || answer1Text.Text == "" || answer2Text.Text == "" || answer3Text.Text == "" || answer4Text.Text == "")
                 {
                     MessageBox.ErrorQuery(30, 7, "Error!", "Not all fields are filled in!", "Ok");
                 }
-                else if (is_correct1.SelectedItem == 0 && is_correct2.SelectedItem == 0 && is_correct3.SelectedItem == 0 && is_correct4.SelectedItem == 0)
+                else if (isCorrect1.SelectedItem == 0 && isCorrect2.SelectedItem == 0 && isCorrect3.SelectedItem == 0 && isCorrect4.SelectedItem == 0)
                 {
                     MessageBox.ErrorQuery(30, 7, "Error!", "Correct answer is not chosen!", "Ok");
                 }
                 else
                 {
-                    _creator.SetQuestion(question_text.Text.ToString()!);
-                    _creator.SetAnswer(answer1_text.Text.ToString()!, is_correct1.SelectedItem);
-                    _creator.SetAnswer(answer2_text.Text.ToString()!, is_correct2.SelectedItem);
-                    _creator.SetAnswer(answer3_text.Text.ToString()!, is_correct3.SelectedItem);
-                    _creator.SetAnswer(answer4_text.Text.ToString()!, is_correct4.SelectedItem);
+                    _creator.SetQuestion(questionText.Text.ToString()!);
+                    _creator.SetAnswer(answer1Text.Text.ToString()!, isCorrect1.SelectedItem);
+                    _creator.SetAnswer(answer2Text.Text.ToString()!, isCorrect2.SelectedItem);
+                    _creator.SetAnswer(answer3Text.Text.ToString()!, isCorrect3.SelectedItem);
+                    _creator.SetAnswer(answer4Text.Text.ToString()!, isCorrect4.SelectedItem);
                     _creator.AddItem();
                     _buffer_question = "";
                     for (int j = 0; j < 4; j++)
                     {
                         _buffer_answers[j] = ("", 0);
                     }
-                    _buffer_theme = theme_text.Text.ToString();
+                    _buffer_theme = themeText.Text.ToString();
                     _buffer_level = levels.SelectedItem;
                     top.Running = false;
                 }
             };
-            step_back.Clicked += () =>
+            stepBack.Clicked += () =>
             {
-                _buffer_theme = theme_text.Text.ToString();
+                _buffer_theme = themeText.Text.ToString();
                 _buffer_level = levels.SelectedItem;
-                if (_iterator == 0) RememberInputData(question_text.Text.ToString()!, answer1_text.Text.ToString()!, answer2_text.Text.ToString()!, answer3_text.Text.ToString()!, answer4_text.Text.ToString()!,
-                                  is_correct1.SelectedItem, is_correct2.SelectedItem, is_correct3.SelectedItem, is_correct4.SelectedItem);
+                if (_iterator == 0) RememberInputData(questionText.Text.ToString()!, answer1Text.Text.ToString()!, answer2Text.Text.ToString()!, answer3Text.Text.ToString()!, answer4Text.Text.ToString()!,
+                                  isCorrect1.SelectedItem, isCorrect2.SelectedItem, isCorrect3.SelectedItem, isCorrect4.SelectedItem);
                 Step('-');
                 top.Running = false;
             };
-            step_forward.Clicked += () =>
+            stepForward.Clicked += () =>
             {
-                _buffer_theme = theme_text.Text.ToString();
+                _buffer_theme = themeText.Text.ToString();
                 _buffer_level = levels.SelectedItem;
                 if (_iterator + 1 == 0)
                 {
@@ -508,31 +491,30 @@ namespace QuizGame.GUI
                 else Step('+');
                 top.Running = false;
             };
-            win.Add(header, theme, theme_text, level, levels, question, question_text, answer1, answer1_text, is_correct1, answer2, answer2_text, is_correct2,
-                    answer3, answer3_text, is_correct3, answer4, answer4_text, is_correct4, add_item, step_back, edit_item, step_forward, fast_forward, questions_added, cancel, save, fast_back);
+            win.Add(header, theme, themeText, level, levels, question, questionText, answer1, answer1Text, isCorrect1, answer2, answer2Text, isCorrect2,
+                    answer3, answer3Text, isCorrect3, answer4, answer4Text, isCorrect4, addItem, stepBack, editItem, stepForward, fastForward, questionsAdded, cancel, save, fastBack);
             Application.Run();
-            return (keep_on!, logout!, back!, action!);
+            return (keepOn, logout, back, action!);
         }
         protected (bool keep_on, bool logout, bool back, SomeAction action) EditQuizWindow()
         {
             bool logout;
-            bool keep_on;
+            bool keepOn;
             bool back;
             SomeAction? action = null;
-            (bool keep_on, bool logout, bool back, SomeAction action) stop;
             do
             {
-                stop = EditQuizMenu();
+                var stop = EditQuizMenu();
                 logout = stop.logout;
-                keep_on = stop.keep_on;
+                keepOn = stop.keep_on;
                 back = stop.back;
-            } while (!logout && keep_on && !back);
-            return (keep_on!, logout!, back!, action!);
+            } while (!logout && keepOn && !back);
+            return (keepOn, logout, back, action!);
         }
         protected (bool keep_on, bool logout, bool back, SomeAction action) EditQuizMenu()
         {
             bool logout = false;
-            bool keep_on = true;
+            bool keepOn = true;
             bool back = false;
             SomeAction? action = null;
             Application.Init();
@@ -548,7 +530,7 @@ namespace QuizGame.GUI
             top.Add(win);
             var menu = new MenuBar(new MenuBarItem[] {new MenuBarItem ("_Menu", new MenuItem []
             {new MenuItem ("_Logout", "", () => { logout=true; top.Running = false; }),
-             new MenuItem("_Quit", "", () => {  if (GuiHelper.Quit()) { keep_on = false; top.Running = false;} }) })});
+             new MenuItem("_Quit", "", () => {  if (GuiHelper.Quit()) { keepOn = false; top.Running = false;} }) })});
             top.Add(menu);
             var hello = new Label($"{_role}")
             {
@@ -566,22 +548,22 @@ namespace QuizGame.GUI
                 };
                 if (_creator.GetAllQuizThemes().Count == 0)
                 {
-                    var no_quizes = new Label("No Quizes available!")
+                    var noQuizes = new Label("No Quizes available!")
                     {
                         X = Pos.Center(),
                         Y = Pos.Bottom(header) + 4
                     };
-                    var return_back = new Button("Back")
+                    var returnBack = new Button("Back")
                     {
                         X = Pos.Center(),
-                        Y = Pos.Bottom(no_quizes) + 3
+                        Y = Pos.Bottom(noQuizes) + 3
                     };
-                    return_back.Clicked += () =>
+                    returnBack.Clicked += () =>
                     {
                         back = true;
                         top.Running = false;
                     };
-                    win.Add(no_quizes, return_back);
+                    win.Add(noQuizes, returnBack);
                 }
                 else
                 {
@@ -590,7 +572,7 @@ namespace QuizGame.GUI
                     {
                         buffer[i] = _creator.GetAllQuizThemes()[i];
                     }
-                    var themes_list = new RadioGroup(buffer)
+                    var themesList = new RadioGroup(buffer)
                     {
                         X = Pos.Center(),
                         Y = Pos.Top(header) + 3
@@ -598,7 +580,7 @@ namespace QuizGame.GUI
                     var cancel = new Button("Cancel")
                     {
                         X = Pos.Center() - 11,
-                        Y = Pos.Bottom(themes_list) + 3
+                        Y = Pos.Bottom(themesList) + 3
                     };
                     cancel.Clicked += () =>
                     {
@@ -613,10 +595,10 @@ namespace QuizGame.GUI
                     edit.Clicked += () =>
                     {
                         _is_editing = true;
-                        _creator.QuizInit(_creator.FindQuiz(themes_list.SelectedItem)!);
+                        _creator.QuizInit(_creator.FindQuiz(themesList.SelectedItem));
                         top.Running = false;
                     };
-                    win.Add(header, themes_list, edit, cancel);
+                    win.Add(header, themesList, edit, cancel);
                 }
             }
             else
@@ -655,7 +637,7 @@ namespace QuizGame.GUI
                     X = 16,
                     Y = Pos.Top(header) + 4
                 };
-                var theme_text = new TextField(_buffer_theme)
+                var themeText = new TextField(_buffer_theme)
                 {
                     X = Pos.Left(theme) + 8,
                     Y = Pos.Top(theme),
@@ -667,7 +649,7 @@ namespace QuizGame.GUI
                     X = Pos.Left(theme),
                     Y = Pos.Top(theme) + 3
                 };
-                var levels = new RadioGroup(new ustring[] { "Easy", "Normal", "Hard" }, 0)
+                var levels = new RadioGroup(new ustring[] { "Easy", "Normal", "Hard" })
                 {
                     X = Pos.Right(level) + 1,
                     Y = Pos.Top(theme) + 2,
@@ -686,7 +668,7 @@ namespace QuizGame.GUI
                 {
                     question.X = Pos.Left(level) - 5;
                 }
-                var question_text = new TextField(_buffer_question)
+                var questionText = new TextField(_buffer_question)
                 {
                     X = Pos.Left(levels),
                     Y = Pos.Top(question),
@@ -697,15 +679,15 @@ namespace QuizGame.GUI
                     X = Pos.Left(question) + 2,
                     Y = Pos.Top(question) + 3
                 };
-                var answer1_text = new TextField(_buffer_answers![0].Item1)
+                var answer1Text = new TextField(_buffer_answers![0].Item1)
                 {
                     X = Pos.Left(levels),
                     Y = Pos.Top(answer1),
                     Width = 40
                 };
-                var is_correct1 = new RadioGroup(new ustring[] { "Incorrect", "Correct" })
+                var isCorrect1 = new RadioGroup(new ustring[] { "Incorrect", "Correct" })
                 {
-                    X = Pos.Right(answer1_text) + 2,
+                    X = Pos.Right(answer1Text) + 2,
                     Y = Pos.Top(question) + 3,
                     SelectedItem = _buffer_answers[0].Item2
                 };
@@ -714,16 +696,16 @@ namespace QuizGame.GUI
                     X = Pos.Left(answer1),
                     Y = Pos.Top(answer1) + 3
                 };
-                var answer2_text = new TextField(_buffer_answers[1].Item1)
+                var answer2Text = new TextField(_buffer_answers[1].Item1)
                 {
                     X = Pos.Left(levels),
                     Y = Pos.Top(answer1) + 3,
                     Width = 40
                 };
-                var is_correct2 = new RadioGroup(new ustring[] { "Incorrect", "Correct" })
+                var isCorrect2 = new RadioGroup(new ustring[] { "Incorrect", "Correct" })
                 {
-                    X = Pos.Left(is_correct1),
-                    Y = Pos.Top(is_correct1) + 3,
+                    X = Pos.Left(isCorrect1),
+                    Y = Pos.Top(isCorrect1) + 3,
                     SelectedItem = _buffer_answers[1].Item2
                 };
                 var answer3 = new Label("Answer 3: ")
@@ -731,16 +713,16 @@ namespace QuizGame.GUI
                     X = Pos.Left(answer1),
                     Y = Pos.Top(answer2) + 3
                 };
-                var answer3_text = new TextField(_buffer_answers[2].Item1)
+                var answer3Text = new TextField(_buffer_answers[2].Item1)
                 {
                     X = Pos.Left(levels),
                     Y = Pos.Top(answer2) + 3,
                     Width = 40
                 };
-                var is_correct3 = new RadioGroup(new ustring[] { "Incorrect", "Correct" })
+                var isCorrect3 = new RadioGroup(new ustring[] { "Incorrect", "Correct" })
                 {
-                    X = Pos.Left(is_correct1),
-                    Y = Pos.Top(is_correct2) + 3,
+                    X = Pos.Left(isCorrect1),
+                    Y = Pos.Top(isCorrect2) + 3,
                     SelectedItem = _buffer_answers[2].Item2
                 };
                 var answer4 = new Label("Answer 4: ")
@@ -748,54 +730,52 @@ namespace QuizGame.GUI
                     X = Pos.Left(answer1),
                     Y = Pos.Top(answer3) + 3
                 };
-                var answer4_text = new TextField(_buffer_answers[3].Item1)
+                var answer4Text = new TextField(_buffer_answers[3].Item1)
                 {
                     X = Pos.Left(levels),
                     Y = Pos.Top(answer3) + 3,
                     Width = 40
                 };
-                var is_correct4 = new RadioGroup(new ustring[] { "Incorrect", "Correct" })
+                var isCorrect4 = new RadioGroup(new ustring[] { "Incorrect", "Correct" })
                 {
-                    X = Pos.Left(is_correct1),
-                    Y = Pos.Top(is_correct3) + 3,
+                    X = Pos.Left(isCorrect1),
+                    Y = Pos.Top(isCorrect3) + 3,
                     SelectedItem = _buffer_answers[3].Item2
                 };
-                var add_item = new Button("Add Item");
+                var addItem = new Button("Add Item");
                 if (count == 0)
                 {
-                    add_item.X = Pos.Center() + 1;
-                    add_item.Y = Pos.Top(is_correct4) + 6;
-                    add_item.Clicked += () =>
+                    addItem.X = Pos.Center() + 1;
+                    addItem.Y = Pos.Top(isCorrect4) + 6;
+                    addItem.Clicked += () =>
                     {
-                        if (question_text.Text == "" || answer1_text.Text == "" || answer2_text.Text == "" || answer3_text.Text == "" || answer4_text.Text == "")
+                        if (questionText.Text == "" || answer1Text.Text == "" || answer2Text.Text == "" || answer3Text.Text == "" || answer4Text.Text == "")
                         {
                             MessageBox.ErrorQuery(30, 7, "Error!", "Not all fields are filled in!", "Ok");
                         }
                         else
                         {
-                            _creator.SetQuestion(question_text.Text.ToString()!);
-                            _creator.SetAnswer(answer1_text.Text.ToString()!, is_correct1.SelectedItem);
-                            _creator.SetAnswer(answer2_text.Text.ToString()!, is_correct2.SelectedItem);
-                            _creator.SetAnswer(answer3_text.Text.ToString()!, is_correct3.SelectedItem);
-                            _creator.SetAnswer(answer4_text.Text.ToString()!, is_correct4.SelectedItem);
+                            _creator.SetQuestion(questionText.Text.ToString()!);
+                            _creator.SetAnswer(answer1Text.Text.ToString()!, isCorrect1.SelectedItem);
+                            _creator.SetAnswer(answer2Text.Text.ToString()!, isCorrect2.SelectedItem);
+                            _creator.SetAnswer(answer3Text.Text.ToString()!, isCorrect3.SelectedItem);
+                            _creator.SetAnswer(answer4Text.Text.ToString()!, isCorrect4.SelectedItem);
                             _creator.AddItem();
-                            _creator.SetTheme(theme_text.Text.ToString()!);
-                            string what_level = "";
+                            _creator.SetTheme(themeText.Text.ToString()!);
+                            string whatLevel = "";
                             switch (levels.SelectedItem)
                             {
                                 case 0:
-                                    what_level = "Easy";
+                                    whatLevel = "Easy";
                                     break;
                                 case 1:
-                                    what_level = "Normal";
+                                    whatLevel = "Normal";
                                     break;
                                 case 2:
-                                    what_level = "Hard";
-                                    break;
-                                default:
+                                    whatLevel = "Hard";
                                     break;
                             }
-                            _creator.SetLevel(what_level);
+                            _creator.SetLevel(whatLevel);
                             for (int j = 0; j < 4; j++)
                             {
                                 _buffer_answers[j] = _creator.GetAnswer(_iterator, j);
@@ -806,45 +786,45 @@ namespace QuizGame.GUI
                 }
                 else
                 {
-                    add_item.X = Pos.Center() + 8;
-                    add_item.Y = Pos.Top(is_correct4) + 6;
-                    add_item.Clicked += () =>
+                    addItem.X = Pos.Center() + 8;
+                    addItem.Y = Pos.Top(isCorrect4) + 6;
+                    addItem.Clicked += () =>
                     {
                         _is_adding = true;
                         _iterator++;
                         top.Running = false;
                     };
                 }
-                var edit_item = new Button("Edit Item")
+                var editItem = new Button("Edit Item")
                 {
                     X = Pos.Center(),
-                    Y = Pos.Top(is_correct4) + 6
+                    Y = Pos.Top(isCorrect4) + 6
                 };
-                var step_back = new Button("Back")
+                var stepBack = new Button("Back")
                 {
-                    X = Pos.Left(edit_item) - 10,
-                    Y = Pos.Top(is_correct4) + 6
+                    X = Pos.Left(editItem) - 10,
+                    Y = Pos.Top(isCorrect4) + 6
                 };
-                var step_forward = new Button("Forward")
+                var stepForward = new Button("Forward")
                 {
-                    X = Pos.Right(edit_item) + 2,
-                    Y = Pos.Top(is_correct4) + 6
+                    X = Pos.Right(editItem) + 2,
+                    Y = Pos.Top(isCorrect4) + 6
                 };
-                var fast_forward = new Button(">>>")
+                var fastForward = new Button(">>>")
                 {
-                    X = Pos.Left(step_forward) + 13,
-                    Y = Pos.Top(is_correct4) + 6
-                }; var fast_back = new Button("<<<")
+                    X = Pos.Left(stepForward) + 13,
+                    Y = Pos.Top(isCorrect4) + 6
+                }; var fastBack = new Button("<<<")
                 {
-                    X = Pos.Left(step_back) - 9,
-                    Y = Pos.Top(is_correct4) + 6
+                    X = Pos.Left(stepBack) - 9,
+                    Y = Pos.Top(isCorrect4) + 6
                 };
-                var delete_item = new Button("Delete Item")
+                var deleteItem = new Button("Delete Item")
                 {
                     X = Pos.Center(),
-                    Y = Pos.Top(edit_item) + 2
+                    Y = Pos.Top(editItem) + 2
                 };
-                delete_item.Clicked += () =>
+                deleteItem.Clicked += () =>
                 {
                     _creator.DeleteItem(_iterator);
                     if (_iterator == count - 1) _iterator--;
@@ -859,33 +839,26 @@ namespace QuizGame.GUI
                     }
                     top.Running = false;
                 };
-                if (count == 0) delete_item.Visible = false;
-                var questions_added = new Label($"Questions added: {count}")
+                if (count == 0) deleteItem.Visible = false;
+                var questionsAdded = new Label($"Questions added: {count}")
                 {
                     Y = Pos.Top(header) + 4
                 };
-                if (count < 10)
-                {
-                    questions_added.X = Pos.AnchorEnd(32);
-                }
-                else
-                {
-                    questions_added.X = Pos.AnchorEnd(33);
-                }
+                questionsAdded.X = Pos.AnchorEnd(count < 10 ? 32 : 33);
                 var cancel = new Button("Cancel")
                 {
                     X = Pos.Center() - 11,
-                    Y = Pos.Top(add_item) + 4
+                    Y = Pos.Top(addItem) + 4
                 };
                 if (count == 0)
                 {
                     cancel.X = Pos.Center() - 11;
-                    cancel.Y = Pos.Top(add_item);
+                    cancel.Y = Pos.Top(addItem);
                 }
                 else
                 {
                     cancel.X = Pos.Center() - 11;
-                    cancel.Y = Pos.Top(add_item) + 4;
+                    cancel.Y = Pos.Top(addItem) + 4;
                 }
                 cancel.Clicked += () =>
                 {
@@ -907,8 +880,8 @@ namespace QuizGame.GUI
                         }
                         else
                         {
-                            RememberInputData(question_text.Text.ToString()!, answer1_text.Text.ToString()!, answer2_text.Text.ToString()!, answer3_text.Text.ToString()!, answer4_text.Text.ToString()!,
-                                  is_correct1.SelectedItem, is_correct2.SelectedItem, is_correct3.SelectedItem, is_correct4.SelectedItem);
+                            RememberInputData(questionText.Text.ToString()!, answer1Text.Text.ToString()!, answer2Text.Text.ToString()!, answer3Text.Text.ToString()!, answer4Text.Text.ToString()!,
+                                  isCorrect1.SelectedItem, isCorrect2.SelectedItem, isCorrect3.SelectedItem, isCorrect4.SelectedItem);
                             _is_cancelling = true;
                             top.Running = false;
                         }
@@ -931,29 +904,27 @@ namespace QuizGame.GUI
                 var save = new Button("Save")
                 {
                     X = Pos.Right(cancel) + 2,
-                    Y = Pos.Top(add_item) + 4
+                    Y = Pos.Top(addItem) + 4
                 };
                 save.Clicked += () =>
                 {
                     if (GuiHelper.Save())
                     {
                         _creator.SetTheme(_buffer_theme);
-                        string what_level = "";
+                        string whatLevel = "";
                         switch (_buffer_level)
                         {
                             case 0:
-                                what_level = "Easy";
+                                whatLevel = "Easy";
                                 break;
                             case 1:
-                                what_level = "Normal";
+                                whatLevel = "Normal";
                                 break;
                             case 2:
-                                what_level = "Hard";
-                                break;
-                            default:
+                                whatLevel = "Hard";
                                 break;
                         }
-                        _creator.SetLevel(what_level);
+                        _creator.SetLevel(whatLevel);
                         QuizSaver.ReSaveToFile(_creator.GetQuiz());
                         _buffer_theme = "";
                         _buffer_level = 0;
@@ -977,123 +948,123 @@ namespace QuizGame.GUI
                 {
                     if (count == 0)
                     {
-                        fast_back.Visible = false;
-                        step_back.Visible = false;
-                        step_forward.Visible = false;
-                        fast_forward.Visible = false;
-                        add_item.Visible = true;
-                        edit_item.Visible = false;
-                        delete_item.Visible = false;
+                        fastBack.Visible = false;
+                        stepBack.Visible = false;
+                        stepForward.Visible = false;
+                        fastForward.Visible = false;
+                        addItem.Visible = true;
+                        editItem.Visible = false;
+                        deleteItem.Visible = false;
                         save.Visible = false;
                     }
                     else if (count == 1)
                     {
-                        fast_back.Visible = false;
-                        step_back.Visible = false;
-                        step_forward.Visible = false;
-                        fast_forward.Visible = false;
-                        edit_item.Visible = true;
-                        delete_item.Visible = true;
-                        add_item.Visible = true;
+                        fastBack.Visible = false;
+                        stepBack.Visible = false;
+                        stepForward.Visible = false;
+                        fastForward.Visible = false;
+                        editItem.Visible = true;
+                        deleteItem.Visible = true;
+                        addItem.Visible = true;
                     }
                     else if (count == 2 && _iterator == 0)
                     {
-                        fast_back.Visible = false;
-                        step_back.Visible = false;
-                        step_forward.Visible = true;
-                        fast_forward.Visible = false;
-                        edit_item.Visible = true;
-                        delete_item.Visible = true;
-                        add_item.Visible = false;
+                        fastBack.Visible = false;
+                        stepBack.Visible = false;
+                        stepForward.Visible = true;
+                        fastForward.Visible = false;
+                        editItem.Visible = true;
+                        deleteItem.Visible = true;
+                        addItem.Visible = false;
                     }
                     else if (count == 2 && _iterator == 1)
                     {
-                        fast_back.Visible = false;
-                        step_back.Visible = true;
-                        step_forward.Visible = false;
-                        fast_forward.Visible = false;
-                        edit_item.Visible = true;
-                        delete_item.Visible = true;
-                        add_item.Visible = true;
+                        fastBack.Visible = false;
+                        stepBack.Visible = true;
+                        stepForward.Visible = false;
+                        fastForward.Visible = false;
+                        editItem.Visible = true;
+                        deleteItem.Visible = true;
+                        addItem.Visible = true;
                     }
                     else if (count >= 3 && _iterator == 0)
                     {
-                        fast_back.Visible = false;
-                        step_back.Visible = false;
-                        step_forward.Visible = true;
-                        fast_forward.Visible = true;
-                        edit_item.Visible = true;
-                        delete_item.Visible = true;
-                        add_item.Visible = false;
+                        fastBack.Visible = false;
+                        stepBack.Visible = false;
+                        stepForward.Visible = true;
+                        fastForward.Visible = true;
+                        editItem.Visible = true;
+                        deleteItem.Visible = true;
+                        addItem.Visible = false;
                     }
                     else if (count == 3 && _iterator == 1)
                     {
-                        fast_back.Visible = false;
-                        step_back.Visible = true;
-                        step_forward.Visible = true;
-                        fast_forward.Visible = false;
-                        edit_item.Visible = true;
-                        delete_item.Visible = true;
-                        add_item.Visible = false;
+                        fastBack.Visible = false;
+                        stepBack.Visible = true;
+                        stepForward.Visible = true;
+                        fastForward.Visible = false;
+                        editItem.Visible = true;
+                        deleteItem.Visible = true;
+                        addItem.Visible = false;
                     }
                     else if ((count == 3 && _iterator == 2) || (count > 3 && _iterator == count - 1))
                     {
-                        fast_back.Visible = true;
-                        step_back.Visible = true;
-                        step_forward.Visible = false;
-                        fast_forward.Visible = false;
-                        edit_item.Visible = true;
-                        delete_item.Visible = true;
-                        add_item.Visible = true;
+                        fastBack.Visible = true;
+                        stepBack.Visible = true;
+                        stepForward.Visible = false;
+                        fastForward.Visible = false;
+                        editItem.Visible = true;
+                        deleteItem.Visible = true;
+                        addItem.Visible = true;
                     }
                     else if (count > 3 && _iterator == 1)
                     {
-                        fast_back.Visible = false;
-                        step_back.Visible = true;
-                        step_forward.Visible = true;
-                        fast_forward.Visible = true;
-                        edit_item.Visible = true;
-                        delete_item.Visible = true;
-                        add_item.Visible = false;
+                        fastBack.Visible = false;
+                        stepBack.Visible = true;
+                        stepForward.Visible = true;
+                        fastForward.Visible = true;
+                        editItem.Visible = true;
+                        deleteItem.Visible = true;
+                        addItem.Visible = false;
                     }
                     else if (count > 3 && _iterator == count - 2)
                     {
-                        fast_back.Visible = true;
-                        step_back.Visible = true;
-                        step_forward.Visible = true;
-                        fast_forward.Visible = false;
-                        edit_item.Visible = true;
-                        delete_item.Visible = true;
-                        add_item.Visible = false;
+                        fastBack.Visible = true;
+                        stepBack.Visible = true;
+                        stepForward.Visible = true;
+                        fastForward.Visible = false;
+                        editItem.Visible = true;
+                        deleteItem.Visible = true;
+                        addItem.Visible = false;
                     }
                     else
                     {
-                        fast_back.Visible = true;
-                        step_back.Visible = true;
-                        step_forward.Visible = true;
-                        fast_forward.Visible = true;
-                        edit_item.Visible = true;
-                        delete_item.Visible = true;
-                        add_item.Visible = false;
+                        fastBack.Visible = true;
+                        stepBack.Visible = true;
+                        stepForward.Visible = true;
+                        fastForward.Visible = true;
+                        editItem.Visible = true;
+                        deleteItem.Visible = true;
+                        addItem.Visible = false;
                     }
                 }
                 else
                 {
-                    add_item.Visible = false;
-                    fast_back.Visible = false;
-                    step_back.Visible = false;
-                    step_forward.Visible = false;
-                    fast_forward.Visible = false;
-                    edit_item.Visible = false;
-                    delete_item.Visible = false;
+                    addItem.Visible = false;
+                    fastBack.Visible = false;
+                    stepBack.Visible = false;
+                    stepForward.Visible = false;
+                    fastForward.Visible = false;
+                    editItem.Visible = false;
+                    deleteItem.Visible = false;
                     save.Visible = false;
                     cancel.Visible = false;
-                    var dont_add = new Button("Cancel")
+                    var dontAdd = new Button("Cancel")
                     {
                         X = Pos.Center() - 10,
-                        Y = Pos.Top(add_item),
+                        Y = Pos.Top(addItem),
                     };
-                    dont_add.Clicked += () =>
+                    dontAdd.Clicked += () =>
                     {
                         _is_adding = false;
                         _iterator--;
@@ -1101,40 +1072,38 @@ namespace QuizGame.GUI
                     };
                     var add = new Button("Ok")
                     {
-                        X = Pos.Right(dont_add) + 2,
-                        Y = Pos.Top(add_item),
+                        X = Pos.Right(dontAdd) + 2,
+                        Y = Pos.Top(addItem),
                     };
                     add.Clicked += () =>
                     {
-                        if (question_text.Text == "" || answer1_text.Text == "" || answer2_text.Text == "" || answer3_text.Text == "" || answer4_text.Text == "")
+                        if (questionText.Text == "" || answer1Text.Text == "" || answer2Text.Text == "" || answer3Text.Text == "" || answer4Text.Text == "")
                         {
                             MessageBox.ErrorQuery(30, 7, "Error!", "Not all fields are filled in!", "Ok");
                         }
                         else
                         {
-                            _creator.SetQuestion(question_text.Text.ToString()!);
-                            _creator.SetAnswer(answer1_text.Text.ToString()!, is_correct1.SelectedItem);
-                            _creator.SetAnswer(answer2_text.Text.ToString()!, is_correct2.SelectedItem);
-                            _creator.SetAnswer(answer3_text.Text.ToString()!, is_correct3.SelectedItem);
-                            _creator.SetAnswer(answer4_text.Text.ToString()!, is_correct4.SelectedItem);
+                            _creator.SetQuestion(questionText.Text.ToString()!);
+                            _creator.SetAnswer(answer1Text.Text.ToString()!, isCorrect1.SelectedItem);
+                            _creator.SetAnswer(answer2Text.Text.ToString()!, isCorrect2.SelectedItem);
+                            _creator.SetAnswer(answer3Text.Text.ToString()!, isCorrect3.SelectedItem);
+                            _creator.SetAnswer(answer4Text.Text.ToString()!, isCorrect4.SelectedItem);
                             _creator.AddItem();
-                            _creator.SetTheme(theme_text.Text.ToString()!);
-                            string what_level = "";
+                            _creator.SetTheme(themeText.Text.ToString()!);
+                            string whatLevel = "";
                             switch (levels.SelectedItem)
                             {
                                 case 0:
-                                    what_level = "Easy";
+                                    whatLevel = "Easy";
                                     break;
                                 case 1:
-                                    what_level = "Normal";
+                                    whatLevel = "Normal";
                                     break;
                                 case 2:
-                                    what_level = "Hard";
-                                    break;
-                                default:
+                                    whatLevel = "Hard";
                                     break;
                             }
-                            _creator.SetLevel(what_level);
+                            _creator.SetLevel(whatLevel);
                             for (int j = 0; j < 4; j++)
                             {
                                 _buffer_answers[j] = _creator.GetAnswer(_iterator, j);
@@ -1143,45 +1112,43 @@ namespace QuizGame.GUI
                             top.Running = false;
                         }
                     };
-                    win.Add(add, dont_add);
+                    win.Add(add, dontAdd);
                 }
-                fast_forward.Clicked += () =>
+                fastForward.Clicked += () =>
                 {
                     _iterator = count - 1;
                     top.Running = false;
                 };
-                fast_back.Clicked += () =>
+                fastBack.Clicked += () =>
                 {
-                    if (_iterator == count) RememberInputData(question_text.Text.ToString()!, answer1_text.Text.ToString()!, answer2_text.Text.ToString()!, answer3_text.Text.ToString()!, answer4_text.Text.ToString()!,
-                                     is_correct1.SelectedItem, is_correct2.SelectedItem, is_correct3.SelectedItem, is_correct4.SelectedItem);
+                    if (_iterator == count) RememberInputData(questionText.Text.ToString()!, answer1Text.Text.ToString()!, answer2Text.Text.ToString()!, answer3Text.Text.ToString()!, answer4Text.Text.ToString()!,
+                                     isCorrect1.SelectedItem, isCorrect2.SelectedItem, isCorrect3.SelectedItem, isCorrect4.SelectedItem);
                     _iterator = 0;
                     top.Running = false;
                 };
-                edit_item.Clicked += () =>
+                editItem.Clicked += () =>
                 {
                     int i = _iterator;
-                    _creator.SetTheme(theme_text.Text.ToString()!);
-                    string what_level = "";
+                    _creator.SetTheme(themeText.Text.ToString()!);
+                    string whatLevel = "";
                     switch (levels.SelectedItem)
                     {
                         case 0:
-                            what_level = "Easy";
+                            whatLevel = "Easy";
                             break;
                         case 1:
-                            what_level = "Normal";
+                            whatLevel = "Normal";
                             break;
                         case 2:
-                            what_level = "Hard";
-                            break;
-                        default:
+                            whatLevel = "Hard";
                             break;
                     }
-                    _creator.SetLevel(what_level);
-                    _creator.EditQuestion(question_text.Text.ToString()!, i);
-                    _creator.EditAnswer(answer1_text.Text.ToString()!, is_correct1.SelectedItem, i, 0);
-                    _creator.EditAnswer(answer2_text.Text.ToString()!, is_correct2.SelectedItem, i, 1);
-                    _creator.EditAnswer(answer3_text.Text.ToString()!, is_correct3.SelectedItem, i, 2);
-                    _creator.EditAnswer(answer4_text.Text.ToString()!, is_correct4.SelectedItem, i, 3);
+                    _creator.SetLevel(whatLevel);
+                    _creator.EditQuestion(questionText.Text.ToString()!, i);
+                    _creator.EditAnswer(answer1Text.Text.ToString()!, isCorrect1.SelectedItem, i, 0);
+                    _creator.EditAnswer(answer2Text.Text.ToString()!, isCorrect2.SelectedItem, i, 1);
+                    _creator.EditAnswer(answer3Text.Text.ToString()!, isCorrect3.SelectedItem, i, 2);
+                    _creator.EditAnswer(answer4Text.Text.ToString()!, isCorrect4.SelectedItem, i, 3);
                     _buffer_question = _creator.GetQuestion(i);
                     for (int j = 0; j < 4; j++)
                     {
@@ -1189,21 +1156,21 @@ namespace QuizGame.GUI
                     }
                     top.Running = false;
                 };
-                step_back.Clicked += () =>
+                stepBack.Clicked += () =>
                 {
                     _iterator--;
                     top.Running = false;
                 };
-                step_forward.Clicked += () =>
+                stepForward.Clicked += () =>
                 {
                     _iterator++;
                     top.Running = false;
                 };
-                win.Add(header, theme, theme_text, level, levels, question, question_text, answer1, answer1_text, is_correct1, answer2, answer2_text, is_correct2,
-                        answer3, answer3_text, is_correct3, answer4, answer4_text, is_correct4, add_item, step_back, edit_item, step_forward, fast_forward, questions_added, cancel, save, fast_back, delete_item);
+                win.Add(header, theme, themeText, level, levels, question, questionText, answer1, answer1Text, isCorrect1, answer2, answer2Text, isCorrect2,
+                        answer3, answer3Text, isCorrect3, answer4, answer4Text, isCorrect4, addItem, stepBack, editItem, stepForward, fastForward, questionsAdded, cancel, save, fastBack, deleteItem);
             }
             Application.Run();
-            return (keep_on!, logout!, back!, action!);
+            return (keepOn, logout, back, action!);
         }
         protected void Step(char key)
         {
@@ -1226,8 +1193,6 @@ namespace QuizGame.GUI
                     {
                         _buffer_answers![j] = _creator.GetAnswer(b, j);
                     }
-                    break;
-                default:
                     break;
             }
         }
@@ -1253,22 +1218,22 @@ namespace QuizGame.GUI
         }
         public virtual (bool keep_on, bool logout) AdminMenu()
         {
-            bool keep_on;
+            bool keepOn;
             bool logout;
             do
             {
                 var reply = MainMenuWindow();
-                keep_on = reply.keep_on;
+                keepOn = reply.keep_on;
                 logout = reply.logout;
-                if (!keep_on || logout) break;
+                if (!keepOn || logout) break;
                 if (reply.action is not null)
                 {
                     (bool keep_on, bool logout, bool back, SomeAction action) stop = reply.action.Invoke();
-                    keep_on = stop.keep_on;
+                    keepOn = stop.keep_on;
                     logout = stop.logout;
                 }
-            } while (!logout && keep_on);
-            return (keep_on, logout);
+            } while (!logout && keepOn);
+            return (keepOn, logout);
         }
     }
 }

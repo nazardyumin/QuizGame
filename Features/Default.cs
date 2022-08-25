@@ -4,26 +4,26 @@ namespace QuizGame.Features
 {
     public class Default
     {
-        protected User _user;
+        protected readonly User _user;
         protected Default(User user)
         {
             _user = user;
         }
-        public void ChangePassword(string NewPassword)
+        public void ChangePassword(string newPassword)
         {
             var database = new UsersDataBase();
             database.LoadFromFile();
             var user = database.SearchByLogin(_user.Login!);
-            user!.Password = NewPassword;
+            user!.Password = newPassword;
             database.SaveToFile();
         }
-        public void ChangeDateOfBirth(string NewDateOfBirth)
+        public void ChangeDateOfBirth(string newDateOfBirth)
         {
             var database = new UsersDataBase();
             database.LoadFromFile();
             var user = database.SearchByLogin(_user.Login!);
-            user!.DateOfBirth = NewDateOfBirth;
-            _user.DateOfBirth = NewDateOfBirth;
+            user!.DateOfBirth = newDateOfBirth;
+            _user.DateOfBirth = newDateOfBirth;
             database.SaveToFile();
         }
     }

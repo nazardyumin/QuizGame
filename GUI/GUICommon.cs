@@ -9,9 +9,9 @@ namespace QuizGame.GUI
         private static (bool is_existed_user, bool comeback, bool keep_on) Welcome()
         {
             bool comeback = true;
-            bool keep_on = true;
-            bool is_existed_user = true;
-            string quizgame = @"  
+            bool keepOn = true;
+            bool isExistedUser = true;
+            string quizGame = @"  
   #####                       #####                          
  #     #  #    #  #  ######  #     #    ##    #    #  ###### 
  #     #  #    #  #      #   #         #  #   ##  ##  #      
@@ -30,9 +30,9 @@ namespace QuizGame.GUI
             };
             var menu = new MenuBar(new MenuBarItem[] { new MenuBarItem("_Menu", new MenuItem[] { new MenuItem("_Quit", "", () =>
             {
-                 if (GuiHelper.Quit()){ comeback = false; keep_on = false; top.Running = false; } }) }) });
+                 if (GuiHelper.Quit()){ comeback = false; keepOn = false; top.Running = false; } }) }) });
             top.Add(win, menu);
-            var logo = new Label(quizgame) { X = Pos.Center(), Y = 2 };
+            var logo = new Label(quizGame) { X = Pos.Center(), Y = 2 };
             var signin = new Button("Enter")
             {
                 X = Pos.Center(),
@@ -49,17 +49,17 @@ namespace QuizGame.GUI
             };
             reg.Clicked += () =>
             {
-                is_existed_user = false;
+                isExistedUser = false;
                 top.Running = false;
             };
             win.Add(logo, signin, reg);
             Application.Run();
-            return (is_existed_user, comeback, keep_on);
+            return (isExistedUser, comeback, keepOn);
         }
         private static (bool comeback, bool keep_on, User user) LoginPasswordWindow()
         {
             bool comeback = false;
-            bool keep_on = true;
+            bool keepOn = true;
             Application.Init();
             var top = Application.Top;
             var win = new Window("QuizGame")
@@ -71,7 +71,7 @@ namespace QuizGame.GUI
             };
             top.Add(win);
             var menu = new MenuBar(new MenuBarItem[] {new MenuBarItem ("_Menu", new MenuItem []
-            {new MenuItem("_Quit", "", () => { if (GuiHelper.Quit()) {comeback=false; keep_on = false;top.Running = false; } }) })});
+            {new MenuItem("_Quit", "", () => { if (GuiHelper.Quit()) {comeback=false; keepOn = false;top.Running = false; } }) })});
             top.Add(menu);
             var login = new Label("Login: ")
             {
@@ -106,8 +106,8 @@ namespace QuizGame.GUI
             User? user = null;
             signin.Clicked += () =>
             {
-                Authentification Auth = new();
-                var reply = Auth.SignIn(loginText.Text.ToString()!, passText.Text.ToString()!);
+                Authentification auth = new();
+                var reply = auth.SignIn(loginText.Text.ToString()!, passText.Text.ToString()!);
                 if (reply == ("login", false, null))
                 {
                     MessageBox.ErrorQuery(30, 7, "Error!", "Invalid Login!", "Ok");
@@ -136,12 +136,12 @@ namespace QuizGame.GUI
             };
             win.Add(signin, back);
             Application.Run();
-            return (comeback!, keep_on!, user!);
+            return (comeback, keepOn, user!);
         }
         private static (bool comeback, bool keep_on, User user) RegistrationWindow()
         {
             bool comeback = false;
-            bool keep_on = true;
+            bool keepOn = true;
             Application.Init();
             var top = Application.Top;
             var win = new Window("QuizGame")
@@ -153,54 +153,54 @@ namespace QuizGame.GUI
             };
             top.Add(win);
             var menu = new MenuBar(new MenuBarItem[] {new MenuBarItem ("_Menu", new MenuItem []
-            {new MenuItem("_Quit", "", () => { if (GuiHelper.Quit()) {comeback=false; keep_on = false; top.Running = false; } }) })});
+            {new MenuItem("_Quit", "", () => { if (GuiHelper.Quit()) {comeback=false; keepOn = false; top.Running = false; } }) })});
             top.Add(menu);
             var header = new Label("New user registration: ")
             {
                 X = Pos.Center(),
                 Y = 2
             };
-            var first_name = new Label("First Name: ")
+            var firstName = new Label("First Name: ")
             {
                 X = Pos.Center() - 19,
                 Y = Pos.Top(header) + 4
             };
-            var last_name = new Label("Last Name: ")
+            var lastName = new Label("Last Name: ")
             {
-                X = Pos.Left(first_name),
-                Y = Pos.Top(first_name) + 2
+                X = Pos.Left(firstName),
+                Y = Pos.Top(firstName) + 2
             };
             var login = new Label("Login: ")
             {
-                X = Pos.Left(first_name),
-                Y = Pos.Top(last_name) + 2
+                X = Pos.Left(firstName),
+                Y = Pos.Top(lastName) + 2
             };
             var password = new Label("Password: ")
             {
-                X = Pos.Left(first_name),
+                X = Pos.Left(firstName),
                 Y = Pos.Top(login) + 2
             };
             var password2 = new Label("Confirm password: ")
             {
-                X = Pos.Left(first_name),
+                X = Pos.Left(firstName),
                 Y = Pos.Top(password) + 2
             };
-            var date_of_birth = new Label("Date of birth: ")
+            var dateOfBirth = new Label("Date of birth: ")
             {
-                X = Pos.Left(first_name),
+                X = Pos.Left(firstName),
                 Y = Pos.Top(password2) + 2
             };
-            win.Add(header, first_name, last_name, login, password, password2, date_of_birth);
-            var first_nameText = new TextField("")
+            win.Add(header, firstName, lastName, login, password, password2, dateOfBirth);
+            var firstNameText = new TextField("")
             {
                 X = Pos.Right(password2),
-                Y = Pos.Top(first_name),
+                Y = Pos.Top(firstName),
                 Width = 20
             };
-            var last_nameText = new TextField("")
+            var lastNameText = new TextField("")
             {
                 X = Pos.Right(password2),
-                Y = Pos.Top(last_name),
+                Y = Pos.Top(lastName),
                 Width = 20
             };
             var loginText = new TextField("")
@@ -226,10 +226,10 @@ namespace QuizGame.GUI
             var dateText = new TextField("dd.mm.yyyy")
             {
                 X = Pos.Left(loginText),
-                Y = Pos.Top(date_of_birth),
+                Y = Pos.Top(dateOfBirth),
                 Width = Dim.Width(loginText)
             };
-            win.Add(first_nameText, last_nameText, loginText, passText, passText2, dateText);
+            win.Add(firstNameText, lastNameText, loginText, passText, passText2, dateText);
             var register = new Button("Done")
             {
                 X = Pos.Center() + 1,
@@ -244,10 +244,10 @@ namespace QuizGame.GUI
             {
                 comeback = true; top.Running = false;
             };
-            User? newuser = null;
+            User? newUser = null;
             register.Clicked += () =>
             {
-                if (first_nameText.Text == "" || last_nameText.Text == "" || loginText.Text == "" || passText.Text == "" || passText2.Text == "" || dateText.Text == "")
+                if (firstNameText.Text == "" || lastNameText.Text == "" || loginText.Text == "" || passText.Text == "" || passText2.Text == "" || dateText.Text == "")
                 {
                     MessageBox.ErrorQuery(30, 7, "Error!", "Not all fields are filled in!", "Ok");
                 }
@@ -269,8 +269,8 @@ namespace QuizGame.GUI
                 }
                 else
                 {
-                    Authentification Auth = new();
-                    var reply = Auth.Register(first_nameText.Text.ToString()!, last_nameText.Text.ToString()!, dateText.Text.ToString()!, loginText.Text.ToString()!, passText.Text.ToString()!);
+                    Authentification auth = new();
+                    var reply = auth.Register(firstNameText.Text.ToString()!, lastNameText.Text.ToString()!, dateText.Text.ToString()!, loginText.Text.ToString()!, passText.Text.ToString()!);
                     if (reply == (false, null))
                     {
                         MessageBox.ErrorQuery(30, 7, "Error!", "This login is already occupied!", "Ok");
@@ -278,7 +278,7 @@ namespace QuizGame.GUI
                     }
                     else
                     {
-                        newuser = reply.user;
+                        newUser = reply.user;
                         MessageBox.Query(30, 7, "Well done!", "Registration was successful!", "Ok");
                         comeback = false;
                         top.Running = false;
@@ -287,29 +287,29 @@ namespace QuizGame.GUI
             };
             win.Add(register, back);
             Application.Run();
-            return (comeback!, keep_on!, newuser!);
+            return (comeback, keepOn, newUser!);
         }
         public static (bool keep_on, User user) StartMenu()
         {
-            bool keep_on;
+            bool keepOn;
             (bool comeback, bool keep_on, User? user) reply = (false, true, null);
             do
             {
                 (bool is_existed_user, bool comeback, bool keep_on) welcome = Welcome();
-                keep_on = welcome.keep_on;
-                if (!keep_on) break;
+                keepOn = welcome.keep_on;
+                if (!keepOn) break;
                 if (welcome.is_existed_user)
                 {
                     reply = LoginPasswordWindow();
-                    keep_on = reply.keep_on;
+                    keepOn = reply.keep_on;
                 }
                 else
                 {
                     reply = RegistrationWindow();
-                    keep_on = reply.keep_on;
+                    keepOn = reply.keep_on;
                 }
             } while (reply.comeback);
-            return (keep_on!, reply.user!);
+            return (keepOn, reply.user!);
         }
     }
 }

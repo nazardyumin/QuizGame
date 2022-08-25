@@ -6,50 +6,50 @@ namespace QuizGame.Users
 {
     public class UsersDataBase
     {
-        private List<User> users;
-        private readonly string path;
+        private List<User> _users;
+        private readonly string _path;
         public UsersDataBase()
         {
-            users = new List<User>();
-            path = PathInit();
+            _users = new List<User>();
+            _path = PathInit();
         }
         public void Add(User user)
         {
-            users.Add(user);
+            _users.Add(user);
         }
         public User? SearchByLogin(string login)
         {
-            return users.Find((u) => u.Login == login);
+            return _users.Find((u) => u.Login == login);
         }
         public void SaveToFile()
         {
-            File.Delete(path + "UsersList.json");
-            using var file = new FileStream(path + "UsersList.json", FileMode.Create, FileAccess.Write);
-            Serialize(file, users);
+            File.Delete(_path + "UsersList.json");
+            using var file = new FileStream(_path + "UsersList.json", FileMode.Create, FileAccess.Write);
+            Serialize(file, _users);
         }
         public void LoadFromFile()
         {
-            if (!Directory.Exists(path))
+            if (!Directory.Exists(_path))
             {
-                Directory.CreateDirectory(path);
-                FileStream? helpfile = null;
-                var file = new FileStream(path + "UsersList.json", FileMode.OpenOrCreate, FileAccess.Read);
-                var newfile = SerializerHelper.IfEmptyUsersListFile(ref file, ref helpfile!, path + "UsersList.json");
-                var list = Deserialize(newfile);
-                newfile.Close();
-                users = list!;
+                Directory.CreateDirectory(_path);
+                FileStream? helpFile = null;
+                var file = new FileStream(_path + "UsersList.json", FileMode.OpenOrCreate, FileAccess.Read);
+                var newFile = SerializerHelper.IfEmptyUsersListFile(ref file, ref helpFile!, _path + "UsersList.json");
+                var list = Deserialize(newFile);
+                newFile.Close();
+                _users = list;
             }
             else
             {
-                var file = new FileStream(path + "UsersList.json", FileMode.Open, FileAccess.Read);
+                var file = new FileStream(_path + "UsersList.json", FileMode.Open, FileAccess.Read);
                 var list = Deserialize(file);
                 file.Close();
-                users = list!;
+                _users = list;
             }
         }
         public void Clear()
         {
-            users.Clear();
+            _users.Clear();
         }
         private string PathInit()
         {

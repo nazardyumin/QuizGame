@@ -18,7 +18,7 @@ namespace QuizGame.GUI
         private new (bool keep_on, bool logout, bool back, SomeAction action) MainMenuWindow()
         {
             bool logout = false;
-            bool keep_on = true;
+            bool keepOn = true;
             bool back = false;
             SomeAction? action = null;
             Application.Init();
@@ -34,7 +34,7 @@ namespace QuizGame.GUI
             var menu = new MenuBar(new MenuBarItem[] {new MenuBarItem ("_Menu", new MenuItem []
             {new MenuItem ("_Settings", "", () =>{action=SettingsWindow; top.Running = false; }),
              new MenuItem ("_Logout", "", () => { logout=true; top.Running = false; }),
-             new MenuItem("_Quit", "", () => {  if (GuiHelper.Quit()) {keep_on = false;top.Running = false; } }) })});
+             new MenuItem("_Quit", "", () => {  if (GuiHelper.Quit()) {keepOn = false;top.Running = false; } }) })});
             top.Add(menu);
             var hello = new Label(_role)
             {
@@ -43,70 +43,69 @@ namespace QuizGame.GUI
                 ColorScheme = Colors.Menu
             };
             win.Add(hello);
-            var create_quiz = new Button("Create New Quiz")
+            var createQuiz = new Button("Create New Quiz")
             {
                 X = Pos.Center(),
                 Y = 5
             };
-            create_quiz.Clicked += () =>
+            createQuiz.Clicked += () =>
             {
                 action = CreateQuizWindow;
                 top.Running = false;
             };
-            var edit_quiz = new Button("Edit Quiz")
+            var editQuiz = new Button("Edit Quiz")
             {
                 X = Pos.Center(),
-                Y = Pos.Top(create_quiz) + 2
+                Y = Pos.Top(createQuiz) + 2
             };
-            edit_quiz.Clicked += () =>
+            editQuiz.Clicked += () =>
             {
                 action = EditQuizWindow;
                 top.Running = false;
             };
-            var delete_quiz = new Button("Delete Quiz")
+            var deleteQuiz = new Button("Delete Quiz")
             {
                 X = Pos.Center(),
-                Y = Pos.Top(edit_quiz) + 2
+                Y = Pos.Top(editQuiz) + 2
             };
-            delete_quiz.Clicked += () =>
+            deleteQuiz.Clicked += () =>
             {
                 action = DeleteQuizWindow;
                 top.Running = false;
             };
-            var create_admin = new Button("Create New Admin")
+            var createAdmin = new Button("Create New Admin")
             {
                 X = Pos.Center(),
-                Y = Pos.Top(delete_quiz) + 2
+                Y = Pos.Top(deleteQuiz) + 2
             };
-            create_admin.Clicked += () =>
+            createAdmin.Clicked += () =>
             {
                 action = CreateAdminWindow;
                 top.Running = false;
             };
-            win.Add(create_quiz, edit_quiz, delete_quiz, create_admin);
+            win.Add(createQuiz, editQuiz, deleteQuiz, createAdmin);
             Application.Run();
-            return (keep_on!, logout!, back!, action!);
+            return (keepOn, logout, back, action!);
         }
         private (bool keep_on, bool logout, bool back, SomeAction action) DeleteQuizWindow()
         {
             bool logout;
-            bool keep_on;
+            bool keepOn;
             bool back;
             SomeAction? action = null;
-            (bool keep_on, bool logout, bool back, SomeAction action) stop;
             do
             {
-                stop = DeleteQuizMenu();
+                var stop = DeleteQuizMenu();
                 logout = stop.logout;
-                keep_on = stop.keep_on;
+                keepOn = stop.keep_on;
                 back = stop.back;
-            } while (!logout && keep_on && !back);
-            return (keep_on!, logout!, back!, action!);
+            } while (!logout && keepOn && !back);
+            return (keepOn, logout, back, action!);
         }
         private (bool keep_on, bool logout, bool back, SomeAction action) DeleteQuizMenu()
         {
             bool logout = false;
-            bool keep_on = true;
+            bool keepOn = true;
             bool back = false;
             SomeAction? action = null;
             Application.Init();
@@ -121,7 +120,7 @@ namespace QuizGame.GUI
             top.Add(win);
             var menu = new MenuBar(new MenuBarItem[] {new MenuBarItem ("_Menu", new MenuItem []
             {new MenuItem ("_Logout", "", () => { logout=true; top.Running = false; }),
-             new MenuItem("_Quit", "", () => {  if (GuiHelper.Quit()) { keep_on = false; top.Running = false;} }) })});
+             new MenuItem("_Quit", "", () => {  if (GuiHelper.Quit()) { keepOn = false; top.Running = false;} }) })});
             top.Add(menu);
             var hello = new Label($"{_role}")
             {
@@ -137,22 +136,22 @@ namespace QuizGame.GUI
             };
             if (_creator.GetAllQuizThemes().Count == 0)
             {
-                var no_quizes = new Label("No Quizes available!")
+                var noQuizes = new Label("No Quizes available!")
                 {
                     X = Pos.Center(),
                     Y = Pos.Bottom(header) + 4
                 };
-                var return_back = new Button("Back")
+                var returnBack = new Button("Back")
                 {
                     X = Pos.Center(),
-                    Y = Pos.Bottom(no_quizes) + 3
+                    Y = Pos.Bottom(noQuizes) + 3
                 };
-                return_back.Clicked += () =>
+                returnBack.Clicked += () =>
                 {
                     back = true;
                     top.Running = false;
                 };
-                win.Add(no_quizes, return_back);
+                win.Add(noQuizes, returnBack);
             }
             else
             {
@@ -161,7 +160,7 @@ namespace QuizGame.GUI
                 {
                     buffer[i] = _creator.GetAllQuizThemes()[i];
                 }
-                var themes_list = new RadioGroup(buffer)
+                var themesList = new RadioGroup(buffer)
                 {
                     X = Pos.Center(),
                     Y = Pos.Top(header) + 3
@@ -169,7 +168,7 @@ namespace QuizGame.GUI
                 var cancel = new Button("Cancel")
                 {
                     X = Pos.Center() - 11,
-                    Y = Pos.Bottom(themes_list) + 3
+                    Y = Pos.Bottom(themesList) + 3
                 };
                 cancel.Clicked += () =>
                 {
@@ -185,35 +184,34 @@ namespace QuizGame.GUI
                 {
                     if (GuiHelper.Delete())
                     {
-                        _superCreator.DeleteQuiz(themes_list.SelectedItem);
+                        _superCreator.DeleteQuiz(themesList.SelectedItem);
                     }
                     top.Running = false;
                 };
-                win.Add(header, themes_list, delete, cancel);
+                win.Add(header, themesList, delete, cancel);
             }
             Application.Run();
-            return (keep_on!, logout!, back!, action!);
+            return (keepOn, logout, back, action!);
         }
         private (bool keep_on, bool logout, bool back, SomeAction action) CreateAdminWindow()
         {
             bool logout;
-            bool keep_on;
+            bool keepOn;
             bool back;
             SomeAction? action = null;
-            (bool keep_on, bool logout, bool back, SomeAction action) stop;
             do
             {
-                stop = CreateAdminMenu();
+                var stop = CreateAdminMenu();
                 logout = stop.logout;
-                keep_on = stop.keep_on;
+                keepOn = stop.keep_on;
                 back = stop.back;
-            } while (!logout && keep_on && !back);
-            return (keep_on!, logout!, back!, action!);
+            } while (!logout && keepOn && !back);
+            return (keepOn, logout, back, action!);
         }
         private (bool keep_on, bool logout, bool back, SomeAction action) CreateAdminMenu()
         {
             bool logout = false;
-            bool keep_on = true;
+            bool keepOn = true;
             bool back = false;
             SomeAction? action = null;
             Application.Init();
@@ -228,7 +226,7 @@ namespace QuizGame.GUI
             top.Add(win);
             var menu = new MenuBar(new MenuBarItem[] {new MenuBarItem ("_Menu", new MenuItem []
             {new MenuItem ("_Logout", "", () => { logout=true; top.Running = false; }),
-             new MenuItem("_Quit", "", () => {  if (GuiHelper.Quit()) { keep_on = false; top.Running = false;} }) })});
+             new MenuItem("_Quit", "", () => {  if (GuiHelper.Quit()) { keepOn = false; top.Running = false;} }) })});
             top.Add(menu);
             var hello = new Label($"{_role}")
             {
@@ -242,47 +240,47 @@ namespace QuizGame.GUI
                 X = Pos.Center(),
                 Y = 2
             };
-            var first_name = new Label("First Name: ")
+            var firstName = new Label("First Name: ")
             {
                 X = Pos.Center() - 19,
                 Y = Pos.Top(header) + 4
             };
-            var last_name = new Label("Last Name: ")
+            var lastName = new Label("Last Name: ")
             {
-                X = Pos.Left(first_name),
-                Y = Pos.Top(first_name) + 2
+                X = Pos.Left(firstName),
+                Y = Pos.Top(firstName) + 2
             };
             var login = new Label("Login: ")
             {
-                X = Pos.Left(first_name),
-                Y = Pos.Top(last_name) + 2
+                X = Pos.Left(firstName),
+                Y = Pos.Top(lastName) + 2
             };
             var password = new Label("Password: ")
             {
-                X = Pos.Left(first_name),
+                X = Pos.Left(firstName),
                 Y = Pos.Top(login) + 2
             };
             var password2 = new Label("Confirm password: ")
             {
-                X = Pos.Left(first_name),
+                X = Pos.Left(firstName),
                 Y = Pos.Top(password) + 2
             };
-            var date_of_birth = new Label("Date of birth: ")
+            var dateOfBirth = new Label("Date of birth: ")
             {
-                X = Pos.Left(first_name),
+                X = Pos.Left(firstName),
                 Y = Pos.Top(password2) + 2
             };
-            win.Add(header, first_name, last_name, login, password, password2, date_of_birth);
-            var first_nameText = new TextField("")
+            win.Add(header, firstName, lastName, login, password, password2, dateOfBirth);
+            var firstNameText = new TextField("")
             {
                 X = Pos.Right(password2),
-                Y = Pos.Top(first_name),
+                Y = Pos.Top(firstName),
                 Width = 20
             };
-            var last_nameText = new TextField("")
+            var lastNameText = new TextField("")
             {
                 X = Pos.Right(password2),
-                Y = Pos.Top(last_name),
+                Y = Pos.Top(lastName),
                 Width = 20
             };
             var loginText = new TextField("")
@@ -308,11 +306,11 @@ namespace QuizGame.GUI
             var dateText = new TextField("dd.mm.yyyy")
             {
                 X = Pos.Left(loginText),
-                Y = Pos.Top(date_of_birth),
+                Y = Pos.Top(dateOfBirth),
                 Width = Dim.Width(loginText)
             };
-            win.Add(first_nameText, last_nameText, loginText, passText, passText2, dateText);
-            var which_admin = new RadioGroup(new ustring[] { "Admin", "SuperAdmin" }, 0)
+            win.Add(firstNameText, lastNameText, loginText, passText, passText2, dateText);
+            var whichAdmin = new RadioGroup(new ustring[] { "Admin", "SuperAdmin" })
             {
                 X = Pos.Center(),
                 Y = Pos.Top(dateText) + 2,
@@ -321,21 +319,21 @@ namespace QuizGame.GUI
             var register = new Button("Done")
             {
                 X = Pos.Center() + 1,
-                Y = Pos.Top(which_admin) + 3
+                Y = Pos.Top(whichAdmin) + 3
             };
-            var return_back = new Button("Cancel")
+            var returnBack = new Button("Cancel")
             {
                 X = Pos.Left(register) - 11,
                 Y = Pos.Top(register)
             };
-            return_back.Clicked += () =>
+            returnBack.Clicked += () =>
             {
                 back = true; top.Running = false;
             };
             User? newuser = null;
             register.Clicked += () =>
             {
-                if (first_nameText.Text == "" || last_nameText.Text == "" || loginText.Text == "" || passText.Text == "" || passText2.Text == "" || dateText.Text == "")
+                if (firstNameText.Text == "" || lastNameText.Text == "" || loginText.Text == "" || passText.Text == "" || passText2.Text == "" || dateText.Text == "")
                 {
                     MessageBox.ErrorQuery(30, 7, "Error!", "Not all fields are filled in!", "Ok");
                 }
@@ -357,8 +355,8 @@ namespace QuizGame.GUI
                 }
                 else
                 {
-                    Authentification Auth = new();
-                    var reply = Auth.RegisterAdmin(first_nameText.Text.ToString()!, last_nameText.Text.ToString()!, dateText.Text.ToString()!, loginText.Text.ToString()!, passText.Text.ToString()!, which_admin.SelectedItem);
+                    Authentification auth = new();
+                    var reply = auth.RegisterAdmin(firstNameText.Text.ToString()!, lastNameText.Text.ToString()!, dateText.Text.ToString()!, loginText.Text.ToString()!, passText.Text.ToString()!, whichAdmin.SelectedItem);
                     if (reply == (false, null))
                     {
                         MessageBox.ErrorQuery(30, 7, "Error!", "This login is already occupied!", "Ok");
@@ -373,28 +371,28 @@ namespace QuizGame.GUI
                     }
                 }
             };
-            win.Add(register, return_back, which_admin);
+            win.Add(register, returnBack, whichAdmin);
             Application.Run();
-            return (keep_on!, logout!, back!, action!);
+            return (keepOn, logout, back, action!);
         }
         public override (bool keep_on, bool logout) AdminMenu()
         {
-            bool keep_on;
+            bool keepOn;
             bool logout;
             do
             {
                 var reply = MainMenuWindow();
-                keep_on = reply.keep_on;
+                keepOn = reply.keep_on;
                 logout = reply.logout;
-                if (!keep_on || logout) break;
+                if (!keepOn || logout) break;
                 if (reply.action is not null)
                 {
                     (bool keep_on, bool logout, bool back, SomeAction action) stop = reply.action.Invoke();
-                    keep_on = stop.keep_on;
+                    keepOn = stop.keep_on;
                     logout = stop.logout;
                 }
-            } while (!logout && keep_on);
-            return (keep_on, logout);
+            } while (!logout && keepOn);
+            return (keepOn, logout);
         }
     }
 }

@@ -23,7 +23,7 @@ namespace QuizGame.Users
                 else return ("password", false, null);
             }
         }
-        public (bool, User? user) Register(string firstname, string lastname, string dateofbirth, string login, string password)
+        public (bool, User? user) Register(string firstname, string lastname, string dateOfBirth, string login, string password)
         {
             if (_usersDataBase.SearchByLogin(login) is not null)
             {
@@ -35,7 +35,7 @@ namespace QuizGame.Users
                 {
                     FirstName = firstname,
                     LastName = lastname,
-                    DateOfBirth = dateofbirth,
+                    DateOfBirth = dateOfBirth,
                     Login = login,
                     Password = password,
                     IsAdmin = false,
@@ -47,7 +47,7 @@ namespace QuizGame.Users
                 return (true, user);
             }
         }
-        public (bool, User? user) RegisterAdmin(string firstname, string lastname, string dateofbirth, string login, string password, int which_admin)
+        public (bool, User? user) RegisterAdmin(string firstname, string lastname, string dateOfBirth, string login, string password, int whichAdmin)
         {
             if (_usersDataBase.SearchByLogin(login) is not null)
             {
@@ -56,13 +56,13 @@ namespace QuizGame.Users
             else
             {
                 User user;
-                if (which_admin == 0)
+                if (whichAdmin == 0)
                 {
                     user = new User
                     {
                         FirstName = firstname,
                         LastName = lastname,
-                        DateOfBirth = dateofbirth,
+                        DateOfBirth = dateOfBirth,
                         Login = login,
                         Password = password,
                         IsAdmin = true,
@@ -75,7 +75,7 @@ namespace QuizGame.Users
                     {
                         FirstName = firstname,
                         LastName = lastname,
-                        DateOfBirth = dateofbirth,
+                        DateOfBirth = dateOfBirth,
                         Login = login,
                         Password = password,
                         IsAdmin = false,

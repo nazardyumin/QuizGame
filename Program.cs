@@ -1,39 +1,39 @@
 using QuizGame.GUI;
 using QuizGame.Users;
 
-bool keep_on_using;
-bool logout;
+bool keepOnUsing;
 
 do
 {
-    (bool keep_on, User user) = GuiCommon.StartMenu();
-    keep_on_using = keep_on;
-    if (!keep_on_using) break;
+    (bool keepOn, User user) = GuiCommon.StartMenu();
+    keepOnUsing = keepOn;
+    if (!keepOnUsing) break;
+    bool logout;
     do
     {
         if (user.IsAdmin)
         {
-            var GUIadmin = new GuiAdmin(user);
-            (bool keep_on, bool logout) reply = GUIadmin.AdminMenu();
-            keep_on_using = reply.keep_on;
+            var guiAdmin = new GuiAdmin(user);
+            (bool keep_on, bool logout) reply = guiAdmin.AdminMenu();
+            keepOnUsing = reply.keep_on;
             logout = reply.logout;
-            if (!keep_on_using) break;
+            if (!keepOnUsing) break;
         }
         else if (user.IsSuperAdmin)
         {
-            var GUIsuperadmin = new GuiSuperAdmin(user);
-            (bool keep_on, bool logout) reply = GUIsuperadmin.AdminMenu();
-            keep_on_using = reply.keep_on;
+            var guiSuperAdmin = new GuiSuperAdmin(user);
+            (bool keep_on, bool logout) reply = guiSuperAdmin.AdminMenu();
+            keepOnUsing = reply.keep_on;
             logout = reply.logout;
-            if (!keep_on_using) break;
+            if (!keepOnUsing) break;
         }
         else
         {
-            var GUIplayer = new GuiPlayer(user);
-            (bool keep_on, bool logout) reply = GUIplayer.PlayerMenu();
-            keep_on_using = reply.keep_on;
+            var guiPlayer = new GuiPlayer(user);
+            (bool keep_on, bool logout) reply = guiPlayer.PlayerMenu();
+            keepOnUsing = reply.keep_on;
             logout = reply.logout;
-            if (!keep_on_using) break;
+            if (!keepOnUsing) break;
         }
     } while (!logout);
-} while (keep_on_using);
+} while (keepOnUsing);

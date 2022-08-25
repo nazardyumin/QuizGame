@@ -14,11 +14,11 @@ namespace QuizGame.Helpers
             if (!Directory.Exists(path))
             {
                 Directory.CreateDirectory(path!);
-                FileStream? helpfile = null;
+                FileStream? helpFile = null;
                 var file = new FileStream(path + "QuizesList.json", FileMode.OpenOrCreate, FileAccess.Read);
-                var newfile = SerializerHelper.IfEmptyQuizesListFile(ref file, ref helpfile!, path + "QuizesList.json");
-                var list = Deserialize(newfile);
-                newfile.Close();
+                var newFile = SerializerHelper.IfEmptyQuizesListFile(ref file, ref helpFile!, path + "QuizesList.json");
+                var list = Deserialize(newFile);
+                newFile.Close();
                 return list!;
             }
             else
@@ -44,8 +44,8 @@ namespace QuizGame.Helpers
             creator.SetTheme("Mixed Quiz");
             creator.SetLevel("Mixed");
             Random random = new();
-            var quiz_list = FromFile();
-            foreach (var (item, i) in from item in quiz_list
+            var quizList = FromFile();
+            foreach (var (item, i) in from item in quizList
                                       let i = random.Next(0, item.Questions!.Count)
                                       select (item, i))
             {

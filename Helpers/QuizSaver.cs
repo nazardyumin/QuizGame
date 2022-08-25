@@ -9,28 +9,28 @@ namespace QuizGame.Helpers
         public static void ToFile(Quiz quiz)
         {
             var path = PathsConfig.Init().PathToQuizes;
-            var quizlist = QuizLoader.FromFile();
-            if (quizlist is not null)
+            var quizList = QuizLoader.FromFile();
+            if (quizList is not null)
             {
-                quizlist.Add(quiz);
+                quizList.Add(quiz);
             }
             else
             {
-                quizlist = new List<Quiz>
+                quizList = new List<Quiz>
                 {
                     quiz
                 };
             }
             File.Delete(path + "QuizesList.json");
             using var file = new FileStream(path + "QuizesList.json", FileMode.Create, FileAccess.Write);
-            JsonSerializer.SerializeAsync(file, quizlist);
+            JsonSerializer.SerializeAsync(file, quizList);
         }
-        public static void ReSaveToFile(Quiz quiz_local)
+        public static void ReSaveToFile(Quiz quizLocal)
         {
             var path = PathsConfig.Init().PathToQuizes;
             var list = QuizLoader.FromFile();
-            var index = list.IndexOf(QuizLoader.FindQuiz($"{quiz_local.Theme} ({quiz_local.Level})", list));
-            list[index] = quiz_local;
+            var index = list.IndexOf(QuizLoader.FindQuiz($"{quizLocal.Theme} ({quizLocal.Level})", list));
+            list[index] = quizLocal;
             File.Delete(path + "QuizesList.json");
             using var file = new FileStream(path + "QuizesList.json", FileMode.Create, FileAccess.Write);
             JsonSerializer.SerializeAsync(file, list);

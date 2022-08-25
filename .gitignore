@@ -361,3 +361,8 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+/QuizGame.sln.DotSettings
+/.idea/.idea.QuizGame/.idea/vcs.xml
+/.idea/.idea.QuizGame/.idea/indexLayout.xml
+/.idea/.idea.QuizGame/.idea/encodings.xml
+/.idea/.idea.QuizGame/.idea/.gitignore

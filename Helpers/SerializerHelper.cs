@@ -8,53 +8,53 @@ namespace QuizGame.Helpers
 {
     public static class SerializerHelper
     {
-        public static FileStream IfEmptyRatingPositionFile(ref FileStream file, ref FileStream helpfile, string path)
+        public static FileStream IfEmptyRatingPositionFile(ref FileStream file, ref FileStream helpFile, string path)
         {
             if (file.Length == 0)
             {
                 file.Close();
-                var testrecord = new List<RatingPosition>();
-                var tempfile = new FileStream(path, FileMode.Open, FileAccess.Write);
-                JsonSerializer.SerializeAsync(tempfile, testrecord);
-                tempfile.Close();
-                helpfile = new FileStream(path, FileMode.Open, FileAccess.Read);
-                return helpfile;
+                var testRecord = new List<RatingPosition>();
+                var tempFile = new FileStream(path, FileMode.Open, FileAccess.Write);
+                JsonSerializer.SerializeAsync(tempFile, testRecord);
+                tempFile.Close();
+                helpFile = new FileStream(path, FileMode.Open, FileAccess.Read);
+                return helpFile;
             }
             return file;
         }
-        public static FileStream IfEmptyUsersListFile(ref FileStream file, ref FileStream helpfile, string path)
+        public static FileStream IfEmptyUsersListFile(ref FileStream file, ref FileStream helpFile, string path)
         {
             if (file.Length == 0)
             {
                 file.Close();
-                var newfile = new FileStream("DefaultUsersList.json", FileMode.Open, FileAccess.Read);
-                var defaultusers = DeserializeUsers(newfile);
-                newfile.Close();
-                var tempfile = new FileStream(path, FileMode.Open, FileAccess.Write);
-                JsonSerializer.SerializeAsync(tempfile, defaultusers);
-                tempfile.Close();
-                helpfile = new FileStream(path, FileMode.Open, FileAccess.Read);
-                return helpfile;
+                var newFile = new FileStream("DefaultUsersList.json", FileMode.Open, FileAccess.Read);
+                var defaultUsers = DeserializeUsers(newFile);
+                newFile.Close();
+                var tempFile = new FileStream(path, FileMode.Open, FileAccess.Write);
+                JsonSerializer.SerializeAsync(tempFile, defaultUsers);
+                tempFile.Close();
+                helpFile = new FileStream(path, FileMode.Open, FileAccess.Read);
+                return helpFile;
             }
             return file;
         }
-        public static FileStream IfEmptyQuizesListFile(ref FileStream file, ref FileStream helpfile, string path)
+        public static FileStream IfEmptyQuizesListFile(ref FileStream file, ref FileStream helpFile, string path)
         {
             if (file.Length == 0)
             {
                 file.Close();
-                var newfile = new FileStream("DefaultQuizesList.json", FileMode.Open, FileAccess.Read);
-                var defaultquizes = DeserializeQuizes(newfile);
-                newfile.Close();
-                foreach (var item in defaultquizes)
+                var newFile = new FileStream("DefaultQuizesList.json", FileMode.Open, FileAccess.Read);
+                var defaultQuizes = DeserializeQuizes(newFile);
+                newFile.Close();
+                foreach (var item in defaultQuizes)
                 {
                     Top20Serializer.CreateTop20File($"{item.Theme} ({item.Level})");
                 }
-                var tempfile = new FileStream(path, FileMode.Open, FileAccess.Write);
-                JsonSerializer.SerializeAsync(tempfile, defaultquizes);
-                tempfile.Close();
-                helpfile = new FileStream(path, FileMode.Open, FileAccess.Read);
-                return helpfile;
+                var tempFile = new FileStream(path, FileMode.Open, FileAccess.Write);
+                JsonSerializer.SerializeAsync(tempFile, defaultQuizes);
+                tempFile.Close();
+                helpFile = new FileStream(path, FileMode.Open, FileAccess.Read);
+                return helpFile;
             }
             return file;
         }
@@ -75,8 +75,8 @@ namespace QuizGame.Helpers
                 }
                 var orderedHighScores = highscores.OrderByDescending((r) => r.Scores);
                 File.Delete(path + "Highscores.json");
-                using var hsfile2 = new FileStream(path + "Highscores.json", FileMode.Create, FileAccess.Write);
-                JsonSerializer.SerializeAsync(hsfile2, orderedHighScores);
+                using var hsFile2 = new FileStream(path + "Highscores.json", FileMode.Create, FileAccess.Write);
+                JsonSerializer.SerializeAsync(hsFile2, orderedHighScores);
             }
             else
             {
@@ -85,8 +85,8 @@ namespace QuizGame.Helpers
                     position
                 };
                 File.Delete(path + "Highscores.json");
-                using var hsfile3 = new FileStream(path + "Highscores.json", FileMode.Create, FileAccess.Write);
-                JsonSerializer.SerializeAsync(hsfile3, highscores);
+                using var hsFile3 = new FileStream(path + "Highscores.json", FileMode.Create, FileAccess.Write);
+                JsonSerializer.SerializeAsync(hsFile3, highscores);
             }
         }
         public static List<RatingPosition>? LoadHighscores()
@@ -96,11 +96,11 @@ namespace QuizGame.Helpers
             {
                 Directory.CreateDirectory(path!);
             }
-            FileStream? helpfile = null;
-            var hsfile1 = new FileStream(path + "Highscores.json", FileMode.OpenOrCreate, FileAccess.Read);
-            var newfile = IfEmptyRatingPositionFile(ref hsfile1, ref helpfile!, path + "Highscores.json");
-            var highscores = DeserializeRatings(newfile);
-            newfile.Close();
+            FileStream? helpFile = null;
+            var hsFile1 = new FileStream(path + "Highscores.json", FileMode.OpenOrCreate, FileAccess.Read);
+            var newFile = IfEmptyRatingPositionFile(ref hsFile1, ref helpFile!, path + "Highscores.json");
+            var highscores = DeserializeRatings(newFile);
+            newFile.Close();
             return highscores;
         }
         private static List<RatingPosition> DeserializeRatings(FileStream file)

@@ -15,7 +15,7 @@ namespace QuizGame.Quizes.QuizResults
             {
                 Directory.CreateDirectory(path);
             }
-            var file = new FileStream(path + login! + ".json", FileMode.Create, FileAccess.Write);
+            var file = new FileStream(path + login + ".json", FileMode.Create, FileAccess.Write);
             Serialize(ref file, new List<QuizResult>());
             file.Close();
         }
@@ -31,19 +31,19 @@ namespace QuizGame.Quizes.QuizResults
         }
         private static List<QuizResult> LoadFromFile(string path, string login)
         {
-            var file = new FileStream(path + login! + ".json", FileMode.Open, FileAccess.Read);
+            var file = new FileStream(path + login + ".json", FileMode.Open, FileAccess.Read);
             var results = Deserialize(ref file);
             file.Close();
             return results;
         }
         private static void SaveToFile(string path, string login, List<QuizResult> results)
         {
-            File.Delete(path + login! + ".json");
-            var file = new FileStream(path + login! + ".json", FileMode.Create, FileAccess.Write);
+            File.Delete(path + login + ".json");
+            var file = new FileStream(path + login + ".json", FileMode.Create, FileAccess.Write);
             Serialize(ref file, results);
             file.Close();
         }
-        public static List<QuizResult>? GetQuizResults(string login)
+        public static List<QuizResult> GetQuizResults(string login)
         {
             var path = PathInit();
             var results = LoadFromFile(path, login);

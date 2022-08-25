@@ -6,6 +6,6 @@ namespace QuizGame.Quizes
     {
         public string? Theme { get; set; }
         public string? Level { get; set; }
-        public List<QuizQuestion>? Questions { get; set; }      
+        public List<QuizQuestion>? Questions { get; set; }
     }
 }

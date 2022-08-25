@@ -26,15 +26,15 @@ namespace QuizGame.Features
         }
         public List<string> GetAllQuizThemes()
         {
-            var quizlist = QuizLoader.FromFile();
-            var listthemes = new List<string>();
-            foreach (var item in quizlist)
+            var quizList = QuizLoader.FromFile();
+            var listThemes = new List<string>();
+            foreach (var item in quizList)
             {
-                listthemes.Add($"{item.Theme} ({item.Level})");
+                listThemes.Add($"{item.Theme} ({item.Level})");
             }
-            return listthemes;
+            return listThemes;
         }
-        public Quiz? FindQuiz(int index)
+        public Quiz FindQuiz(int index)
         {
             return QuizLoader.FindQuiz(index);
         }
@@ -88,15 +88,15 @@ namespace QuizGame.Features
             if (check1 && check2 && check3 && check4) return true;
             else return false;
         }
-        public void AddItemToQuizResult(int index, bool is_correct)
+        public void AddItemToQuizResult(int index, bool isCorrect)
         {
             var item = new QuizQuestionResult
             {
                 Question = _quiz!.Questions![index].Question,
-                IsCorrect = is_correct
+                IsCorrect = isCorrect
             };
             _result!.AnsweredQuestions!.Add(item);
-            if (is_correct) _result.Scores++;
+            if (isCorrect) _result.Scores++;
         }
         private void AddQuizResultToDataBase()
         {
@@ -109,7 +109,7 @@ namespace QuizGame.Features
         {
             _position = new RatingPosition
             {
-                Login = _user!.Login,
+                Login = _user.Login,
                 Name = _user.FirstName + " " + _user.LastName,
                 Scores = _result!.Scores
             };
@@ -125,18 +125,18 @@ namespace QuizGame.Features
                 SerializerHelper.SaveHighscores(_position);
             }
         }
-        public void SaveResults(bool is_mixed)
+        public void SaveResults(bool isMixed)
         {
             AddQuizResultToDataBase();
             PositionInit();
-            if (!is_mixed)
+            if (!isMixed)
             {
                 SaveResultToTop20();
                 QuizSaver.ReSaveToFile(_quiz!);
             }
             SaveResultToHighscoresFile();
         }
-        public List<string>? GetTop20()
+        public List<string> GetTop20()
         {
             List<string> list = new();
             var top20 = Top20Serializer.GetTop20($"{_quiz!.Theme} ({_quiz.Level})");
@@ -149,7 +149,7 @@ namespace QuizGame.Features
             }
             return list;
         }
-        public string? GetHighScores()
+        public string GetHighScores()
         {
             var stringBuilder = new StringBuilder();
             var list = SerializerHelper.LoadHighscores();
@@ -159,7 +159,7 @@ namespace QuizGame.Features
                 {
                     for (var i = 0; i < 10; i++)
                     {
-                        stringBuilder.Append($"{list[i]!.Name!} {list[i]!.Scores!}\n");
+                        stringBuilder.Append($"{list[i].Name!} {list[i].Scores!}\n");
                     }
                 }
                 else
@@ -170,8 +170,8 @@ namespace QuizGame.Features
                     }
                 }
             }
-            string? highscores = stringBuilder.ToString();
-            return highscores;
+            string highScores = stringBuilder.ToString();
+            return highScores;
         }
         public List<QuizResult>? GetQuizResults()
         {
@@ -190,18 +190,18 @@ namespace QuizGame.Features
         }
         public string GetPlayerInfo()
         {
-            var quizes_passed = 0;
-            var total_scores = 0;
+            var quizesPassed = 0;
+            var totalScores = 0;
             var list = QuizResultsSerializer.GetQuizResults(_user.Login!);
             if (list!.Count > 0)
             {
-                quizes_passed = list.Count;
+                quizesPassed = list.Count;
                 foreach (var item in list)
                 {
-                    total_scores += item.Scores;
+                    totalScores += item.Scores;
                 }
             }
-            return $"Quizes passed: {quizes_passed} | Total Scores: {total_scores} | ";
+            return $"Quizes passed: {quizesPassed} | Total Scores: {totalScores} | ";
         }
     }
 }

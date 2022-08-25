@@ -7,10 +7,10 @@ namespace QuizGame.Features
     public class QuizEditor : Default
     {
         protected Quiz? _quiz;
-        public QuizEditor(User user) : base(user)
+        protected QuizEditor(User user) : base(user)
         {
         }
-        public Quiz? FindQuiz(int index)
+        public Quiz FindQuiz(int index)
         {
             return QuizLoader.FindQuiz(index);
         }
@@ -30,10 +30,10 @@ namespace QuizGame.Features
         {
             _quiz!.Questions![index].Question = question;
         }
-        public void EditAnswer(string answer, int iscorrect, int index1, int index2)
+        public void EditAnswer(string answer, int isCorrect, int index1, int index2)
         {
             _quiz!.Questions![index1].Answers![index2].Answer = answer;
-            _quiz!.Questions![index1].Answers![index2].IsCorrect = iscorrect;
+            _quiz!.Questions![index1].Answers![index2].IsCorrect = isCorrect;
         }
         public int GetCount()
         {
@@ -75,13 +75,13 @@ namespace QuizGame.Features
         }
         public List<string> GetAllQuizThemes()
         {
-            var quizlist = QuizLoader.FromFile();
-            var listthemes = new List<string>();
-            foreach (var item in quizlist)
+            var quizList = QuizLoader.FromFile();
+            var listThemes = new List<string>();
+            foreach (var item in quizList)
             {
-                listthemes.Add($"{item.Theme} ({item.Level})");
+                listThemes.Add($"{item.Theme} ({item.Level})");
             }
-            return listthemes;
+            return listThemes;
         }
         public string GetTheme()
         {

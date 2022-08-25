@@ -15,7 +15,7 @@ namespace QuizGame.Quizes.QuizResults
             {
                 Directory.CreateDirectory(path);
             }
-            var file = new FileStream(path + theme! + "Top20.json", FileMode.Create, FileAccess.Write);
+            var file = new FileStream(path + theme + "Top20.json", FileMode.Create, FileAccess.Write);
             Serialize(ref file, new List<RatingPosition>());
             file.Close();
         }
@@ -23,7 +23,7 @@ namespace QuizGame.Quizes.QuizResults
         {
             if (theme != "Mixed Quiz (Mixed)")
             {
-                var file = new FileStream(path + theme! + "Top20.json", FileMode.Open, FileAccess.Read);
+                var file = new FileStream(path + theme + "Top20.json", FileMode.Open, FileAccess.Read);
                 var list = Deserialize(ref file);
                 file.Close();
                 return list;
@@ -32,8 +32,8 @@ namespace QuizGame.Quizes.QuizResults
         }
         private static void SaveToFile(string path, string theme, List<RatingPosition> list)
         {
-            File.Delete(path + theme! + "Top20.json");
-            var file = new FileStream(path + theme! + "Top20.json", FileMode.Create, FileAccess.Write);
+            File.Delete(path + theme + "Top20.json");
+            var file = new FileStream(path + theme + "Top20.json", FileMode.Create, FileAccess.Write);
             Serialize(ref file, list);
             file.Close();
         }
@@ -69,7 +69,7 @@ namespace QuizGame.Quizes.QuizResults
                 SaveToFile(path, theme, list);
             }
         }
-        public static List<RatingPosition>? GetTop20(string theme)
+        public static List<RatingPosition> GetTop20(string theme)
         {
             var path = PathInit();
             var list = LoadFromFile(path, theme);
@@ -78,7 +78,7 @@ namespace QuizGame.Quizes.QuizResults
         public static void DeleteTop20File(string theme)
         {
             var path = PathInit();
-            File.Delete(path + theme! + "Top20.json");
+            File.Delete(path + theme + "Top20.json");
         }
         private static string PathInit()
         {

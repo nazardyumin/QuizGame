@@ -11,4 +11,4 @@ https://github.com/gui-cs/Terminal.Gui
 
 [QuizGame](https://user-images.githubusercontent.com/107345088/184873342-35658893-359c-457b-9ddf-75a3b70fec8f.png)
 
-nazar-photo © 2022
+nazardyumin © 2022
